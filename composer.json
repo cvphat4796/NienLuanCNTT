@@ -1,14 +1,16 @@
 {
-    "name": "laravel/laravel",
+   "name": "laravel/laravel",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.6.4",
-        "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
-    },
+      "php": ">=5.6.4",
+      "laravel/framework": "5.4.*",
+      "laravel/tinker": "~1.0",
+      "maatwebsite/excel": "~2.1.0",
+      "webpatser/laravel-uuid": "^3.0"
+   },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
@@ -47,5 +49,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+ }
 }

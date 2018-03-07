@@ -1,0 +1,192 @@
+﻿*{margin:0;padding:0; }
+
+span#xinchao1 {
+    text-transform: none;
+    color: white;
+}
+ 
+body{
+    background-color: #f3f3f3;
+}
+ 
+ .banner{
+   background-color: #f3f3f3;
+   height: 180px;
+   margin-left: 16px;
+   margin-right: 16px;
+   text-transform: uppercase;
+   font-size: 30px;
+   color: #b13434;
+ }
+
+ .banner .icon{
+    background-image: url('../images/icon-bgd.png');
+    height:  100%;
+    background-repeat:  no-repeat;
+    background-size: contain;
+ }
+
+.banner span{
+    font-size: 24px;
+    text-transform: none;
+}
+
+.form-control:focus{
+    border-color: #e69999;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(218, 85, 105, .6);
+}
+
+.tieude{
+    text-align:  center;
+    padding-top: 29px;
+}
+
+.navbar-default{
+    background-color: #b13434;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.navbar-default .navbar-nav > li > a  {
+    color: #ffffff;
+    border-right: 2px solid white;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus{
+    background-color: white;
+    color:  #b13434;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a{
+    color: #dad2d2;
+}
+
+.navbar-nav > li > .dropdown-menu{
+    background-color: #b13434;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus
+{
+    color: #dad2d2;
+    background-color: #6d2121;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus{
+    background-color: #6d2121;
+    color:  white;
+}
+
+
+.form-dangnhap label{
+    font-size: 10px;
+}
+
+
+.form-dangnhap input{
+    font-size: 10px;
+}
+
+.form-dangnhap .tieudedangnhap{
+    font-size: 20px;
+}
+
+.btn-default{
+    background-color:  #b13434;
+    color:  white;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default{
+    background-color:  #6d2121;
+    color:  white;
+}
+
+.timkiem{
+    margin-top: 100px;
+}
+
+.timkiem label{
+    color: #b13434;
+}
+
+.navbar-form .form-control{
+    width: 260px;
+}
+
+.custom-select{
+    width: auto;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    padding: .375rem 1.75rem .375rem .75rem;
+    line-height: 1.5;
+}
+
+.custom-select:focus{
+    border-color: #e69999;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(218, 85, 105, .6);
+}
+
+.btn-default.disabled, .custom-select[disabled], .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled.focus, .btn-default[disabled].focus, fieldset[disabled] .btn-default.focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active{
+    background-color: #464646;
+    border-color: #ccc;
+    color: white;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus
+{
+    background-color: #b13434;
+    color: white;
+}
+.timkiemmenu{
+    padding-right: 20px;
+}
+
+.navbar-default .navbar-nav > li > span{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 20px;
+    line-height: 20px;
+    position: relative;
+    display: block;
+    text-transform: none;
+    font-size: 18px;
+}
+.info{
+    padding-top: 35px;
+}
+.table-striped > tbody > tr:nth-of-type(odd){
+    background-color: #b13434;
+    color: white;
+}
+.table-hover > tbody > tr:hover{
+    background-color: #842424;
+    color: white;
+}
+
+.datepicker th.prev {
+    background-image: url('../images/prev.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+.next{
+    background-image: url('../images/next.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.thoigian{
+line-height: 28px;
+}
+
+
+.thoigian .text-right{
+    margin-top: 10px;
+}
+
+.thoigian > label{
+    
+color: #b13434;
+}
+
+
