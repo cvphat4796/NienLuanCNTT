@@ -12,6 +12,13 @@
 */
 
 Route::get('/',['as' => 'trangchu',  function () {
+	if(Auth::check()){
+    		$user = Auth::user();
+    		if($user->pq_maso == 'bgd')
+    			return redirect()->route('getHomeBoGD');
+    		else
+    			return redirect()->route('getLogin');
+    	}
     return view('trangchu');
 }]);
 
@@ -24,22 +31,79 @@ Route::post('dang-nhap', ['as' => 'postLogin', 'uses' => 'TaiKhoanController@pos
 Route::get('dang-xuat',['as' => 'getLogout', 'uses' => 'TaiKhoanController@getLogout']);
 Route::get('doi-mat-khau',['as' => 'getDoiMatKhau', 'uses' => 'TaiKhoanController@getDoiMatKhau']);
 
-Route::get('bo-giao-duc', ['as' => 'getHomeBoGD', 'uses' => 'BoGDController@getHomeBoGD'])->middleware('xacthuc:bgd');
-Route::get('bo-giao-duc/tao-tai-khoan', ['as' => 'getTaoTaiKhoan', 'uses' => 'BoGDController@getTaoTaiKhoan'])->middleware('xacthuc:bgd');
+//controller bo giao duc
+Route::get('bo-giao-duc', 
+			['as' => 'getHomeBoGD', 
+			'uses' => 'BoGDController@getHomeBoGD'])
+			->middleware('xacthuc:bgd');
 
-Route::post('bo-giao-duc/tao-tai-khoan', ['as' => 'postTaoTaiKhoan', 'uses' => 'BoGDController@postTaoTaiKhoan'])->middleware('xacthuc:bgd');
+Route::get('bo-giao-duc/tao-tai-khoan', 
+			['as' => 'getTaoTaiKhoan', 
+			'uses' => 'BoGDController@getTaoTaiKhoan'])
+			->middleware('xacthuc:bgd');
 
-Route::post('bo-giao-duc/tao-tai-khoan-excel', ['as' => 'postTaoTaiKhoanExcel', 'uses' => 'BoGDController@postTaoTaiKhoanExcel'])->middleware('xacthuc:bgd');
+Route::post('bo-giao-duc/tao-tai-khoan', 
+			['as' => 'postTaoTaiKhoan', 
+			'uses' => 'BoGDController@postTaoTaiKhoan'])
+			->middleware('xacthuc:bgd');
 
-Route::get('bo-giao-duc/tai-khoan-sogd', ['as' => 'getTaiKhoanSoGD', 'uses' => 'BoGDController@getTaiKhoanSoGD'])->middleware('xacthuc:bgd');
+Route::post('bo-giao-duc/tao-tai-khoan-excel', 
+			['as' => 'postTaoTaiKhoanExcel', 
+			'uses' => 'BoGDController@postTaoTaiKhoanExcel'])
+			->middleware('xacthuc:bgd');
 
-Route::get('bo-giao-duc/tai-khoan-dh', ['as' => 'getTaiKhoanDH', 'uses' => 'BoGDController@getTaiKhoanDH'])->middleware('xacthuc:bgd');
+Route::get('bo-giao-duc/tai-khoan/{q}', 
+			['as' => 'getTaiKhoanSoGDDH', 
+			'uses' => 'BoGDController@getTaiKhoanSoGDDH'])
+			->middleware('xacthuc:bgd');
 
-Route::get('bo-giao-duc/quan-ly-thoi-gian', ['as' => 'getThoiGian', 'uses' => 'BoGDController@getThoiGian'])->middleware('xacthuc:bgd');
+Route::get('bo-giao-duc/quan-ly-thoi-gian', 
+			['as' => 'getThoiGian', 
+			'uses' => 'BoGDController@getThoiGian'])
+			->middleware('xacthuc:bgd');
 
-Route::post('bo-giao-duc/quan-ly-thoi-gian', ['as' => 'postThoiGian', 'uses' => 'BoGDController@postThoiGian'])->middleware('xacthuc:bgd');
+Route::post('bo-giao-duc/quan-ly-thoi-gian', 
+			['as' => 'postThoiGian', 
+			'uses' => 'BoGDController@postThoiGian'])
+			->middleware('xacthuc:bgd');
 
-Route::get('bo-giao-duc/ql-khoi-nganh', ['as' => 'getKhoiNganh', 'uses' => 'BoGDController@getKhoiNganh'])->middleware('xacthuc:bgd');
+Route::get('bo-giao-duc/ql-khoi-nganh', 
+			['as' => 'getKhoiNganh', 
+			'uses' => 'BoGDController@getKhoiNganh'])
+			->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-khoi-nganh', 
+			['as' => 'getListKhoiNganh', 
+			'uses' => 'BoGDController@getListKhoiNganh'])
+			->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-mon-hoc', 
+			['as' => 'getMonHoc', 
+			'uses' => 'BoGDController@getMonHoc'])
+			->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/them-mon-hoc',
+			['as' => 'postMonHoc',
+			'uses' => 'BoGDController@postMonHoc'])
+			->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-khoi', 
+			['as' => 'getKhoi', 
+			'uses' => 'BoGDController@getKhoi'])
+			->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/them-khoi',
+			['as' => 'postKhoi',
+			'uses' => 'BoGDController@postKhoi'])
+			->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/them-khoi-nganh',
+			['as' => 'postKhoiNganh',
+			'uses' => 'BoGDController@postKhoiNganh'])
+			->middleware('xacthuc:bgd');
+
+
+// het controller bo giao duc
 
 Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {
     return view('trangchu');

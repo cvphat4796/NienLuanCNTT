@@ -88,14 +88,12 @@ $(window).resize(function(event) {
 });
 //resize
 
-
    
-    $("#myBtn").click(function(){
-         $('#myModal').modal('show');
-        // $.ajax();
-        //  $.get('/admin/society/' + id, function( data ) {
-        // alert(data);
-        //   $(".modal-body").html(data);
-        // });
+    $("#showDialogMH").click(function(){
+
+         $('#querry').val('insert');
+         $('#mh_maso').val("");
+ 			$('#mh_ten').val("");
+
     });
 });

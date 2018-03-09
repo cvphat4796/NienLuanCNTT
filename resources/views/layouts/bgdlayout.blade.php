@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{!!asset('public/js/bootstrap-datepicker.js')!!}"></script>
-  <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
-  <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-  
+    <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xulytable.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-khoi.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-ctkhoi.js')!!}"></script>
+    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
+
     <link rel="stylesheet" href="{!!asset('public/css/datepicker.css')!!}">
-  <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
+    <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
 
 
@@ -63,8 +67,8 @@
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Tài Khoản <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="/bo-giao-duc/tao-tai-khoan">Tạo Tài Khoản</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan-sogd">Tài Khoản Sở GD</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan-dh">Tài Khoản Trường ĐH</a></li>
+                            <li><a href="/bo-giao-duc/tai-khoan/sgd">Tài Khoản Sở GD</a></li>
+                            <li><a href="/bo-giao-duc/tai-khoan/dh">Tài Khoản Trường ĐH</a></li>
                             <li><a href="/so-giao-duc/tai-khoan-thpt">Tài Khoản Trường THPT</a></li>
                             <li><a href="/thpt/tai-khoan-hs">Tài Khoản Học Sinh</a></li>
                         </ul>
@@ -86,6 +90,6 @@
     </div>
 
  
-    <link rel="stylesheet" href="{!!asset('public/css/site.scss')!!}">
+   
 </body>
 </html>

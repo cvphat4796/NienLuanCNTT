@@ -1,5 +1,42 @@
 ﻿*{margin:0;padding:0; }
 
+.btnThemKhoi-MH {
+    position:  absolute;
+}
+
+
+#tableMH_length select.form-control {
+    width: 65px;
+    padding: 0;
+}
+
+div#tableMH_paginate {
+    display:  inline;
+    float:  right;
+    margin-top: -18px;
+}
+
+div#tableMH_length {
+    display:  inline;
+    float:  left;
+}
+
+#tableKhoi_length select.form-control {
+    width: 65px;
+    padding: 0;
+}
+
+div#tableKhoi_paginate {
+    display:  inline;
+    float:  right;
+    margin-top: -18px;
+}
+
+div#tableKhoi_length {
+    display:  inline;
+    float:  left;
+}
+
 span#xinchao1 {
     text-transform: none;
     color: white;

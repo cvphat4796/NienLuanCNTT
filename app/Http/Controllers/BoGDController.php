@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Facades\Datatables;
+use App\Models\MonHoc;
+use App\Models\Khoi;
 
 class BoGDController extends Controller
 {
@@ -21,6 +24,8 @@ class BoGDController extends Controller
 		 return View::make('bogds.trangchu')
 				->with(compact('thoigians'));
 	}
+
+	
 
 	public function postThoiGian1(Request $request)
 	{
@@ -58,18 +63,25 @@ class BoGDController extends Controller
 	}
 
 	//controller hien thi danh sach cac so giao duc
-	public function getTaiKhoanSoGD(){
-		$sogds = DB::table('users')->where('pq_maso','sgd')->orderBy('user_name', 'asc')->paginate(3);;
-		return View::make('bogds.danhsachsogd')
-				->with(compact('sogds'));
+	public function getTaiKhoanSoGDDH($p){
+		$dss = DB::table('users')->where('pq_maso',$p)->orderBy('user_name', 'asc')->paginate(2);;
+		$title = "";
+		switch ($p) {
+			case 'sgd':
+				$title = "Danh Sách Sở Giáo Dục";
+				break;
+			case 'dh':
+				$title = "Danh Sách Sở Trường Đại Học";
+				break;
+			default:
+				return View('errors.404');
+		}
+		return View::make('bogds.danhsachsogdvadh')
+				->with(compact('title'))
+				->with(compact('dss'));
 	}
 
-	//controller hien thi danh sach cac truong dai hoc
-	public function getTaiKhoanDH(){
-		$dhs = DB::table('users')->where('pq_maso','dh')->orderBy('user_name', 'asc')->paginate(3);
-		return View::make('bogds.danhsachdh')
-				->with(compact('dhs'));
-	}
+	
 
 	//controller trang tao tai khoan
     public function getTaoTaiKhoan($status="")
@@ -414,13 +426,350 @@ class BoGDController extends Controller
 		}
 	}
 
+	public function getListKhoiNganh()
+	{
+		$khoi = DB::table('chitietkhoi')->join('khoi', 'chitietkhoi.khoi_maso', '=', 'khoi.khoi_maso')
+							            ->join('monhoc', 'chitietkhoi.mh_maso', '=', 'monhoc.mh_maso')
+							            ->select('chitietkhoi.khoi_maso', 'khoi.khoi_mota', 'monhoc.mh_ten')
+							            ->get();
+
+		$khoi=collect([
+["khoi_maso" => "a", "khoi_mota" => "Khoi A", "mh_maso1" => "TO", "mh_ten1" => "Toan","mh_maso2" => "LY", "mh_ten2" => "Vat Ly", "mh_maso3" => "HO", "mh_ten3" => "Hoa Hoc"],
+["khoi_maso" => "d", "khoi_mota" => "Khoi D", "mh_maso1" =>"TO", "mh_ten1" => "Toan","mh_maso2" => "HOA", "mh_ten2" => "Hoa Hoc","mh_maso3" => "Sinh", "mh_ten3" => "Hoa Hoc"]]);	
+		//$khoi =  Khoi::query()->groupBy("khoi_maso");
+					            
+		return Datatables::of($khoi)
+         
+            ->make();
+            // ->addColumn('action', function ($khoi) {
+            //     return '<button onclick="edit(this)" data-mamon="'.$khoi->mh_maso.'" data-tenmon="'.$khoi->mh_ten.'" id="edit-'.$khoi->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+            //     		<button onclick="deletes(this)" data-mamon="'.$khoi->mh_maso.'" data-tenmon="'.$khoi->mh_ten.'" id="delete-'.$khoi->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+            // })
+            // data-makhoi="'.$khoi->pluck("khoi_maso").'" data-tenkhoi="'.$khoi->pluck("khoi_maso").'" id="edit-'.$khoi->pluck("khoi_maso").'"
+	}
 
 	//controller quan ly khoi nganh
 	public function getKhoiNganh()
 	{
+		$khoi = Khoi::all();
+		foreach ($khoi as $key => $value) {
+			//foreach ($value as $k => $v) {
+				$i = 1;
+				foreach ($value->monhocs as $monhoc) {
+					
+						$a[] = [
+							"mh_maso".$i => $monhoc->pivot->mh_maso,
+								"mh_ten".$i => $monhoc->mh_ten];
+					    
+					$i++;
+				}
+				if(is_null($a))
+					continue;
+				$temp = ["khoi_maso" => $value->khoi_maso, "khoi_mota" => $value->khoi_mota];
+				//array_push($a, $temp);
+				$b[] = $a;
+				$a = null;
+			//}
+		}
+		$khoi =  DB::table('chitietkhoi')->get()->groupBy("khoi_maso");
+		//dd($khoi);
+		$khoi =  Khoi::query();
+		//dd($khoi);
+		
+		//dd($ctkh);
+
+		$t = DB::raw("select chitietkhoi.khoi_maso, ch1.mh_maso, ch2.mh_maso, ch3.mh_maso from chitietkhoi, chitietkhoi as ch1, chitietkhoi as ch2, chitietkhoi as ch3 WHERE chitietkhoi.khoi_maso = 'A' and ch1.mh_maso != ch2.mh_maso and ch1.mh_maso != ch3.mh_maso and ch3.mh_maso != ch2.mh_maso LIMIT 1");		            
+		$keys=array("0","1","2","3");
+		$khoi=collect([["khoi_maso" => "a", "mh_maso1" => "TO", "mh_maso2" => "LY","mh_maso3" => "HO"],
+						["khoi_maso" => "d", "mh_maso1" =>"TO","mh_maso2" => "HOA","mh_maso3" => "Sinh"]]);	
+		//dd($t);
+		//$a1=array_fill_keys($keys,$value);
+		//dd($khoi->only("khoi_maso"));
 		$monhoc = DB::table('monhoc')->get();
+		
+		$ctkhoi = DB::table('chitietkhoi')->select('khoi_maso')
+                					->groupBy('khoi_maso')->get();
+
+       
+        foreach ($ctkhoi as $key => $value) {
+        	if(!is_null($value)){
+
+        		foreach ($value as $k => $v) {
+        			$list_ma_khoi[] = $v;
+        		}
+        	}
+        }
+
+
+        foreach ($list_ma_khoi as $key => $value) {
+        	
+        	$list_ma_mon[] = DB::table('chitietkhoi')->select('mh_maso')->where('khoi_maso', $value)->get();
+        	
+	        
+        }
+        foreach ($list_ma_mon as $key => $value) {
+	        	if(!is_null($value)){
+	        		foreach ($value as $k => $v) {
+	        			$list_cac_mon[] = $v->mh_maso;
+	        		}
+	        			
+	        	}
+	        }
+        $b = array_fill_keys($list_ma_khoi,$list_cac_mon);
+    
+       
+       foreach ($b as $key => $value) {
+        	if(!is_null($value)){
+        		
+        		foreach ($value as $k => $v) {
+        			
+        			$a[] = $v;
+        		}
+        	}
+        }
+       
+		$khoi = DB::table('khoi')
+				->whereNotIn('khoi_maso', $a)->get();
 		return View::make('bogds.khoinganh')
+				->with(compact('khoi'))
 				->with(compact('monhoc'));
 	}
 
+	 public function getMonHoc()
+    {
+    	//response()->json(array("message" => "Thanh Cong"));
+    	$monhoc =  DB::table('monhoc')->get();
+    	// return Datatables::of($monhoc)
+     //        ->addColumn('action', function ($monhoc) {
+     //            return '<button onclick="edit()" id="edit-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button> 
+     //            		<button onclick="delete()" id="delete-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Remove</button> ';
+     //        })
+     //        ->make(true);
+    	  return Datatables::of($monhoc)
+            ->addColumn('action', function ($monhoc) {
+                return '<button onclick="edit(this)" data-mamon="'.$monhoc->mh_maso.'" data-tenmon="'.$monhoc->mh_ten.'" id="edit-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+                		<button onclick="deletes(this)" data-mamon="'.$monhoc->mh_maso.'" data-tenmon="'.$monhoc->mh_ten.'" id="delete-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+            })
+            ->rawColumns([1, 2])
+            ->make();
+    }
+
+	public function postMonHoc(Request $request)
+	{
+		$key = "";
+		switch ($request->querry) {
+			case 'insert':
+				$key = 'Thêm';
+				$status = $this->insertMH($request);
+				break;
+			case 'update':
+				$key = 'Sửa';
+				$status = $this->updateMH($request);
+				break;
+			case 'delete':
+				$key = 'Xóa';
+				$status = $this->deleteMH($request);
+				break;
+			default:
+				return redirect()->back();
+				break;
+		}
+		
+		if($status){
+			$message = $key.' Mô Học Thành Công!';
+			return	response()->json(array('message' => $message));
+		}
+		else{
+			$message = 'Lỗi '.$key."!";
+			return	response()->json(array('message' => $message));
+		}
+		//return redirect()->back();
+	}
+
+	private function insertMH($request)
+	{
+		DB::beginTransaction();
+		try{
+			DB::table('monhoc')->insert(
+				[ 'mh_maso' => $request->mh_maso,
+					'mh_ten' => $request->mh_ten
+				]);
+			DB::commit();
+
+			return $status = true; //'Thêm Mô Học Thành Công!';
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
+		}
+	}
+
+	private function updateMH($request)
+	{
+		DB::beginTransaction();
+
+		try{
+			DB::table('monhoc')->where('mh_maso', $request->mh_maso)
+            					->update(['mh_ten' => $request->mh_ten]);
+            
+			DB::commit();
+			return $status = true; //'Thêm Mô Học Thành Công!';
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
+		}
+	}
+
+	private function deleteMH($request)
+	{
+		DB::beginTransaction();
+
+		try{
+			$ctk = DB::table('chitietkhoi')->where('mh_maso', $request->mh_maso)->get();
+            DB::table('monhoc')->where('mh_maso', $request->mh_maso)->delete();
+            DB::table('chitietkhoi')->where('khoi_maso', $ctk[0]->khoi_maso)->delete();
+			DB::commit();
+			return $status = true; //'Thêm Mô Học Thành Công!';
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
+		}
+	}
+
+	public function getKhoi()
+    {
+    	
+    	$khoi =  DB::table('khoi')->get();
+    	
+    	  return Datatables::of($khoi)
+            ->addColumn('action', function ($khoi) {
+                return '<button onclick="editKhoi(this)" data-makhoi="'.$khoi->khoi_maso.'" data-tenkhoi="'.$khoi->khoi_mota.'" id="edit-'.$khoi->khoi_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+                		<button onclick="deleteKhoi(this)" data-makhoi="'.$khoi->khoi_maso.'" data-tenkhoi="'.$khoi->khoi_mota.'" id="delete-'.$khoi->khoi_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+            })
+            ->rawColumns([1, 2])
+            ->make();
+    }
+
+	public function postKhoi(Request $request)
+	{
+		$key = "";
+		switch ($request->querry) {
+			case 'insert':
+				$key = 'Thêm';
+				$status = $this->insertKhoi($request);
+				break;
+			case 'update':
+				$key = 'Sửa';
+				$status = $this->updateKhoi($request);
+				break;
+			case 'delete':
+				$key = 'Xóa';
+				$status = $this->deleteKhoi($request);
+				break;
+			default:
+				return redirect()->back();
+				break;
+		}
+		
+		if($status){
+			$message = $key.' Khối Thành Công!';
+			return	response()->json(array('message' => $message));
+		}
+		else{
+			$message = 'Lỗi '.$key." Khối!";
+			return	response()->json(array('message' => $message));
+		}
+		
+	}
+
+	private function insertKhoi($request)
+	{
+		DB::beginTransaction();
+		try{
+			DB::table('khoi')->insert(
+				[ 'khoi_maso' => strtoupper($request->khoi_maso),
+					'khoi_mota' => $request->khoi_ten
+				]);
+			DB::commit();
+			return $status = true;
+		}
+		catch(\Exception $e){
+			DB::rollBack();
+			return	$status = false;
+			
+		}
+	}
+
+	private function updateKhoi($request)
+	{
+		DB::beginTransaction();
+
+		try{
+			DB::table('khoi')->where('khoi_maso', $request->khoi_maso)
+            					->update(['khoi_mota' => $request->khoi_ten]);
+            
+			DB::commit();
+			return $status = true; //'Thêm Mô Học Thành Công!';
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
+		}
+	}
+
+	private function deleteKhoi($request)
+	{
+		DB::beginTransaction();
+
+		try{
+			
+            DB::table('chitietkhoi')->where('khoi_maso', $request->khoi_maso)->delete();
+            DB::table('khoi')->where('khoi_maso', $request->khoi_maso)->delete();
+			DB::commit();
+			return $status = true; //'Thêm Mô Học Thành Công!';
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
+		}
+	}
+
+	public function postKhoiNganh(Request $request)
+	{
+		$mon1 = $request->mon1;
+		$mon2 = $request->mon2;
+		$mon3 = $request->mon3;
+		
+		if($mon1 == $mon2 || $mon1 == $mon3 || $mon2 == $mon3){
+			$status = 'Chọn trùng môn!';
+			session()->flash('status', $status);
+			return redirect()->back();
+		} 
+		DB::beginTransaction();
+		try{
+
+			DB::table('chitietkhoi')->insert([
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon1],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon2],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon3],
+			]);
+			DB::commit();
+			 $status = 'Thêm Khối Ngành Thành Công!';
+		}
+		catch(\Exception $e){
+			$status = 'Lỗi Thêm! Có thể do trùng mã số';
+			DB::rollBack();
+		}
+		session()->flash('status', $status);
+		return redirect()->back();
+	}
+
+	//het khoi nganh
 }
