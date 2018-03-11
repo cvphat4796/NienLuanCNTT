@@ -30,6 +30,8 @@
 
  	$(document).ready(function($) {
  		tableKhoi();
+         $('#tableKhoi_paginate').addClass('dbtb_paginate');
+        $('#tableKhoi_length').addClass('dbtb_length');
  	});
  	
 
@@ -63,6 +65,7 @@
 
  	
  	editKhoi = function (button) {
+        $('#h4-Khoi').text("Sửa Khối");
  		$('#khoi_maso').val($('#'+button.id).data('makhoi'));
  		$('#khoi_ten').val($('#'+button.id).data('tenkhoi'));
  		$('#querryKhoi').val('update');

@@ -1,14 +1,7 @@
 @extends('layouts.bgdlayout')
 @section('title','Tạo Tài Khoản')
 @section('content')
-
-<script>
-    var msg = '{{Session::get('status')}}';
-    var exist = '{{Session::has('status')}}';
-    if(exist){
-      alert(msg);
-    }
-</script>
+<script type="text/javascript" src="{!!asset('public/js/ajax-tao-tai-khoan-bgd.js')!!}"></script>
  <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div class="panel panel-default">
@@ -108,7 +101,7 @@
                 <div class="panel panel-info">
                     <div class="panel-heading text-center">Tạo Tài Khoản SGD, Trường ĐH Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/bo-giao-duc/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
+                        <form action="/tao-tai-khoan-excel" id='form_excel_sgd_dh' method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
@@ -127,7 +120,7 @@
                  <div class="panel panel-primary">
                     <div class="panel-heading text-center">Tạo Tài Khoản Trường THPT Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/bo-giao-duc/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
+                        <form action="/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
                         	{{ csrf_field() }}
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
@@ -147,7 +140,7 @@
                  <div class="panel panel-success">
                     <div class="panel-heading text-center">Tạo Tài Khoản Học Sinh Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/bo-giao-duc/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
+                        <form action="/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
                         	{{ csrf_field() }}
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
@@ -164,6 +157,23 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal -->
+      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-body progressDialog">
+                    <div class="progress progress-striped active" style="margin-bottom:0;">
+                        <div class="progress-bar" style="width: 100%">
+                          Xin chờ!!!!
+                        </div>
+                    </div>
+              </div>
+            
+          </div>
+        </div>
+      </div> {{-- het modal progress dialog --}}
         </div>
         {{-- {{ csrf_field() }} --}}
 

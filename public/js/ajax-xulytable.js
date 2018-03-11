@@ -21,6 +21,8 @@
 
  	$(document).ready(function($) {
  		tableMH();
+         $('#tableMH_paginate').addClass('dbtb_paginate');
+        $('#tableMH_length').addClass('dbtb_length');
  	});
  	
 
@@ -40,20 +42,14 @@
  	 	iDisplayLength: 3,
         processing: true,
         serverSide: true,
-        ajax:{ 
-        	url: '/bo-giao-duc/get-list-mon-hoc',
-        	dataSrc: function (data) {
-        		data1 = data.data;
-
-        		return data.data;
-        	}
-        	},
+        ajax:'/bo-giao-duc/get-list-mon-hoc',
         
     });
  	} 
 
  	
  	edit = function (button) {
+        $('#h4-MH').text("Sửa Môn Học");
  		$('#mh_maso').val($('#'+button.id).data('mamon'));
  		$('#mh_ten').val($('#'+button.id).data('tenmon'));
  		$('#querry').val('update');

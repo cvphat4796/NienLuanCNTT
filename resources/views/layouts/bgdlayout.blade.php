@@ -10,9 +10,6 @@
     <script type="text/javascript" src="{!!asset('public/js/bootstrap-datepicker.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/ajax-xulytable.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-khoi.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-ctkhoi.js')!!}"></script>
     <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
     <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
 
@@ -35,7 +32,7 @@
             Hệ Thống Quản Lý điểm & Xét Tuyển đại Học
           </div>
           <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center info ">
-            <a href="">Id: {!! Auth::id() !!}</a>
+            <a href="/bo-giao-duc/thong-tin">Id: {!! Auth::id() !!}</a>
             <br/>
             <a href="/dang-xuat" class="btn btn-default">Đăng xuất</a>
           </div>

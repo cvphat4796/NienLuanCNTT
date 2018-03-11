@@ -1,8 +1,7 @@
 @extends('layouts.bgdlayout')
 @section('title','Quản lý khối ngành')
+
 @section('content')
-
-
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <div class="text-left">
@@ -15,7 +14,7 @@
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Thêm Môn Học</h4>
+                  <h4 id="h4-MH" class="modal-title">Thêm Môn Học</h4>
               </div>
               <div class="modal-body">
                   <div class="form-group">
@@ -66,7 +65,7 @@
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close " data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Thêm Khối</h4>
+                  <h4 id="h4-Khoi" class="modal-title">Thêm Khối</h4>
               </div>
               <div class="modal-body">
                   <div class="form-group">
@@ -112,57 +111,10 @@
 </div> {{-- het row 1 --}}
 
 <div class="row">
- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-    <form action="them-khoi-nganh" method="post">
-      {{ csrf_field() }}
-      <div class="panel panel-default">
-        <div class="panel-heading text-center">
-          Thêm Khối Ngành
-        </div>
-        <div class="panel-body">
-          <div class="form-group">
-              <label for="textbox1">*Chọn Khối:</label>
-              <select class="form-control" name="khoi" id="">
-                 @foreach ($khoi as $k)
-                    <option value="{{ $k->khoi_maso  }}">{{ $k->khoi_mota }}</option>
-                                           
-                 @endforeach 
-              </select>
-
-              <label for="textbox2">*Chọn Môn 1:</label>
-               <select class="form-control" name="mon1" id="">
-                 @foreach ($monhoc as $mh)
-                    <option value="{{ $mh->mh_maso  }}">{{ $mh->mh_ten }}</option>
-                                           
-                 @endforeach 
-              </select>
-
-              <label for="textbox2">*Chọn Môn 2:</label>
-               <select class="form-control" name="mon2" id="">
-                 @foreach ($monhoc as $mh)
-                    <option value="{{ $mh->mh_maso  }}">{{ $mh->mh_ten }}</option>
-                                           
-                 @endforeach 
-              </select>
-
-              <label for="textbox2">*Chọn Môn 3:</label>
-               <select class="form-control" name="mon3" id="">
-                 @foreach ($monhoc as $mh)
-                    <option value="{{ $mh->mh_maso  }}">{{ $mh->mh_ten }}</option>
-                                           
-                 @endforeach 
-              </select>
-          </div>
-          <div class="text-right">
-                                <input type="submit" value="Cập Nhật" class="btn btn-default">                  
-                    </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+ 
+  <div class="col-xs-12 col-sm-12 col-md-push-3 col-md-6 col-lg-6">
     <div class="text-left">
-        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogKhoiNganh" data-toggle="modal" data-target="#modalKhoiNganh">Thêm Khối</button>
+        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogKhoiNganh" data-toggle="modal" data-target="#modalKhoiNganh">Thêm Tổ Hợp Môn</button>
     </div>
       <!-- Modal -->
       <div id="modalKhoiNganh" class="modal fade" role="dialog">
@@ -171,16 +123,30 @@
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close " data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Thêm Khối</h4>
+                  <h4 id="h4-KN" class="modal-title">Thêm Tổ Hợp Môn</h4>
               </div>
               <div class="modal-body">
                   <div class="form-group">
                       <input type="hidden" value="insert" id="querryKhoiNganh">
-                      <label for="textbox1">*Mã số:</label>
-                      <input class="form-control" name="maso" id="khoi_maso" placeholder="Nhập mã số" type="text"/>
+                      <label for="textbox1">*Chọn Khối:</label>
+                      <select class="form-control" name="khoi" id="sel-khoi">
+                                   
+                      </select>
 
-                      <label for="textbox2">*Tên Khối:</label>
-                      <input class="form-control" name="ten" id="khoi_ten" placeholder="Nhập tên" type="text"/>
+                      <label for="textbox2">*Chọn Môn 1:</label>
+                       <select class="form-control" name="mon1" id="sel-mon1">
+                          
+                      </select>
+
+                      <label for="textbox2">*Chọn Môn 2:</label>
+                       <select class="form-control" name="mon2" id="sel-mon2">
+                           
+                      </select>
+
+                      <label for="textbox2">*Chọn Môn 3:</label>
+                       <select class="form-control" name="mon3" id="sel-mon3">
+                                    
+                      </select>
                  </div>
               </div>
               <div class="modal-footer">
@@ -214,6 +180,9 @@
   </div>
 </div>
 
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xulytable.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-khoi.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/ajax-xuly-bang-ctkhoi.js')!!}"></script>
 <script>
         $(document).ready(function () {
             $('#qlkhoinganh').addClass('active');

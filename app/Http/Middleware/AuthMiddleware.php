@@ -20,12 +20,12 @@ class AuthMiddleware
             $pq =  $request->user()->pq_maso;
             $quyen = explode(':',$role);
             foreach ($quyen as $key => $q) {
-                if($pq == $key){
+                if($pq == $q){
                     return $next($request);
                 }
             }
         }
             
-        return redirect()->route('getLogin');
+        return redirect()->route('trangchu');
     }
 }

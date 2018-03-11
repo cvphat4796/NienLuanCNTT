@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Maatwebsite\Excel\Facades\Excel;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Facades\Datatables;
@@ -25,7 +24,10 @@ class BoGDController extends Controller
 				->with(compact('thoigians'));
 	}
 
-	
+	public function getThongTinBoGD()
+	{
+		return view('bogds.thongtin');
+	}
 
 	public function postThoiGian1(Request $request)
 	{
@@ -64,7 +66,7 @@ class BoGDController extends Controller
 
 	//controller hien thi danh sach cac so giao duc
 	public function getTaiKhoanSoGDDH($p){
-		$dss = DB::table('users')->where('pq_maso',$p)->orderBy('user_name', 'asc')->paginate(2);;
+		$dss = DB::table('users')->where('pq_maso',$p)->orderBy('user_name', 'asc')->paginate(2);
 		$title = "";
 		switch ($p) {
 			case 'sgd':
@@ -97,217 +99,7 @@ class BoGDController extends Controller
 				->with(compact('khuvucs'));
 	}
 
-	//controller tao tai khoan bang file excel
-	public function postTaoTaiKhoanExcel(Request $request)
-	{
-		$status = false;
-		switch (key($request->file())) {
-			case 'sgd_dh':
-				$status = $this->insertSoGDandDHExcel($request);
-				break;
-			case 'thpt':
-				$status = $this->insertTHPTExcel($request);
-				break;
-			case 'hs':
-				$status = $this->insertHSExcel($request);
-				break;
-			
-		}
-		if ($status) {
-			$status = "Thêm tài khoản thành công!";
-		}else{
-			$status = "Thêm tài khoản thất bại!";
-
-		}
-		
-		session()->flash('status', $status);
-		return redirect()->back();
-	}
-
-	//phuong thuc them du lieu tai khoan so gd va dai hoc bang excel
-	private function insertSoGDandDHExcel($request)
-	{
-		   $path = $request->file('sgd_dh')->getRealPath();
-	        $data = Excel::load($path, function($reader) {})->get();
-
-	        if(!empty($data)){
-	            foreach ($data->toArray() as $key => $value) {
-	            	if(is_null($value['ma_so']))
-	            		continue;
-	            	$id = $value['ma_so'];
-	                $ten = $value['ten'];
-	                $matkhau = bcrypt($value['mat_khau']);
-	                $sdt = $value['so_dien_thoai'];
-	                $diachi = $value['dia_chi'];
-	                $email = $value['email'];
-	                $quyen= $value['quyen'];  
-	                if(strtolower($quyen) == "s")
-	                	$quyen = "sgd";
-	                else{
-	                	$quyen = "dh";
-	                }
-	                $insert_user[] = [
-	                   'user_id' => $id, 
-	                   'user_name' => $ten,
-	                   'user_pass' => $matkhau,
-	                   'user_addr' => $diachi,
-	                   'user_phone' => $sdt,
-	                   'user_email' => $email,
-	                   'pq_maso' => $quyen
-	                ];
-	            }
-	            try 
-	            {
-
-					if(!empty($insert_user))
-					{
-						DB::beginTransaction();
-
-		                DB::table('users')->insert($insert_user);
-
-						DB::commit();
-		                return true;
-		            }
-		            else
-		            {
-		            	return false;
-		            }
-				} catch (\Exception $e) {
-					DB::rollBack();
-					return false;
-				}
-	            
-	        }
-	    
-	}
-
-	//phuong thuc them du lieu tai khoan truong thpt bang excel
-	private function insertTHPTExcel($request)
-	{
-		   $path = $request->file('thpt')->getRealPath();
-	        $data = Excel::load($path, function($reader) {})->get();
-
-	        if(!empty($data)){
-	            foreach ($data->toArray() as $key => $value) {
-	            	if(is_null($value['ma_so']))
-	            		continue;
-	            	$id = strtoupper($value['ma_so']);
-	                $ten = $value['ten'];
-	                $matkhau = bcrypt($value['mat_khau']);
-	                $sgd_maso = strtoupper($value['thuoc_sogd']);
-	                $sdt = $value['so_dien_thoai'];
-	                $diachi = $value['dia_chi'];
-	                $email = $value['email'];
-	                $quyen= "thpt";  
-	                
-	                $insert_user[] = [
-	                   'user_id' => $id, 
-	                   'user_name' => $ten,
-	                   'user_pass' => $matkhau,
-	                   'user_addr' => $diachi,
-	                   'user_phone' => $sdt,
-	                   'user_email' => $email,
-	                   'pq_maso' => $quyen
-	                ];
-	                $insert_thpt[] = [
-	                   'thpt_maso' => $id, 
-	                   'sgd_maso' => $sgd_maso,
-	                ];
-	            }
-	            try 
-	            {
-					if(!empty($insert_user) && !empty($insert_thpt))
-					{
-						DB::beginTransaction();
-		                
-		                DB::table('users')->insert($insert_user);
-
-		                DB::table('thpt')->insert($insert_thpt);
-
-						DB::commit();	
-		                return true;
-		            }
-		            else
-		            {
-		            	return false;
-		            }
-				} catch (\Exception $e) {
-					DB::rollBack();
-					return false;
-				}
-	            
-	        }
-	    
-	}
-
-	//phuong thuc them du lieu tai khoan hoc sinh bang excel
-	private function insertHSExcel($request)
-	{
-		   $path = $request->file('hs')->getRealPath();
-	        $data = Excel::load($path, function($reader) {})->get();
-	        
-	        if(!empty($data)){
-	            foreach ($data->toArray() as $key => $value) {
-	            	if(is_null($value['ma_so']))
-	            		continue;
-	            	$id = strtoupper($value['ma_so']);
-	                $ten = $value['ten'];
-	                $matkhau = bcrypt($value['mat_khau']);
-	                $thpt_maso = $value['thuoc_thpt'];
-	                $kv = $value['khu_vuc'];
-	                $sdt = $value['so_dien_thoai'];
-	                $cmnd = $value['cmnd'];
-	                $ngaysinh = $value['ngay_sinh'];
-	                $email = $value['email'];
-	                $diachi = $value['dia_chi'];
-	                $gioitinh = strtolower($value['gioi_tinh'])=="nam" ? "Nam":"Nữ";
-
-	                $quyen= "hs";  
-	                
-	                
-	                $insert_user[] = [
-	                   'user_id' => $id, 
-	                   'user_name' => $ten,
-	                   'user_pass' => $matkhau,
-	                   'user_addr' => $diachi,
-	                   'user_phone' => $sdt,
-	                   'user_email' => $email,
-	                   'pq_maso' => $quyen
-	                ];
-	                $insert_hs[] = [
-	                   'hs_maso' => $id, 
-	                   'thpt_maso' => $thpt_maso,
-	                   'kv_maso' => $kv,
-	                   'hs_cmnd' => $cmnd,
-	                   'hs_ngaysinh' => $ngaysinh,
-	                   'hs_gioitinh' => $gioitinh
-	                ];
-	            }
-	            try 
-	            {
-					if(!empty($insert_user) && !empty($insert_hs))
-					{
-						DB::beginTransaction();
-
-		                DB::table('users')->insert($insert_user);
-		                
-		                DB::table('hocsinh')->insert($insert_hs);
-
-		                DB::commit();	
-		                return true;
-		            }
-		            else
-		            {
-		            	return false;
-		            }
-				} catch (\Exception $e) {
-					DB::rollBack();
-					return false;
-				}
-	            
-	        }
-	    
-	}
+	
 
 	//post controller tao tai khoan
 	public function postTaoTaiKhoan(Request $request)
@@ -428,124 +220,78 @@ class BoGDController extends Controller
 
 	public function getListKhoiNganh()
 	{
-		$khoi = DB::table('chitietkhoi')->join('khoi', 'chitietkhoi.khoi_maso', '=', 'khoi.khoi_maso')
-							            ->join('monhoc', 'chitietkhoi.mh_maso', '=', 'monhoc.mh_maso')
-							            ->select('chitietkhoi.khoi_maso', 'khoi.khoi_mota', 'monhoc.mh_ten')
-							            ->get();
+		$khoi = Khoi::all();
+		//mang muon [	'khoi_maso' => value, 
+		//				'khoi_mota' => value, 
+		//				'mon1_maso' => value,
+		//				'mon1_ten' => value,
+		//				'mon2_maso' => value,
+		//				'mon2_ten' => value,
+		//				'mon3_maso' => value,
+		//				'mon3_ten' => value ] cau truc array can tra ve
+		// for lay array cac mon hoc va khoi
+		foreach ($khoi as $key => $value) {
+				$i = 1;
+				foreach ($value->monhocs as $monhoc) {
+						$arrayMH[] = [
+							"mh_maso".$i => $monhoc->pivot->mh_maso,
+								"mh_ten".$i => $monhoc->mh_ten];
+					$i++;
+				}
+				if(is_null($arrayMH))
+					continue;
+				$temp = ["khoi_maso" => $value->khoi_maso, "khoi_mota" => $value->khoi_mota];
+				array_push($arrayMH, $temp);
+				$arrayKhoiMH[] = $arrayMH;
+				$arrayMH = null;
+		}
+		//for lay mang theo cau truc 
+		foreach ($arrayKhoiMH as $key => $value) {
+			for($i = 0; $i < count($value); $i++){
+				foreach ($value[$i] as $k => $v) {
+					$okMH[$k] = $v;
+				}
+			}
+			$ok[]=$okMH;
+		}
 
-		$khoi=collect([
-["khoi_maso" => "a", "khoi_mota" => "Khoi A", "mh_maso1" => "TO", "mh_ten1" => "Toan","mh_maso2" => "LY", "mh_ten2" => "Vat Ly", "mh_maso3" => "HO", "mh_ten3" => "Hoa Hoc"],
-["khoi_maso" => "d", "khoi_mota" => "Khoi D", "mh_maso1" =>"TO", "mh_ten1" => "Toan","mh_maso2" => "HOA", "mh_ten2" => "Hoa Hoc","mh_maso3" => "Sinh", "mh_ten3" => "Hoa Hoc"]]);	
-		//$khoi =  Khoi::query()->groupBy("khoi_maso");
+		$khoi = collect($ok);
 					            
-		return Datatables::of($khoi)
-         
-            ->make();
-            // ->addColumn('action', function ($khoi) {
-            //     return '<button onclick="edit(this)" data-mamon="'.$khoi->mh_maso.'" data-tenmon="'.$khoi->mh_ten.'" id="edit-'.$khoi->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
-            //     		<button onclick="deletes(this)" data-mamon="'.$khoi->mh_maso.'" data-tenmon="'.$khoi->mh_ten.'" id="delete-'.$khoi->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
-            // })
-            // data-makhoi="'.$khoi->pluck("khoi_maso").'" data-tenkhoi="'.$khoi->pluck("khoi_maso").'" id="edit-'.$khoi->pluck("khoi_maso").'"
+		return Datatables::of($khoi)->make();
+           
+	}
+
+	public function getThemKhoiNganh(Request $request)
+	{
+		if($request->querry == "insert"){
+			$ctkhoi = DB::table('chitietkhoi')->select('khoi_maso')->groupBy('khoi_maso')->get()->toArray();       
+	        foreach ($ctkhoi as $k => $v) {
+	        	$list_ma_khoi[] = $v->khoi_maso;
+
+	        }
+
+	        $khoi = DB::table('khoi')->whereNotIn('khoi_maso', $list_ma_khoi)->get();
+		}
+		else{
+			$khoi = DB::table('khoi')->get();
+		}
+		
+        $mon = DB::table('monhoc')->orderBy('mh_ten','asc')->get();
+		return	response()->json(array('listKhoi' => $khoi, 'listMon' => $mon));
 	}
 
 	//controller quan ly khoi nganh
 	public function getKhoiNganh()
 	{
-		$khoi = Khoi::all();
-		foreach ($khoi as $key => $value) {
-			//foreach ($value as $k => $v) {
-				$i = 1;
-				foreach ($value->monhocs as $monhoc) {
-					
-						$a[] = [
-							"mh_maso".$i => $monhoc->pivot->mh_maso,
-								"mh_ten".$i => $monhoc->mh_ten];
-					    
-					$i++;
-				}
-				if(is_null($a))
-					continue;
-				$temp = ["khoi_maso" => $value->khoi_maso, "khoi_mota" => $value->khoi_mota];
-				//array_push($a, $temp);
-				$b[] = $a;
-				$a = null;
-			//}
-		}
-		$khoi =  DB::table('chitietkhoi')->get()->groupBy("khoi_maso");
-		//dd($khoi);
-		$khoi =  Khoi::query();
-		//dd($khoi);
-		
-		//dd($ctkh);
-
-		$t = DB::raw("select chitietkhoi.khoi_maso, ch1.mh_maso, ch2.mh_maso, ch3.mh_maso from chitietkhoi, chitietkhoi as ch1, chitietkhoi as ch2, chitietkhoi as ch3 WHERE chitietkhoi.khoi_maso = 'A' and ch1.mh_maso != ch2.mh_maso and ch1.mh_maso != ch3.mh_maso and ch3.mh_maso != ch2.mh_maso LIMIT 1");		            
-		$keys=array("0","1","2","3");
-		$khoi=collect([["khoi_maso" => "a", "mh_maso1" => "TO", "mh_maso2" => "LY","mh_maso3" => "HO"],
-						["khoi_maso" => "d", "mh_maso1" =>"TO","mh_maso2" => "HOA","mh_maso3" => "Sinh"]]);	
-		//dd($t);
-		//$a1=array_fill_keys($keys,$value);
-		//dd($khoi->only("khoi_maso"));
-		$monhoc = DB::table('monhoc')->get();
-		
-		$ctkhoi = DB::table('chitietkhoi')->select('khoi_maso')
-                					->groupBy('khoi_maso')->get();
-
-       
-        foreach ($ctkhoi as $key => $value) {
-        	if(!is_null($value)){
-
-        		foreach ($value as $k => $v) {
-        			$list_ma_khoi[] = $v;
-        		}
-        	}
-        }
-
-
-        foreach ($list_ma_khoi as $key => $value) {
-        	
-        	$list_ma_mon[] = DB::table('chitietkhoi')->select('mh_maso')->where('khoi_maso', $value)->get();
-        	
-	        
-        }
-        foreach ($list_ma_mon as $key => $value) {
-	        	if(!is_null($value)){
-	        		foreach ($value as $k => $v) {
-	        			$list_cac_mon[] = $v->mh_maso;
-	        		}
-	        			
-	        	}
-	        }
-        $b = array_fill_keys($list_ma_khoi,$list_cac_mon);
-    
-       
-       foreach ($b as $key => $value) {
-        	if(!is_null($value)){
-        		
-        		foreach ($value as $k => $v) {
-        			
-        			$a[] = $v;
-        		}
-        	}
-        }
-       
-		$khoi = DB::table('khoi')
-				->whereNotIn('khoi_maso', $a)->get();
-		return View::make('bogds.khoinganh')
-				->with(compact('khoi'))
-				->with(compact('monhoc'));
+		return View('bogds.khoinganh');
 	}
 
 	 public function getMonHoc()
     {
     	//response()->json(array("message" => "Thanh Cong"));
     	$monhoc =  DB::table('monhoc')->get();
-    	// return Datatables::of($monhoc)
-     //        ->addColumn('action', function ($monhoc) {
-     //            return '<button onclick="edit()" id="edit-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button> 
-     //            		<button onclick="delete()" id="delete-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Remove</button> ';
-     //        })
-     //        ->make(true);
-    	  return Datatables::of($monhoc)
+    	
+    	return Datatables::of($monhoc)
             ->addColumn('action', function ($monhoc) {
                 return '<button onclick="edit(this)" data-mamon="'.$monhoc->mh_maso.'" data-tenmon="'.$monhoc->mh_ten.'" id="edit-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
                 		<button onclick="deletes(this)" data-mamon="'.$monhoc->mh_maso.'" data-tenmon="'.$monhoc->mh_ten.'" id="delete-'.$monhoc->mh_maso.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
@@ -743,15 +489,80 @@ class BoGDController extends Controller
 
 	public function postKhoiNganh(Request $request)
 	{
+		$key = "";
+		switch ($request->querry) {
+			case 'insert':
+				$key = 'Thêm';
+				$status = $this->insertKhoiNganh($request);
+				break;
+			case 'update':
+				$key = 'Sửa';
+				$status = $this->updateKhoiNganh($request);
+				break;
+			case 'delete':
+				$key = 'Xóa';
+				$status = $this->deleteKhoiNganh($request);
+				break;
+			default:
+				return redirect()->back();
+				break;
+		}
+		
+		if($status){
+			$message = $key.' Tổ Hợp Môn Thành Công!';
+			return	response()->json(array('message' => $message));
+		}
+		else{
+			$message = 'Lỗi '.$key." Tổ Hợp Môn!";
+			return	response()->json(array('message' => $message));
+		}
+
+		
+	}
+
+	private function deleteKhoiNganh($request)
+	{
+		DB::beginTransaction();
+		try{
+			DB::table('chitietkhoi')->where('khoi_maso', $request->khoi)->delete();
+			DB::commit();
+			return true;
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return false;
+		}
+	}
+
+	private function updateKhoiNganh($request)
+	{
 		$mon1 = $request->mon1;
 		$mon2 = $request->mon2;
-		$mon3 = $request->mon3;
-		
-		if($mon1 == $mon2 || $mon1 == $mon3 || $mon2 == $mon3){
-			$status = 'Chọn trùng môn!';
-			session()->flash('status', $status);
-			return redirect()->back();
-		} 
+		$mon3 = $request->mon3;		
+		DB::beginTransaction();
+		try{
+			DB::table('chitietkhoi')->where('khoi_maso', $request->khoi)->delete();
+			DB::table('chitietkhoi')->insert([
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon1],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon2],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon3],
+			]);
+			DB::commit();
+			return true;
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return false;
+		}
+	}
+
+	private function insertKhoiNganh($request)
+	{
+		$mon1 = $request->mon1;
+		$mon2 = $request->mon2;
+		$mon3 = $request->mon3;		
 		DB::beginTransaction();
 		try{
 
@@ -761,14 +572,13 @@ class BoGDController extends Controller
 				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon3],
 			]);
 			DB::commit();
-			 $status = 'Thêm Khối Ngành Thành Công!';
+			return true;
 		}
 		catch(\Exception $e){
-			$status = 'Lỗi Thêm! Có thể do trùng mã số';
+			
 			DB::rollBack();
+			return false;
 		}
-		session()->flash('status', $status);
-		return redirect()->back();
 	}
 
 	//het khoi nganh
