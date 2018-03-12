@@ -38,11 +38,16 @@ class SoGDController extends Controller
                 		data-emailthpt="'.$thpt->user_email.'"
                 		id="editthpt-'.$thpt->user_id.'" 
                 		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+
                 		<button onclick="deletethpt(this)" 
                 		data-mathpt="'.$thpt->user_id.'" 
                 		data-tenthpt="'.$thpt->user_name.'" 
                 		id="deletethpt-'.$thpt->user_id.'" 
-                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> 
+                        
+                        
+                        ';
+
             })
             ->make(true);
 	}		
@@ -217,10 +222,192 @@ class SoGDController extends Controller
                 		data-mahs="'.$hs->user_id.'" 
                 		data-tenhs="'.$hs->user_name.'" 
                 		id="deletehs-'.$hs->user_id.'" 
-                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> 
+                        <br/>
+                        <button onclick="nhapdiem(this)" 
+                        data-mahs="'.$hs->user_id.'" 
+                        id="nhapdiem-'.$hs->user_id.'" 
+                        class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Nhập Điểm</button>
+                        ';
             })
             ->make(true);
 	}	
+
+    public function postThemDiemHS($value='')
+    {
+        # code...
+    }
+
+    public function postThemDiemHSExcel(Request $request)
+    {
+        $path = $request->file('diemhs')->getRealPath();
+        $data = Excel::load($path, function($reader) {})->get();
+        if(!empty($data)){
+            foreach ($data->toArray() as $key => $value) {
+
+                if(is_null($value['ma_hs']))
+                    continue;
+
+                $id = $value['ma_hs'];
+                $mh_maso = '';
+                if(!is_null($value['toan'])){
+                    $mh_maso = 'TO';
+                    $diemso = $value['toan'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['ngu_van'])){
+                    $mh_maso = 'VA';
+                    $diemso = $value['ngu_van'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                 if(!is_null($value['tieng_anh'])){
+                    $mh_maso = 'TA';
+                    $diemso = $value['tieng_anh'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['tieng_nga'])){
+                    $mh_maso = 'TN';
+                    $diemso = $value['tieng_nga'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['tieng_phap'])){
+                    $mh_maso = 'TP';
+                    $diemso = $value['tieng_phap'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['tieng_trung'])){
+                    $mh_maso = 'TQ';
+                    $diemso = $value['tieng_trung'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['tieng_duc'])){
+                    $mh_maso = 'TD';
+                    $diemso = $value['tieng_duc'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['tieng_nhat'])){
+                    $mh_maso = 'TJ';
+                    $diemso = $value['tieng_nhat'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['vat_ly'])){
+                    $mh_maso = 'LY';
+                    $diemso = $value['vat_ly'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                if(!is_null($value['hoa_hoc'])){
+                    $mh_maso = 'HO';
+                    $diemso = $value['hoa_hoc'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['sinh_hoc'])){
+                    $mh_maso = 'SI';
+                    $diemso = $value['sinh_hoc'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['lich_su'])){
+                    $mh_maso = 'SU';
+                    $diemso = $value['lich_su'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['dia_ly'])){
+                    $mh_maso = 'DI';
+                    $diemso = $value['dia_ly'];$insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                    
+                }
+                if(!is_null($value['giao_duc_cong_dan'])){
+                    $mh_maso = 'CD';
+                    $diemso = $value['giao_duc_cong_dan'];
+                    $insert_user[] = [
+                       'hs_maso' => $id, 
+                       'mh_maso' => $mh_maso,
+                       'dt_diemso' => $diemso
+                    ];
+                }
+                
+            }
+                try 
+                {
+                    if(!empty($insert_user))
+                    {
+                        DB::beginTransaction();
+
+                        DB::table('diemthi')->insert($insert_user);
+
+                        DB::commit();
+                        $status =  true;
+                    }
+                    else
+                    {
+                        $status =  false;
+                    }
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                   $status =  false;
+                }
+                
+            }
+
+            if($status){
+                $message =  'Thêm Điểm Học Sinh Thành Công!';
+                return  response()->json(array('message' => $message,'status' => true));
+            }
+            else{
+                $message = 'Lỗi Thêm Điểm!! ';
+                return  response()->json(array('message' => $message,'status' => false));
+            }
+    }
 
     public function postThemHS(Request $request)
     {

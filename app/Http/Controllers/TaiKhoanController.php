@@ -57,7 +57,7 @@ class TaiKhoanController extends Controller
                 case 'sgd':
                     return redirect()->route('getThongTinSoGD');
                 case 'dh':
-                    return redirect()->route('getHomeDHGD');
+                    return redirect()->route('getThongTinDaiHoc');
                 case 'thpt':
                     return redirect()->route('getHomeTHPTGD');
                 case 'hs':

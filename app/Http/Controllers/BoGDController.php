@@ -372,11 +372,13 @@ class BoGDController extends Controller
 	private function deleteMH($request)
 	{
 		DB::beginTransaction();
-
 		try{
 			$ctk = DB::table('chitietkhoi')->where('mh_maso', $request->mh_maso)->get();
             DB::table('monhoc')->where('mh_maso', $request->mh_maso)->delete();
-            DB::table('chitietkhoi')->where('khoi_maso', $ctk[0]->khoi_maso)->delete();
+            if(!$ctk->isEmpty())
+            {
+            	DB::table('chitietkhoi')->where('khoi_maso', $ctk[0]->khoi_maso)->delete();
+            }
 			DB::commit();
 			return $status = true; //'Thêm Mô Học Thành Công!';
 		}

@@ -19,4 +19,9 @@ class Khoi extends Model
     {
         return $this->belongsToMany("App\Models\MonHoc","chitietkhoi","khoi_maso","mh_maso");
     }
+
+    public function nganhhocs()
+    {
+        return $this->belongsToMany("App\Models\NganhHoc","khoinganh","khoi_maso","ngh_id");
+    }
 }

@@ -151,9 +151,38 @@ Route::post('so-giao-duc/them-hs',
 			['as' => 'postThemHS',
 			'uses' => 'SoGDController@postThemHS'])
 			->middleware('xacthuc:sgd');
+
+Route::post('so-giao-duc/them-diem-excel',
+			['as' => 'postThemDiemHSExcel',
+			'uses' => 'SoGDController@postThemDiemHSExcel'])
+			->middleware('xacthuc:sgd');			
 			
 			
 //het controller so giao duc
+
+
+//controller Dai Hoc
+Route::get('dai-hoc/thong-tin',
+			['as' => 'getThongTinDaiHoc',
+			'uses' => 'DaiHocController@getThongTinDaiHoc'])
+			->middleware('xacthuc:dh');
+
+Route::get('dai-hoc/quan-ly-nganh',
+			['as' => 'getNganh',
+			'uses' => 'DaiHocController@getNganh'])
+			->middleware('xacthuc:dh');
+
+Route::get('dai-hoc/get-list-nganh',
+			['as' => 'getListNganh',
+			'uses' => 'DaiHocController@getListNganh'])
+			->middleware('xacthuc:dh');
+
+Route::post('dai-hoc/them-nganh',
+			['as' => 'postThemNganh',
+			'uses' => 'DaiHocController@postThemNganh'])
+			->middleware('xacthuc:dh');
+
+//Het controller dai hoc
 Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {
     return view('trangchu');
 }]);

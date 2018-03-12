@@ -57,7 +57,7 @@
                 $('#proDialog').modal('hide');
                 alert(response.message);
                 if (response.status) {
-                    $('#tableHS').DataTable().ajax.reload()
+                    $('#tableNganh').DataTable().ajax.reload()
                 }
                 
             }
@@ -66,83 +66,54 @@
        
     }
 
- 	submitHS = function(event) {
-        var hs_maso = $('#hs-maso').val();
-        var hs_ten = $('#hs-ten').val();
-        var hs_pass1 = $('#hs-pass1').val();
-        var hs_pass2 = $('#hs-pass2').val();
-        var hs_diachi = $('#hs-diachi').val();
-        var hs_sdt = $('#hs-sdt').val();
-        var hs_email = $('#hs-email').val();
-        var hs_thpt = $('#thpt').val();
-        var hs_kv = $('#kv_maso').val();
-        var hs_gioitinh = $('#gioitinh').val();
-        var hs_ngaysinh = $('#hs-ngaysinh').val();
-        var hs_cmnd = $('#hs-cmnd').val();
-        var querry = $('#querry').val();
-
+ 	submitNganh = function(event) {
+                
+            var nganh_maso = $('#nganh-maso').val();
+            var nganh_ten = $('#nganh-ten').val();
+            var nganh_chitieu = $('#nganh-chitieu').val();
+            var bh = $('#bh').val();
+            var querry = $('#querry').val();
+            var khoi = [];
+                $(':checkbox:checked').each(function(i){
+                  khoi[i] = $(this).val();
+                });
+            if($.isEmptyObject(khoi)){
+                     alert('Phải chọn khối xét tuyển!!');          
+                    return false;
+            }
         if(querry == 'insert'){
-            if(hs_maso == ''){
-                alert('Phải nhập mã trường Học Sinh!!');          
+            if(nganh_maso == ''){
+                alert('Phải nhập mã ngành!!');          
                 return false;
             }
-            if(hs_ten == ''){
-                alert('Phải nhập tên trường Học Sinh!!');
+            if(nganh_ten == ''){
+                alert('Phải nhập tên ngành!!');
                 return false;
             }
-            if(hs_pass1 == ''){
-                alert('Phải nhập mật khẩu trường Học Sinh!!');
+            if(nganh_chitieu == ''){
+                alert('Phải nhập chỉ tiêu!!');
                 return false;
             }
-            if(hs_diachi == ''){
-                alert('Phải nhập địa chỉ trường Học Sinh!!');
+            if(bh == '' || bh == null){
+                alert('Phải chọn bậc học!!');
                 return false;
             }
-            if(hs_sdt == ''){
-                alert('Phải nhập số điện thoại trường Học Sinh!!');
-                return false;
-            }
-            if(hs_thpt == '' || hs_thpt == null){
-                alert('Phải chọn trường THPT cho học sinh!!');
-                return false;
-            }
-            if(hs_kv == '' || hs_kv == null){
-                alert('Phải chọn khu vực cho học sinh!!');
-                return false;
-            }
-            if(hs_ngaysinh == ''){
-                alert('Phải nhập ngày sinh cho học sinh!!');
-                return false;
-            }
-            if(hs_cmnd == '' ){
-                alert('Phải số chứng minh nhân dân cho học sinh!!');
-                return false;
-            }
-            if(hs_pass1 != hs_pass2 ){
-                alert('Mật khẩu nhập lại không đúng!!');
-                return false;
-            }  
+             
         } 
         
  		$.ajax({
- 			url: '/so-giao-duc/them-hs',
+ 			url: '/dai-hoc/them-nganh',
  			type: 'POST',
- 			data: {hs_maso: hs_maso, 
-                    hs_ten: hs_ten,
-                    hs_pass: hs_pass1,
-                    hs_diachi: hs_diachi,
-                    hs_sdt: hs_sdt,
-                    hs_email: hs_email,
-                    hs_thpt: hs_thpt,
-                    hs_kv: hs_kv,
-                    hs_gioitinh: hs_gioitinh,
-                    hs_ngaysinh: hs_ngaysinh,
-                    hs_cmnd: hs_cmnd, 
+ 			data: {nganh_maso: nganh_maso, 
+                    nganh_ten: nganh_ten,
+                    nganh_chitieu: nganh_chitieu,
+                    bh: bh,
+                    khoi: khoi,
                     querry: querry},
  			success: function (response) {
  				alert(response.message);
                 if (response.status) {
-                    $('#tableHS').DataTable().ajax.reload()
+                    $('#tableNganh').DataTable().ajax.reload()
                 }
  				
  			}
@@ -151,14 +122,14 @@
  	};
 
  	$(document).ready(function($) {
- 		tableHS();
+ 		tableNganh();
         $('#tableHS_paginate').addClass('dbtb_paginate');
         $('#tableHS_length').addClass('dbtb_length');
  	});
  	
 
- 	tableHS = function () {
- 		$('#tableHS').DataTable({
+ 	tableNganh = function () {
+ 		$('#tableNganh').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
  	 	"language": {
             "search": "Tìm kiếm:",
@@ -173,20 +144,35 @@
  	 	iDisplayLength: 3,
         processing: true,
         serverSide: true,
-        columns:[
-                {data: 'user_id'},
-                {data: 'user_name'},
-                {data: 'user_phone'},
-                {data: 'hs_gioitinh'},
-                {data: 'hs_cmnd'},
-                {data: 'hs_ngaysinh'},
-                {data: 'user_addr'},
-                {data: 'thpt_maso'},
-                {data: 'action', name: 'action', orderable: false, searchable: false}],
-        ajax:'/so-giao-duc/get-list-hs',
-        columnDefs: [ {targets: 5, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
-                        { className: "col-name", "targets": [ 1 ] }
-                    ],
+        ajax:'/dai-hoc/get-list-nganh',
+        columns: [
+            {data: 0},
+            {data: 1},
+            {data: 4},
+            {data: 2},
+            {data: 3},
+        ],
+         "columnDefs": [ {
+            "targets": 4,
+            "data": "download_link",
+            "render": function ( data, type, row, meta ) {
+              return '<button onclick="editCTK(this)" '
+                    +'data-makhoi="'+row[6]+'"'
+                    +'data-mon1="'+row[4]+'"'
+                    +'data-mon2="'+row[2]+'"'
+                    +'data-mon3="'+row[0]+'"'
+                    +'id="editKN-'+row[6]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
+                    
+                    +'<button onclick="deleteCTK(this)"'
+                    +'data-tenkhoi="'+row[7]+'"'
+                    +'data-makhoi="'+row[6]+'"'
+                    +'data-mon1="'+row[4]+'"'
+                    +'data-mon2="'+row[2]+'"'
+                    +'data-mon3="'+row[0]+'"'
+                    +'id="deleteKN-'+row[6]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+            }
+          } ],
+       
         
     });
  	} 
