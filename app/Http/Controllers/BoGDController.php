@@ -265,8 +265,9 @@ class BoGDController extends Controller
 	{
 		if($request->querry == "insert"){
 			$ctkhoi = DB::table('chitietkhoi')->select('khoi_maso')->groupBy('khoi_maso')->get()->toArray();       
+	        $list_ma_khoi = [];
 	        foreach ($ctkhoi as $k => $v) {
-	        	$list_ma_khoi[] = $v->khoi_maso;
+	        	$list_ma_khoi = $v->khoi_maso;
 
 	        }
 
