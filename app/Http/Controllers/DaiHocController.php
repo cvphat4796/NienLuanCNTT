@@ -42,6 +42,7 @@ class DaiHocController extends Controller
     							->join('khoi', 'khoi.khoi_maso', '=', 'khoinganh.khoi_maso')
     							->where([
     									['dh_maso','=',Auth::user()->user_id]])->get();
+    	dd(empty($nganh));
     	if(!empty($nganh)){
     		$id = $nganh[0]->ngh_id;
 	 		 $ngh_khoi = "";
