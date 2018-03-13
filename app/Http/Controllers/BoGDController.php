@@ -259,7 +259,7 @@ class BoGDController extends Controller
 			}
 			$ok[]=$okMH;
 		}
-
+		dd($ok);
 		$khoi = collect($ok);
 					            
 		return Datatables::of($khoi)->make();
