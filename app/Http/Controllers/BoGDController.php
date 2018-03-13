@@ -237,15 +237,15 @@ class BoGDController extends Controller
 		foreach ($khoi as $key => $value) {
 				$i = 1;
 				
-			dd($value->monhocs);
+				if(empty($value->monhocs))
+					continue
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
 								"mh_ten".$i => $monhoc->mh_ten];
 					$i++;
 				}
-				if(is_null($arrayMH))
-					continue;
+				
 				$temp = ["khoi_maso" => $value->khoi_maso, "khoi_mota" => $value->khoi_mota];
 				array_push($arrayMH, $temp);
 				$arrayKhoiMH[] = $arrayMH;
