@@ -237,6 +237,7 @@ class BoGDController extends Controller
 		foreach ($khoi as $key => $value) {
 				$i = 1;
 				
+			dd($value);
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
@@ -250,7 +251,7 @@ class BoGDController extends Controller
 				$arrayKhoiMH[] = $arrayMH;
 				$arrayMH = null;
 		}
-		dd($arrayKhoiMH);
+
 		//for lay mang theo cau truc 
 		foreach ($arrayKhoiMH as $key => $value) {
 			for($i = 0; $i < count($value); $i++){
