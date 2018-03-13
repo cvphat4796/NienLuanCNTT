@@ -245,7 +245,8 @@ class BoGDController extends Controller
 								"mh_ten".$i => $monhoc->mh_ten];
 					$i++;
 				}
-
+				if(is_null($arrayMH))
+					continue;
 				$temp = ["khoi_maso" => $value->khoi_maso, "khoi_mota" => $value->khoi_mota];
 				array_push($arrayMH, $temp);
 				$arrayKhoiMH[] = $arrayMH;
