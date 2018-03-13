@@ -17,9 +17,8 @@ class CreateNganhhocTable extends Migration
             $table->string('ngh_id');
             $table->string('ngh_maso');
             $table->string('ngh_ten');
-            $table->float('ngh_diemcu');
-            $table->float('ngh_diemmoi');
-            $table->integer('ngh_diachi');
+            $table->float('ngh_diemchuan')->nullable();
+            $table->integer('ngh_chitieu');
             $table->string('ngh_bachoc');
             $table->string('dh_maso');
             $table->primary('ngh_id');

@@ -45,12 +45,13 @@ class DaiHocController extends Controller
     	
     	if(!$nganh->isEmpty()){
     		$id = $nganh[0]->ngh_id;
-	 		 $ngh_khoi = "";
+	 		 $ngh_khoi = '- '.$nganh[0]->khoi_mota;
 	 		// dd( $nganh->count());
-	    	for($i = 0; $i < $nganh->count();$i++){
-	    		if($i == ($nganh->count()-1) || $nganh[$i]->ngh_id != $id){
+	    	for($i = 1; $i < $nganh->count();$i++){
+	    		if($nganh[$i]->ngh_id != $id){
 	    			$id = $nganh[$i]->ngh_id;
-	    			$ok[] = ['ngh_maso' => $nganh[$i-1]->ngh_maso,
+	    			$ok[] = [	'ngh_id' => $nganh[$i-1]->ngh_id,
+	    						'ngh_maso' => $nganh[$i-1]->ngh_maso,
 	    						'ngh_ten' => $nganh[$i-1]->ngh_ten,
 	    						'ngh_chitieu' => $nganh[$i-1]->ngh_chitieu,
 	    						'ngh_bachoc' => $nganh[$i-1]->ngh_bachoc,
@@ -59,10 +60,21 @@ class DaiHocController extends Controller
 	    			$ngh_khoi = "";
 	    		}
 	    		$ngh_khoi = $ngh_khoi.'- '.$nganh[$i]->khoi_mota;
+	    		if ($i == ($nganh->count()-1)) {
+	    			$ok[] = [	'ngh_id' => $nganh[$i]->ngh_id,
+	    						'ngh_maso' => $nganh[$i]->ngh_maso,
+	    						'ngh_ten' => $nganh[$i]->ngh_ten,
+	    						'ngh_chitieu' => $nganh[$i]->ngh_chitieu,
+	    						'ngh_bachoc' => $nganh[$i]->ngh_bachoc,
+	    						'ngh_khoi' => $ngh_khoi
+	    					];
+	    			$ngh_khoi = "";
+	    		}
+	    		
 	    	}
 	    	$ok = collect($ok);
     	}else{
-    		$ok = collect([""]);
+    		$ok = collect([]);
     	}
     	
     	return Datatables::of($ok)

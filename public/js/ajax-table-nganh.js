@@ -67,7 +67,7 @@
     }
 
  	submitNganh = function(event) {
-                
+            var nganh_id = $('#nganh-maso').val();    
             var nganh_maso = $('#nganh-maso').val();
             var nganh_ten = $('#nganh-ten').val();
             var nganh_chitieu = $('#nganh-chitieu').val();
@@ -146,11 +146,11 @@
         serverSide: true,
         ajax:'/dai-hoc/get-list-nganh',
         columns: [
-            {data: 0},
             {data: 1},
-            {data: 4},
             {data: 2},
+            {data: 5},
             {data: 3},
+            {data: 4},
         ],
          "columnDefs": [ {
             "targets": 4,
@@ -161,7 +161,7 @@
                     +'data-mon1="'+row[4]+'"'
                     +'data-mon2="'+row[2]+'"'
                     +'data-mon3="'+row[0]+'"'
-                    +'id="editKN-'+row[6]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
+                    +'id="editKN-'+row[0]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
                     
                     +'<button onclick="deleteCTK(this)"'
                     +'data-tenkhoi="'+row[7]+'"'
