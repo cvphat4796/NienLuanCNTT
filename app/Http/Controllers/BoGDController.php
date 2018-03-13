@@ -250,6 +250,7 @@ class BoGDController extends Controller
 				$arrayKhoiMH[] = $arrayMH;
 				$arrayMH = null;
 		}
+		dd($arrayKhoiMH);
 		//for lay mang theo cau truc 
 		foreach ($arrayKhoiMH as $key => $value) {
 			for($i = 0; $i < count($value); $i++){
@@ -259,7 +260,7 @@ class BoGDController extends Controller
 			}
 			$ok[]=$okMH;
 		}
-		dd($ok);
+
 		$khoi = collect($ok);
 					            
 		return Datatables::of($khoi)->make();
