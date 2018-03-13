@@ -13,7 +13,8 @@
                 type: 'POST',
                 data: {querry: $('#querryKhoiNganh').val()},
                 success: function (response) {
-                    addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_mota');
+                    if(!$.isEmptyObject(response.listKhoi))
+                        addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_mota');
                     addOptionToSelect('sel-mon1',response.listMon,'mh_maso','mh_ten');
                     addOptionToSelect('sel-mon2',response.listMon,'mh_maso','mh_ten');
                     addOptionToSelect('sel-mon3',response.listMon,'mh_maso','mh_ten');
