@@ -232,7 +232,7 @@ class BoGDController extends Controller
 		// for lay array cac mon hoc va khoi
 		foreach ($khoi as $key => $value) {
 				$i = 1;
-				$arrayMH = [];
+				$arrayMH = array();
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
