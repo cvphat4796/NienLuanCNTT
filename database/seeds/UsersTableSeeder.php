@@ -11,6 +11,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('phanquyen')->insert([[   'pq_maso' => 'bgd',
+                                            'pq_mota' => 'Bộ Giáo Dục'],
+                                        [   'pq_maso' => 'sgd',
+                                            'pq_mota' => 'Sở Giáo Dục'],
+                                        [   'pq_maso' => 'dh',
+                                            'pq_mota' => 'Đại Học'],
+                                        [   'pq_maso' => 'thpt',
+                                            'pq_mota' => 'Trung Học Phổ Thông'],
+                                        [   'pq_maso' => 'hs',
+                                            'pq_mota' => 'Học Sinh'],
+                                        ]);
          DB::table('users')->insert([
             'user_id' => 'bogd',
             'pq_maso' => 'bgd',
