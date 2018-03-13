@@ -232,9 +232,9 @@ class BoGDController extends Controller
 		// for lay array cac mon hoc va khoi
 		foreach ($khoi as $key => $value) {
 				$i = 1;
-				$arrayMH = [];
+				//$arrayMH = [];
 				foreach ($value->monhocs as $monhoc) {
-						$arrayMH = [
+						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
 								"mh_ten".$i => $monhoc->mh_ten];
 					$i++;
@@ -266,12 +266,12 @@ class BoGDController extends Controller
 	{
 		if($request->querry == "insert"){
 			$ctkhoi = DB::table('chitietkhoi')->select('khoi_maso')->groupBy('khoi_maso')->get()->toArray();       
-	        $list_ma_khoi[];
+	        //$list_ma_khoi[] = array();
 	        foreach ($ctkhoi as $k => $v) {
-	        	$list_ma_khoi = $v->khoi_maso;
+	        	$list_ma_khoi[] = $v->khoi_maso;
 
 	        }
-
+	        //dd($list_ma_khoi);
 	        $khoi = DB::table('khoi')->whereNotIn('khoi_maso', $list_ma_khoi)->get();
 		}
 		else{
