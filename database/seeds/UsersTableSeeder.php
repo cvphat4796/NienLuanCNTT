@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'user_id' => 'bogd',
             'user_name' => 'Bộ Giáo Dục',
             'user_addr' => 'Hà Nội',
-            'user_addr' => '01122334455',
+            'user_phone' => '01122334455',
             'pq_maso' => 'bgd',
             'user_pass' => bcrypt('12345'),
         ]);
