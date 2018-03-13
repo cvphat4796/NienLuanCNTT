@@ -230,9 +230,13 @@ class BoGDController extends Controller
 		//				'mon3_maso' => value,
 		//				'mon3_ten' => value ] cau truc array can tra ve
 		// for lay array cac mon hoc va khoi
+		$arrayMH = array();
+		$arrayKhoiMH = array();
+		$okMH = array();
+		$ok = array();
 		foreach ($khoi as $key => $value) {
 				$i = 1;
-				$arrayMH = array();
+				
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
