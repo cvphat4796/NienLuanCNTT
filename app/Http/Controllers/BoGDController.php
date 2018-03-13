@@ -237,7 +237,7 @@ class BoGDController extends Controller
 		foreach ($khoi as $key => $value) {
 				$i = 1;
 				
-				if(empty($value->monhocs))
+				if(($value->monhocs)->isEmpty())
 					continue;
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
