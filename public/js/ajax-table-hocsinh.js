@@ -262,4 +262,32 @@
  		
  	}
 
+    nhapdiem = function (button) {
+        //$('#modalDiemHS').modal('show');
+        $('#body-diem').empty();
+        $('#proDialog').modal('show');
+        mahs = $('#'+button.id).data('mahs');
+        $.ajax({
+            url: '/so-giao-duc/get-diem-hs',
+            type: 'POST',
+            data: {mahs: mahs},
+            success: function (response) {
+                $('#proDialog').modal('hide');
+                var monhc = response.monhoc;
+                if(!is_null(monhc)){
+                    $('body-diem').append('<input type="hiden" id="diem-mahs" value="'+monhc[0]["hs_maso"])+'"/>';
+                    for (var i = 0; i < monhc.length; i++) {
+                        $('#body-diem').append( 
+                        '<label for="">'+monhc[i]["mh_ten"]+'</label>'+
+                        '<input type="number" id="'+monhc[i]["mh_maso"]+'" value="'+monhc[i]["dt_diemso"]+'" class="form-control">' );
+                    }
+                    
+                    $('#proDialog').modal('hide');
+                    $('#modalDiemHS').modal('show');
+                }
+                    
+            }
+        });
+    }
+
  });

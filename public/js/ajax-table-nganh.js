@@ -1,25 +1,16 @@
  $(function(){
  	var data1 = "";
 
-    $('#showDialogHS').click(function(event) {
+    $('#showDialogNganh').click(function(event) {
         $('#querry').val('insert');
-        $('#h4-hs').text("Thêm Trường HS");
-        $('#hs-maso').val('');
-        $('#hs-ten').val('');
-        $('#hs-pass1').removeClass('hidden');
-        $('#hs-pass2').removeClass('hidden');
-        $('#lb-mk1').removeClass('hidden');
-        $('#lb-mk2').removeClass('hidden');
-        $('#hs-diachi').val('');
-        $('#hs-sdt').val('');
-        $('#hs-email').val('');
-        $('#hs-cmnd').val('');
-        $('#hs-ngaysinh').val('');
-
-        $('#thpt').val('');
-        $('#kv_maso').val('');
-        $('#gioitinh').val('nam');
-        
+        $('#h4-Nganh').text("Thêm Ngành");
+        $('#nganh-maso').val('');
+        $('#nganh-ten').val('');
+        $('#nganh-chitieu').val('');
+       $('#nganh-diemchuan').val('');
+        $(':checkbox:checked').each(function(i){
+                  $(this).prop({checked: false});
+        });
     });
 
  	$.ajaxSetup({
@@ -67,11 +58,13 @@
     }
 
  	submitNganh = function(event) {
-            var nganh_id = $('#nganh-maso').val();    
+            var nganh_id = $('#nganh-id').val();    
             var nganh_maso = $('#nganh-maso').val();
             var nganh_ten = $('#nganh-ten').val();
             var nganh_chitieu = $('#nganh-chitieu').val();
             var bh = $('#bh').val();
+            var nganh_diemchuan = $('#nganh-diemchuan').val();
+            
             var querry = $('#querry').val();
             var khoi = [];
                 $(':checkbox:checked').each(function(i){
@@ -104,16 +97,19 @@
  		$.ajax({
  			url: '/dai-hoc/them-nganh',
  			type: 'POST',
- 			data: {nganh_maso: nganh_maso, 
+ 			data: {nganh_id: nganh_id,
+                    nganh_maso: nganh_maso, 
                     nganh_ten: nganh_ten,
                     nganh_chitieu: nganh_chitieu,
+                    nganh_diemchuan: nganh_diemchuan,
                     bh: bh,
                     khoi: khoi,
                     querry: querry},
  			success: function (response) {
  				alert(response.message);
                 if (response.status) {
-                    $('#tableNganh').DataTable().ajax.reload()
+                    $('#tableNganh').DataTable().ajax.reload();      
+                    $('#modalNganh').modal('hide');
                 }
  				
  			}
@@ -123,8 +119,8 @@
 
  	$(document).ready(function($) {
  		tableNganh();
-        $('#tableHS_paginate').addClass('dbtb_paginate');
-        $('#tableHS_length').addClass('dbtb_length');
+        $('#tableNganh_paginate').addClass('dbtb_paginate');
+        $('#tableNganh_length').addClass('dbtb_length');
  	});
  	
 
@@ -153,23 +149,25 @@
             {data: 4},
         ],
          "columnDefs": [ {
-            "targets": 4,
+            "targets": 5,
             "data": "download_link",
             "render": function ( data, type, row, meta ) {
-              return '<button onclick="editCTK(this)" '
-                    +'data-makhoi="'+row[6]+'"'
-                    +'data-mon1="'+row[4]+'"'
-                    +'data-mon2="'+row[2]+'"'
-                    +'data-mon3="'+row[0]+'"'
-                    +'id="editKN-'+row[0]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
-                    
-                    +'<button onclick="deleteCTK(this)"'
-                    +'data-tenkhoi="'+row[7]+'"'
-                    +'data-makhoi="'+row[6]+'"'
-                    +'data-mon1="'+row[4]+'"'
-                    +'data-mon2="'+row[2]+'"'
-                    +'data-mon3="'+row[0]+'"'
-                    +'id="deleteKN-'+row[6]+'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+              return '<button onclick="editNganh(this)" '
+                    +'data-idnganh="'+row[0]+'"'
+                    +'data-manganh="'+row[1]+'"'
+                    +'data-bh="'+row[4]+'"'
+                    +'data-tennganh="'+row[2]+'"'
+                    +'data-tohopmon="'+row[6]+'"'
+                    +'data-chitieu="'+row[3]+'"'
+                    +'data-diemchuan="'+row[7]+'"'
+                    +'id="editNganh-'+row[0]+'"' 
+                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
+
+                    +'<button onclick="deleteNganh(this)"'
+                    +'data-idnganh="'+row[0]+'"'
+                    +'data-tennganh="'+row[2]+'"'
+                    +'id="deleteNganh-'+row[0]+'"'
+                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
             }
           } ],
        
@@ -212,36 +210,28 @@
 
     }
  	
- 	ediths = function (button) {
-        $('#h4-HS').text("Sửa Thông Tin Học Sinh");
-        $('#hs-maso').val($('#'+button.id).data('mahs'));
-        $('#hs-ten').val($('#'+button.id).data('tenhs'));
-        $('#hs-pass1').addClass('hidden');
-        $('#hs-pass2').addClass('hidden');
-        $('#lb-mk1').addClass('hidden');
-        $('#lb-mk2').addClass('hidden');
-        $('#hs-diachi').val($('#'+button.id).data('dchs'));
-        $('#hs-sdt').val($('#'+button.id).data('sdths'));
-        $('#hs-email').val($('#'+button.id).data('emailhs'));
- 		$('#hs-cmnd').val($('#'+button.id).data('cmnd'));
-        $('#hs-ngaysinh').val(moment($('#'+button.id).data('ngaysinh')).format("DD/MM/YYYY"));
+ 	editNganh = function (button) {
+        $('#h4-Nganh').text("Sửa Thông Tin Ngành");
 
-        $('#thpt').val($('#'+button.id).data('thpt'));
-        $('#kv_maso').val($('#'+button.id).data('kvms'));
-        if($('#'+button.id).data('gioitinh') == "Nam")
-            $('#gioitinh').val('nam');
-        else
-            $('#gioitinh').val('nu');    
-
+        $('#nganh-maso').val($('#'+button.id).data('manganh'));
+        $('#nganh-ten').val($('#'+button.id).data('tennganh'));
+        $('#nganh-chitieu').val($('#'+button.id).data('chitieu'));
+        $('#nganh-id').val($('#'+button.id).data('idnganh'));
+        $('#nganh-diemchuan').val($('#'+button.id).data('diemchuan'));
+        
+        $('#bh').val($('#'+button.id).data('bh')=="Đại Học"?"DH":"CD");
+        var kh = $('#'+button.id).data('tohopmon').split(':');
+        for (var i = 0; i < kh.length-1; i++) {
+            $('#'+kh[i]).prop({checked: true})
+        }
  		$('#querry').val('update');
- 		$('#modalHS').modal('show');
+ 		$('#modalNganh').modal('show');
  	}
 
- 	deletehs = function (button) {
- 		ok = confirm("Bạn muốn xóa môn "+$('#'+button.id).data('tenhs')+"?");
+ 	deleteNganh = function (button) {
+ 		ok = confirm("Bạn muốn xóa ngành "+$('#'+button.id).data('tennganh')+"?");
  		if(ok){
- 			$('#hs-maso').val($('#'+button.id).data('mahs'));
-            $('#hs-ten').val($('#'+button.id).data('tenhs'));
+ 			$('#nganh-id').val($('#'+button.id).data('idnganh'));
  			$('#querry').val('delete');
  			submitHS();
  		}

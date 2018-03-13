@@ -165,9 +165,21 @@ class SoGDController extends Controller
 
     }
 
+
+    public function getDiemHS(Request $request)
+    {
+
+        $query = 'select * from diemthi LEFT JOIN monhoc on monhoc.mh_maso=diemthi.mh_maso WHERE diemthi.hs_maso="'.$request->mahs.'"';
+        
+         $monhoc = DB::select(DB::raw($query ));
+         //dd($monhoc);
+         return response()->json(array('monhoc' => $monhoc));
+    }
+
     //action hien thi trang sanh sach hoc sinh
     public function getTaiKhoanHS()
     {
+       
     	$thpts = DB::table('users')
     							->join('thpt', 'users.user_id', '=', 'thpt.thpt_maso')
     							->where([
@@ -181,7 +193,7 @@ class SoGDController extends Controller
 
     public function getListHS()
 	{
-		//SELECT * FROM users JOIN hocsinh ON hocsinh.hs_maso = users.user_id WHERE hocsinh.thpt_maso in (SELECT users.user_id from users JOIN thpt on thpt.thpt_maso = users.user_id WHERE thpt.sgd_maso='SGDKG')
+		
 		
 		$thpt =  DB::table('users')
     							->join('thpt', 'users.user_id', '=', 'thpt.thpt_maso')
@@ -218,16 +230,18 @@ class SoGDController extends Controller
                 		data-emailhs="'.$hs->user_email.'"
                 		id="ediths-'.$hs->user_id.'" 
                 		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+
                 		<button onclick="deletehs(this)" 
                 		data-mahs="'.$hs->user_id.'" 
                 		data-tenhs="'.$hs->user_name.'" 
                 		id="deletehs-'.$hs->user_id.'" 
                 		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> 
+
                         <br/>
                         <button onclick="nhapdiem(this)" 
                         data-mahs="'.$hs->user_id.'" 
                         id="nhapdiem-'.$hs->user_id.'" 
-                        class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Nhập Điểm</button>
+                        class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Sửa Điểm</button>
                         ';
             })
             ->make(true);

@@ -30,6 +30,7 @@
                         <meta name="csrf-token" content="{{ csrf_token() }}">
                         
                         <label for="textbox1">*Mã số:</label>
+                        <input id="nganh-id" type="hidden"/>
                         <input class="form-control" id="nganh-maso" placeholder="Nhập mã số" type="text"/>
 
                         <label for="textbox2">*Tên:</label>
@@ -38,17 +39,20 @@
                         <label for="textbox2">*Chỉ Tiêu:</label>
                         <input class="form-control" id="nganh-chitieu" placeholder="Nhập chỉ tiêu" type="number"/>
 
+                        <label for="textbox2">Điểm Chuẩn:</label>
+                        <input class="form-control" id="nganh-diemchuan" placeholder="Nhập điểm chuẩn" type="number"/>
+
                         <label for="textbox2">*Bậc Học:</label>
                         <select id="bh" class="form-control">
-                                  <option value="CD">Cao Đẳng</option>
-                                  <option value="DH">Đại Học</option>                      
+                                  <option value="DH">Đại Học</option>   
+                                  <option value="CD">Cao Đẳng</option>                   
                         </select>
 
                         <label for="textbox2">*Chọn Khối Xét Tuyển:</label>
-                       <div class="form-check">
+                       <div class="form-check" id="check-khoi">
                          @foreach ($khois as $khoi)
                               <label class="form-check-label">
-                                <input type="checkbox" name="checkNganh[]" class="form-check-input" value='{{ $khoi->khoi_maso  }}'>
+                                <input type="checkbox" name="checkNganh[]" id="{{ $khoi->khoi_maso  }}" class="form-check-input" value='{{ $khoi->khoi_maso  }}'>
                                  {{ $khoi->khoi_mota }}
                               </label>
                          @endforeach    
@@ -126,10 +130,12 @@
           <th>Tổ Hợp Môn Xét</th>
           <th>Chỉ Tiêu</th>
           <th>Bậc Học</th>
+          <th></th>
  				</tr>
  			</thead>
  			<tbody>
 				  	<tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>

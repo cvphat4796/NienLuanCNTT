@@ -105,8 +105,7 @@
               </div>
               <div class="modal-body">
                   <div class="form-group">
-                      <input type="hidden" value="insert" id="querry">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
+                      
                       <label for="textbox2">File mẫu:</label>
                       <a href="{!!asset('public/files/FileMauHocSinh.xlsx')!!}" >File mẫu</a>
                       <br/>
@@ -137,8 +136,7 @@
               </div>
               <div class="modal-body">
                   <div class="form-group">
-                      <input type="hidden" value="insert" id="querry">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
+                     
                       <label for="textbox2">File mẫu:</label>
                       <a href="{!!asset('public/files/FileMauDiemHocSinh.xlsx')!!}" >File mẫu</a>
                       <br/>
@@ -153,6 +151,31 @@
           </div>
         </div>
       </div> {{-- het modal them Diem HS excel--}}
+
+      <!-- Modal -->
+      <div id="modalDiemHS" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 id="h4-DiemHS" class="modal-title">Sửa Điểm</h4>
+              </div>
+              <div class="modal-body">
+
+                  <meta name="csrf-token" content="{{ csrf_token() }}">
+                  <div id="body-diem" class="form-group">
+                      
+                      
+                     
+                 </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="btn-themDiemHS" data-dismiss="modal" class="btn btn-default" onclick="submitExcelHS()">Cập Nhật</button>
+              </div>
+          </div>
+        </div>
+      </div> {{-- het modal sua diem--}}
 
     <!-- Modal -->
       <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
