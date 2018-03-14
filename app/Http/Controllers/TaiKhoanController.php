@@ -61,7 +61,7 @@ class TaiKhoanController extends Controller
                 case 'thpt':
                     return redirect()->route('getHomeTHPTGD');
                 case 'hs':
-                    return redirect()->route('getHomeHSGD');
+                    return redirect()->route('getThongTinHocSinh');
             }
     }
 

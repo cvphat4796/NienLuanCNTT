@@ -186,6 +186,24 @@ Route::post('dai-hoc/them-nganh',
 			->middleware('xacthuc:dh');
 
 //Het controller dai hoc
+Route::get('hoc-sinh/thong-tin',
+			['as' => 'getThongTinHocSinh',
+			'uses' => 'HocSinhController@getThongTinHocSinh'])
+			->middleware('xacthuc:hs');
+
+Route::get('hoc-sinh/nop-ho-so',
+			['as' => 'getNganh',
+			'uses' => 'HocSinhController@getNganh'])
+			->middleware('xacthuc:hs');
+
+Route::get('hoc-sinh/get-list-nganh',
+			['as' => 'getListNganh',
+			'uses' => 'HocSinhController@getListNganh'])
+			->middleware('xacthuc:hs');
+//controller hoc sinh
+
+
+//het controller hoc sinh			
 Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {
     return view('trangchu');
 }]);

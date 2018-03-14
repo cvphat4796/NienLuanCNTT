@@ -274,7 +274,7 @@
             success: function (response) {
                 $('#proDialog').modal('hide');
                 var monhc = response.monhoc;
-                if(!is_null(monhc)){
+                if(monhc.length > 0){
                     $('body-diem').append('<input type="hiden" id="diem-mahs" value="'+monhc[0]["hs_maso"])+'"/>';
                     for (var i = 0; i < monhc.length; i++) {
                         $('#body-diem').append( 
@@ -285,7 +285,9 @@
                     $('#proDialog').modal('hide');
                     $('#modalDiemHS').modal('show');
                 }
-                    
+                else{
+                    alert("Chưa Nhập Điểm Cho Học Sinh Này!");
+                }
             }
         });
     }
