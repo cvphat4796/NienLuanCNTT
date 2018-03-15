@@ -10,9 +10,10 @@
     <script type="text/javascript" src="{!!asset('public/js/bootstrap-datepicker.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
     <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="{!!asset('public/css/datepicker.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
@@ -59,7 +60,7 @@
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                <li id="tths" ><a href="/hoc-sinh/thong-tin">Thông Tin Học Sinh</a></li>
-               <li id="hs-nop" ><a href="/hoc-sinh/nop-ho-so">Danh Sách Hồ Sơ Nộp</a></li>
+               <li id="hs-nop" ><a href="/hoc-sinh/danh-sach-nganh">Danh Sách Ngành</a></li>
                 
                
             </ul>

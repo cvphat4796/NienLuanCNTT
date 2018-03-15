@@ -142,6 +142,7 @@
         serverSide: true,
         ajax:'/dai-hoc/get-list-nganh',
         columns: [
+            {data: 6},
             {data: 1},
             {data: 2},
             {data: 5},
@@ -149,7 +150,7 @@
             {data: 4},
         ],
          "columnDefs": [ {
-            "targets": 5,
+            "targets": 6,
             "data": "download_link",
             "render": function ( data, type, row, meta ) {
               return '<button onclick="editNganh(this)" '
@@ -167,9 +168,20 @@
                     +'data-idnganh="'+row[0]+'"'
                     +'data-tennganh="'+row[2]+'"'
                     +'id="deleteNganh-'+row[0]+'"'
-                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
+                    +' class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Xóa</button> '
+
+                    +'<a href="/dai-hoc/quan-ly-ho-so/'+row[0]+'"'
+                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-list"></i> Xem Hồ Sơ Nộp</a> ';
             }
-          } ],
+          },
+           {
+            "targets": 0,
+            "data": "download_link",
+            "render": function ( data, type, row, meta ) {
+              return meta.row+1;
+            }
+          } 
+          ],
        
         
     });
@@ -209,6 +221,8 @@
         });
 
     }
+
+
  	
  	editNganh = function (button) {
         $('#h4-Nganh').text("Sửa Thông Tin Ngành");

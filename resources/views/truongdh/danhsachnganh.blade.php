@@ -2,8 +2,6 @@
 @section('title','Danh Sách Ngành Xét Tuyển')
 @section('content')
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/datetime.js"></script>
 <script type="text/javascript" src="{!!asset('public/js/ajax-table-nganh.js')!!}"></script>
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
@@ -125,6 +123,7 @@
  		<table id="tableNganh" class="table table-bordered table-hover table-striped">
  			<thead>
  				<tr>
+          <th>STT</th>
  					<th>Mã Số</th>
  					<th>Tên</th>
           <th>Tổ Hợp Môn Xét</th>
@@ -135,6 +134,7 @@
  			</thead>
  			<tbody>
 				  	<tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>

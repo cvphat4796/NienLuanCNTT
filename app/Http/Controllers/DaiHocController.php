@@ -204,4 +204,38 @@ class DaiHocController extends Controller
 			return false;
 		}
 	}
+
+	public function getHoSo($id)
+	{
+		$ng = DB::table('nguyenvong')->join('nganhhoc','nganhhoc.ngh_id','nguyenvong.ngh_id')
+									->where('nguyenvong.ngh_id',$id)->orderBy('nv_douutien','asc')->get();
+		$index = 1;	
+		$ok = [];						
+		foreach ($ng as $key => $value) {
+			$diemhs = DB::table('diemthi')->where('hs_maso',$value->hs_maso)->get();
+			$mon = DB::table('chitietkhoi')->where('khoi_maso',$value->khoi_maso)->get();
+			$diem = 0;
+			foreach ($mon as $k => $v) {
+				foreach ($diemhs as $ke => $va) {
+					if($v->mh_maso==$va->mh_maso){
+						$diem += $va->dt_diemso;
+						break;
+					}
+				}
+			}
+			$v = $value;
+			$v->diem = $diem;
+			if($diem >= $v->ngh_chuan ){
+				$v->kq = true;
+			}
+			else{
+				$v->kq = false;
+			}
+			$index++;
+			$ok[] = $v;
+		}
+		//collect($ok)->sortBy('diem', 'ASC')
+		dd(collect($ok)->sortByDesc('diem')->sortBy('nv_douutien')->sortByDesc('kq'));
+		return View('truongdh.hoso');
+	}
 }

@@ -171,7 +171,7 @@
                  </div>
               </div>
               <div class="modal-footer">
-                  <button type="button" id="btn-themDiemHS" data-dismiss="modal" class="btn btn-default" onclick="submitExcelHS()">Cập Nhật</button>
+                  <button type="button" id="btn-themDiemHS" data-dismiss="modal" class="btn btn-default" onclick="submitDiemHS()">Cập Nhật</button>
               </div>
           </div>
         </div>

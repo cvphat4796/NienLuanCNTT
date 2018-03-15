@@ -66,6 +66,10 @@
        
     }
 
+    submitDiemHS = function () {
+        // body...
+    }
+
  	submitHS = function(event) {
         var hs_maso = $('#hs-maso').val();
         var hs_ten = $('#hs-ten').val();

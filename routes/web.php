@@ -185,23 +185,35 @@ Route::post('dai-hoc/them-nganh',
 			'uses' => 'DaiHocController@postThemNganh'])
 			->middleware('xacthuc:dh');
 
+Route::get('dai-hoc/quan-ly-ho-so/{id}',
+			['as' => 'getHoSo',
+			'uses' => 'DaiHocController@getHoSo'])
+			->middleware('xacthuc:dh');
+
 //Het controller dai hoc
+
+
+
+//controller hoc sinh
 Route::get('hoc-sinh/thong-tin',
 			['as' => 'getThongTinHocSinh',
 			'uses' => 'HocSinhController@getThongTinHocSinh'])
 			->middleware('xacthuc:hs');
 
-Route::get('hoc-sinh/nop-ho-so',
+Route::get('hoc-sinh/danh-sach-nganh',
 			['as' => 'getNganh',
 			'uses' => 'HocSinhController@getNganh'])
 			->middleware('xacthuc:hs');
 
 Route::get('hoc-sinh/get-list-nganh',
 			['as' => 'getListNganh',
-			'uses' => 'HocSinhController@getListNganh'])
-			->middleware('xacthuc:hs');
-//controller hoc sinh
+			'uses' => 'HocSinhController@getListNganh']);
+			//->middleware('xacthuc:hs');
 
+Route::post('hoc-sinh/nop-ho-so',
+			['as' => 'postNopHoSo',
+			'uses' => 'HocSinhController@postNopHoSo'])
+			->middleware('xacthuc:hs');
 
 //het controller hoc sinh			
 Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {

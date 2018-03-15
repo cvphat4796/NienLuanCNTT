@@ -215,3 +215,25 @@ color: #b13434;
 .col-tt{
     width: 25%;
 }
+
+button.dt-button:active:not(.disabled):hover:not(.disabled), button.dt-button.active:not(.disabled):hover:not(.disabled), div.dt-button:active:not(.disabled):hover:not(.disabled), div.dt-button.active:not(.disabled):hover:not(.disabled), a.dt-button:active:not(.disabled):hover:not(.disabled), a.dt-button.active:not(.disabled):hover:not(.disabled) {
+    background-color: #b13434;
+    box-shadow: none;
+}
+
+button.dt-button, div.dt-button, a.dt-button{
+    background-color: #b13434;
+    background-image: none;
+    color: white;
+    border: #adadad;
+}
+
+button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-button:hover:not(.disabled){
+      background-color: #6d2121;
+      color: white;
+      border: #adadad;
+}
+
+button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-button:hover:not(.disabled){
+    background-image: none;
+}
