@@ -16,7 +16,7 @@ class CreateDiemthiTable extends Migration
         Schema::create('diemthi', function (Blueprint $table) {
             $table->string('hs_maso');
             $table->string('mh_maso');
-            $table->float('dt_diemso');
+            $table->float('dt_diemso')->nullable(true);
             $table->primary(['hs_maso','mh_maso']);
             $table->foreign('hs_maso')
                   ->references('hs_maso')

@@ -53,7 +53,7 @@ class TaiKhoanController extends Controller
         $user = Auth::user();
             switch ($user->pq_maso) {
                 case 'bgd':
-                    return redirect()->route('getThongTinBoGD');
+                    return redirect()->route('getHomeBoGD');
                 case 'sgd':
                     return redirect()->route('getThongTinSoGD');
                 case 'dh':

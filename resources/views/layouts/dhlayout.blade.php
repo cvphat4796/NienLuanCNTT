@@ -10,7 +10,7 @@
     <script type="text/javascript" src="{!!asset('public/js/bootstrap-datepicker.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
 
     <link rel="stylesheet" href="{!!asset('public/css/datepicker.css')!!}">
@@ -59,7 +59,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
              <li id="qlthoigian" ><a href="/dai-hoc/quan-ly-nganh">Quản Lý Ngành</a></li>
-             <li id="qlkhoinganh"><a href="/dai-hoc/quan-ly-ho-so">Quản Lý Hồ Sơ Xét Tuyển</a></li>
+             <li id="qlkhoinganh"><a href="/dai-hoc/quan-ly-khoi">Quản Lý Khối Xét Tuyển</a></li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">

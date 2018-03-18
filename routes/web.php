@@ -32,14 +32,34 @@ Route::get('dang-xuat',['as' => 'getLogout', 'uses' => 'TaiKhoanController@getLo
 Route::get('doi-mat-khau',['as' => 'getDoiMatKhau', 'uses' => 'TaiKhoanController@getDoiMatKhau']);
 
 //controller bo giao duc
+Route::get('bo-giao-duc/thoi-gian', 
+			['as' => 'getThoiGianBoGD', 
+			'uses' => 'BoGDController@getThoiGianBoGD'])
+			->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-thoi-gian', 
+			['as' => 'getListThoiGianBoGD', 
+			'uses' => 'BoGDController@getListThoiGianBoGD'])
+			->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-loai-thoi-gian', 
+			['as' => 'getListLoaiThoiGianBoGD', 
+			'uses' => 'BoGDController@getListLoaiThoiGianBoGD'])
+			->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/them-thoi-gian', 
+			['as' => 'postThoiGian', 
+			'uses' => 'BoGDController@postThoiGian'])
+			->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/them-loai-thoi-gian', 
+			['as' => 'postLoaiThoiGian', 
+			'uses' => 'BoGDController@postLoaiThoiGian'])
+			->middleware('xacthuc:bgd');
+
 Route::get('bo-giao-duc', 
 			['as' => 'getHomeBoGD', 
 			'uses' => 'BoGDController@getHomeBoGD'])
-			->middleware('xacthuc:bgd');
-
-Route::get('bo-giao-duc/thong-tin', 
-			['as' => 'getThongTinBoGD', 
-			'uses' => 'BoGDController@getThongTinBoGD'])
 			->middleware('xacthuc:bgd');
 
 Route::get('bo-giao-duc/tao-tai-khoan', 
@@ -188,6 +208,11 @@ Route::post('dai-hoc/them-nganh',
 Route::get('dai-hoc/quan-ly-ho-so/{id}',
 			['as' => 'getHoSo',
 			'uses' => 'DaiHocController@getHoSo'])
+			->middleware('xacthuc:dh');
+
+Route::post('dai-hoc/get-list-ho-so',
+			['as' => 'postListHoSo',
+			'uses' => 'DaiHocController@postListHoSo'])
 			->middleware('xacthuc:dh');
 
 //Het controller dai hoc

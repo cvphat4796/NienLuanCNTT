@@ -14,17 +14,179 @@ use App\Models\Khoi;
 class BoGDController extends Controller
 {
 	//controller trang chu bo giao duc
-	public function getHomeBoGD()
+	public function getThoiGianBoGD()
 	{
-		$thoigians = DB::table('thoigian')
-					->join('users', 'thoigian.user_id', '=', 'users.user_id')
-					->select('users.user_name', 'thoigian.*')
-					->get();
-		 return View::make('bogds.trangchu')
-				->with(compact('thoigians'));
+		
+		$ltg = DB::table('loaithoigian')->get();
+		
+		 return View::make('bogds.trangchu')->with(compact('ltg'));
+	}
+	//action xu ly loai thoi gian
+	public function postLoaiThoiGian(Request $request)
+	{
+		$status = [];
+		switch ($request->querry) {
+			case 'insert':
+				$status = $this->insertLoaiThoiGian($request);
+				break;
+			case 'update':
+				$status = $this->upadteLoaiThoiGian($request);
+				break;
+			case 'delete':
+				$status = $this->deleteLoaiThoiGian($request);
+				break;
+		}
+
+		return response()->json($status);
 	}
 
-	public function getThongTinBoGD()
+	private function deleteLoaiThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		try{
+			DB::beginTransaction();
+
+			DB::table('loaithoigian')->where('ltg_maso',$ltg)->delete();
+			DB::commit();
+			return array('message' => 'Xóa Loại Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Xóa Loại Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+
+	private function upadteLoaiThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		$ltg_ten = $request->ltg_ten;
+		try{
+			DB::beginTransaction();
+
+			DB::table('thoigian')->where('ltg_maso',$ltg)->update(['ltg_ten' => $ltg_ten]);
+			DB::commit();
+			return array('message' => 'Sửa Loại Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Sửa Loại Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+
+	private function insertLoaiThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		$ltg_ten = $request->ltg_ten;
+		try{
+			DB::beginTransaction();
+
+			DB::table('loaithoigian')->insert([
+			    	'ltg_maso' => $ltg,
+			    	'ltg_ten' => $ltg_ten
+			   	]);
+			DB::commit();
+			return array('message' => 'Thêm Loại Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Thêm Loại Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+	//het action xu ly loai thoi gian
+	public function postThoiGian(Request $request)
+	{
+		$status = [];
+		switch ($request->querry) {
+			case 'insert':
+				$status = $this->insertThoiGian($request);
+				break;
+			case 'update':
+				$status = $this->upadteThoiGian($request);
+				break;
+			case 'delete':
+				$status = $this->deleteThoiGian($request);
+				break;
+		}
+
+		return response()->json($status);
+	}
+
+	private function deleteThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		try{
+			DB::beginTransaction();
+
+			DB::table('thoigian')->where('ltg_maso',$ltg)->delete();
+			DB::commit();
+			return array('message' => 'Xóa Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Xóa Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+
+	private function upadteThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		$datebegin = date("Y-m-d", strtotime(str_replace('/', '-',$request->ngaybd)));
+		$dateend = date("Y-m-d", strtotime(str_replace('/', '-',$request->ngaykt)));
+		try{
+			DB::beginTransaction();
+
+			DB::table('thoigian')->where('ltg_maso',$ltg)->update(['tg_batdau'=>$datebegin, 'tg_ketthuc' => $dateend]);
+			DB::commit();
+			return array('message' => 'Sửa Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Sửa Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+
+	private function insertThoiGian($request)
+	{
+		$ltg = $request->ltg;
+		$datebegin = date("Y-m-d", strtotime(str_replace('/', '-',$request->ngaybd)));
+		$dateend = date("Y-m-d", strtotime(str_replace('/', '-',$request->ngaykt)));
+
+		try{
+			DB::beginTransaction();
+
+			DB::table('thoigian')->insert(
+			 	[	'bgd_maso' => Auth::user()->user_id, 
+			    	'ltg_maso' => $ltg,
+			    	'tg_batdau' => $datebegin,
+			    	'tg_ketthuc' => $dateend
+			   	]);
+			DB::commit();
+			return array('message' => 'Thêm Thời Gian Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Thêm Thời Gian Thất Bại', 'status' => false);
+		}
+	}
+
+
+	public function getListThoiGianBoGD()
+	{
+		$thoigian = DB::table('thoigian')
+					->join('loaithoigian','loaithoigian.ltg_maso','thoigian.ltg_maso')
+					->get();
+		
+		 return Datatables::of($thoigian)->make();
+	}
+
+	public function getListLoaiThoiGianBoGD()
+	{
+		$loaithoigian = DB::table('loaithoigian')->get();
+		
+		 return Datatables::of($loaithoigian)->make();
+	}
+
+	public function getHomeBoGD()
 	{
 		return view('bogds.thongtin');
 	}
@@ -35,34 +197,34 @@ class BoGDController extends Controller
 		dd($request);
 	}
 
-	public function postThoiGian(Request $request)
-	{
-		$tg_maso = Uuid::generate()->string;
-		$user_id = Auth::user()->user_id;
-		//dd(strtotime("2011-01-01")$request->datebegin);
-		$tg_batdau = date('Y-m-d', strtotime(str_replace('/', '-', $request->datebegin)));
-		$tg_ketthuc = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateend)));
-		$tg_mota = $request->mota;
-		$status = "";
+	// public function postThoiGian(Request $request)
+	// {
+	// 	$tg_maso = Uuid::generate()->string;
+	// 	$user_id = Auth::user()->user_id;
+	// 	//dd(strtotime("2011-01-01")$request->datebegin);
+	// 	$tg_batdau = date('Y-m-d', strtotime(str_replace('/', '-', $request->datebegin)));
+	// 	$tg_ketthuc = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateend)));
+	// 	$tg_mota = $request->mota;
+	// 	$status = "";
 		
-		try 
-		{  
-			DB::table('thoigian')->insert(['tg_maso' => $tg_maso,
-											'user_id' => $user_id,
-											'tg_batdau' => $tg_batdau,
-											'tg_ketthuc' => $tg_ketthuc,
-											'tg_mota' => $tg_mota
-											]);
-		    $status = "Thêm tài khoản thành công!";
-		} 
-		catch (Exception $e) 
-		{
-			$status = "Thêm tài khoản thất bại!";
+	// 	try 
+	// 	{  
+	// 		DB::table('thoigian')->insert(['tg_maso' => $tg_maso,
+	// 										'user_id' => $user_id,
+	// 										'tg_batdau' => $tg_batdau,
+	// 										'tg_ketthuc' => $tg_ketthuc,
+	// 										'tg_mota' => $tg_mota
+	// 										]);
+	// 	    $status = "Thêm tài khoản thành công!";
+	// 	} 
+	// 	catch (Exception $e) 
+	// 	{
+	// 		$status = "Thêm tài khoản thất bại!";
 			
-		}
-		session()->flash('status', $status);
-		return redirect()->back();
-	}
+	// 	}
+	// 	session()->flash('status', $status);
+	// 	return redirect()->back();
+	// }
 
 	//controller hien thi danh sach cac so giao duc
 	public function getTaiKhoanSoGDDH($p){
@@ -242,7 +404,7 @@ class BoGDController extends Controller
 				foreach ($value->monhocs as $monhoc) {
 						$arrayMH[] = [
 							"mh_maso".$i => $monhoc->pivot->mh_maso,
-								"mh_ten".$i => $monhoc->mh_ten];
+							"mh_ten".$i => $monhoc->mh_ten];
 					$i++;
 				}
 				if(is_null($arrayMH))

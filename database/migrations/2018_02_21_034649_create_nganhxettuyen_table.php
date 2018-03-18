@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKhoinganhTable extends Migration
+class CreateNganhxettuyenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateKhoinganhTable extends Migration
      */
     public function up()
     {
-        Schema::create('khoinganh', function (Blueprint $table) {
+        Schema::create('nganhxettuyen', function (Blueprint $table) {
             $table->string('khoi_maso');
             $table->string('ngh_id');
-            $table->primary(['khoi_maso','ngh_id']);
+            $table->string('dh_maso');
+            $table->primary(['khoi_maso','ngh_id']);            
+            $table->foreign('dh_maso')
+                  ->references('user_id')
+                  ->on('users')
+                  ->onDelete('cascade');
             $table->foreign('khoi_maso')
                   ->references('khoi_maso')
                   ->on('khoi')
@@ -35,6 +40,6 @@ class CreateKhoinganhTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('khoinganh');
+        Schema::dropIfExists('nganhxettuyen');
     }
 }

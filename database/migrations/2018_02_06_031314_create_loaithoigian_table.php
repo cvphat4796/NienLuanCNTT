@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKhoiTable extends Migration
+class CreateLoaithoigianTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateKhoiTable extends Migration
      */
     public function up()
     {
-        Schema::create('khoi', function (Blueprint $table) {
-            $table->string('khoi_maso');
-            $table->string('khoi_ten');
-            $table->primary('khoi_maso');
+        Schema::create('loaithoigian', function (Blueprint $table) {
+            $table->string('ltg_maso');
+            $table->string('ltg_ten');
+            $table->primary('ltg_maso');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateKhoiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('khoi');
+        Schema::dropIfExists('loaithoigian');
     }
 }

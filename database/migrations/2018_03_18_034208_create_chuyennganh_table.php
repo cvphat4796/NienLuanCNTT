@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLoaithoigianTable extends Migration
+class CreateChuyennganhTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLoaithoigianTable extends Migration
      */
     public function up()
     {
-        Schema::create('loaithoigian', function (Blueprint $table) {
+        Schema::create('chuyennganh', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateLoaithoigianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('loaithoigian');
+        Schema::dropIfExists('chuyennganh');
     }
 }

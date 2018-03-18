@@ -14,13 +14,16 @@ class CreateThoigianTable extends Migration
     public function up()
     {
         Schema::create('thoigian', function (Blueprint $table) {
-            $table->string('tg_maso');
-            $table->string('user_id');
+            $table->string('ltg_maso');
+            $table->string('bgd_maso');
             $table->date('tg_batdau');
             $table->date('tg_ketthuc');
-            $table->string('tg_mota');
-            $table->primary('tg_maso');
-            $table->foreign('user_id')
+            $table->primary(['ltg_maso','bgd_maso']);
+            $table->foreign('ltg_maso')
+                  ->references('ltg_maso')
+                  ->on('loaithoigian')
+                  ->onDelete('cascade');
+            $table->foreign('bgd_maso')
                   ->references('user_id')
                   ->on('users')
                   ->onDelete('cascade');

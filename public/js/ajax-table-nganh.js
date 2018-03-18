@@ -121,6 +121,8 @@
  		tableNganh();
         $('#tableNganh_paginate').addClass('dbtb_paginate');
         $('#tableNganh_length').addClass('dbtb_length');
+
+     
  	});
  	
 

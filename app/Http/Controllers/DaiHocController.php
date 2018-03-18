@@ -19,6 +19,8 @@ class DaiHocController extends Controller
     	return View('truongdh.thongtin');
     }
 
+
+
     public function getNganh()
     {
     	
@@ -205,8 +207,9 @@ class DaiHocController extends Controller
 		}
 	}
 
-	public function getHoSo($id)
+	public function postListHoSo(Request $request)
 	{
+		$id = $request->id_nganh;
 		$ng = DB::table('nguyenvong')->join('nganhhoc','nganhhoc.ngh_id','nguyenvong.ngh_id')
 									->where('nguyenvong.ngh_id',$id)->orderBy('nv_douutien','asc')->get();
 		$index = 1;	
@@ -223,8 +226,12 @@ class DaiHocController extends Controller
 					}
 				}
 			}
+			$hs = DB::table('users')->where('user_id',$value->hs_maso)->first();
+			
 			$v = $value;
-			$v->diem = $diem;
+			$v->hs_ten = $hs->user_name;
+			$v->hs_sdt = $hs->user_phone;
+			$v->diem_hs = $diem;
 			if($diem >= $v->ngh_chuan ){
 				$v->kq = true;
 			}
@@ -234,8 +241,22 @@ class DaiHocController extends Controller
 			$index++;
 			$ok[] = $v;
 		}
-		//collect($ok)->sortBy('diem', 'ASC')
-		dd(collect($ok)->sortByDesc('diem')->sortBy('nv_douutien')->sortByDesc('kq'));
-		return View('truongdh.hoso');
+		$kq = collect($ok)->sortByDesc('diem')->sortBy('nv_douutien')->sortByDesc('kq');
+		return Datatables::of($kq)->removeColumn('ngh_bachoc')
+									->removeColumn('ngh_id')
+									->removeColumn('dh_maso')
+									->removeColumn('ngh_chuan')
+									->removeColumn('ngh_chitieu')
+									->removeColumn('ngh_ten')
+									->removeColumn('ngh_maso')->make();
+	}
+
+	public function getHoSo($id)
+	{
+		$ng = DB::table('nganhhoc')
+									->where('nganhhoc.ngh_id',$id)->first();
+		
+		return  View::make('truongdh.hoso')
+				->with(compact('ng'));
 	}
 }

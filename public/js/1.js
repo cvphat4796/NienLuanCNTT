@@ -26,7 +26,7 @@
 
 
 $('.ngay').datepicker({
-    format: 'dd/mm/yyyy'
+    dateFormat: 'dd/mm/yy'
 });
 
 //tao tai khoan

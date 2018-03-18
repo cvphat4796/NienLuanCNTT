@@ -68,7 +68,7 @@
               </div>
           </div>
         </div>
-      </div> {{-- het modal them HS --}}
+      </div> {{-- het modal them Nganh --}}
 
     <div class="pull-left" style="position: relative; left: 10px;">
        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelHS" data-toggle="modal" data-target="#modalExcelHS">Thêm Ngành File Excel</button>
@@ -99,9 +99,39 @@
               </div>
           </div>
         </div>
-      </div> {{-- het modal them HS excel--}}
+      </div> {{-- het modal them Nganh excel--}}
 
       
+      <!-- Modal -->
+      <div id="modalHoSo" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 id="h4-hoso" class="modal-title">Thêm Học Sinh</h4>
+              </div>
+              <div class="modal-body">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="btn-hoso" data-dismiss="modal" class="btn btn-default" onclick="submitHoSo()">Cập Nhật</button>
+              </div>
+          </div>
+        </div>
+      </div> {{-- het modal them Nganh excel--}}
+
 
     <!-- Modal -->
       <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
