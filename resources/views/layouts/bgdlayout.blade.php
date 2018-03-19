@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-
+ <meta name="csrf-token" content="{{ csrf_token() }}">
    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
@@ -64,12 +64,11 @@
                             <li><a href="/bo-giao-duc/tao-tai-khoan">Tạo Tài Khoản</a></li>
                             <li><a href="/bo-giao-duc/tai-khoan/sgd">Tài Khoản Sở GD</a></li>
                             <li><a href="/bo-giao-duc/tai-khoan/dh">Tài Khoản Trường ĐH</a></li>
-                            <li><a href="/so-giao-duc/tai-khoan-thpt">Tài Khoản Trường THPT</a></li>
-                            <li><a href="/thpt/tai-khoan-hs">Tài Khoản Học Sinh</a></li>
+                            <li><a href="/bo-giao-duc/tai-khoan-thpt">Tài Khoản Trường THPT</a></li>
+                            <li><a href="/bo-giao-duc/tai-khoan-hs">Tài Khoản Học Sinh</a></li>
                         </ul>
                     </li>
-                    <li id="qlkhoinganh"><a href="/bo-giao-duc/ql-khoi-nganh">Quản Lý Khối Ngành</a></li>
-
+                
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><span class="xinchao" id="xinchao2">Xin Chào: {!! Auth::user()['user_name'] !!}</span></li>
@@ -84,7 +83,23 @@
  
     </div>
 
- 
+ <!-- Modal -->
+      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-body progressDialog">
+                    <div class="progress progress-striped active" style="margin-bottom:0;">
+                        <div class="progress-bar" style="width: 100%">
+                          Xin chờ!!!!
+                        </div>
+                    </div>
+              </div>
+            
+          </div>
+        </div>
+      </div> {{-- het modal progress dialog --}}
+
    
 </body>
 </html>

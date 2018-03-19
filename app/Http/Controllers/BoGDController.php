@@ -13,7 +13,7 @@ use App\Models\Khoi;
 
 class BoGDController extends Controller
 {
-	//controller trang chu bo giao duc
+	
 	public function getThoiGianBoGD()
 	{
 		
@@ -21,78 +21,9 @@ class BoGDController extends Controller
 		
 		 return View::make('bogds.trangchu')->with(compact('ltg'));
 	}
-	//action xu ly loai thoi gian
-	public function postLoaiThoiGian(Request $request)
-	{
-		$status = [];
-		switch ($request->querry) {
-			case 'insert':
-				$status = $this->insertLoaiThoiGian($request);
-				break;
-			case 'update':
-				$status = $this->upadteLoaiThoiGian($request);
-				break;
-			case 'delete':
-				$status = $this->deleteLoaiThoiGian($request);
-				break;
-		}
 
-		return response()->json($status);
-	}
-
-	private function deleteLoaiThoiGian($request)
-	{
-		$ltg = $request->ltg;
-		try{
-			DB::beginTransaction();
-
-			DB::table('loaithoigian')->where('ltg_maso',$ltg)->delete();
-			DB::commit();
-			return array('message' => 'Xóa Loại Thời Gian Thành Công', 'status' => true);
-		}
-		catch (\Exception $e) {
-			DB::rollBack();
-			return array('message' => 'Xóa Loại Thời Gian Thất Bại', 'status' => false);
-		}
-	}
-
-	private function upadteLoaiThoiGian($request)
-	{
-		$ltg = $request->ltg;
-		$ltg_ten = $request->ltg_ten;
-		try{
-			DB::beginTransaction();
-
-			DB::table('thoigian')->where('ltg_maso',$ltg)->update(['ltg_ten' => $ltg_ten]);
-			DB::commit();
-			return array('message' => 'Sửa Loại Thời Gian Thành Công', 'status' => true);
-		}
-		catch (\Exception $e) {
-			DB::rollBack();
-			return array('message' => 'Sửa Loại Thời Gian Thất Bại', 'status' => false);
-		}
-	}
-
-	private function insertLoaiThoiGian($request)
-	{
-		$ltg = $request->ltg;
-		$ltg_ten = $request->ltg_ten;
-		try{
-			DB::beginTransaction();
-
-			DB::table('loaithoigian')->insert([
-			    	'ltg_maso' => $ltg,
-			    	'ltg_ten' => $ltg_ten
-			   	]);
-			DB::commit();
-			return array('message' => 'Thêm Loại Thời Gian Thành Công', 'status' => true);
-		}
-		catch (\Exception $e) {
-			DB::rollBack();
-			return array('message' => 'Thêm Loại Thời Gian Thất Bại', 'status' => false);
-		}
-	}
-	//het action xu ly loai thoi gian
+	
+	//action xu ly thoi gian
 	public function postThoiGian(Request $request)
 	{
 		$status = [];
@@ -168,8 +99,9 @@ class BoGDController extends Controller
 			return array('message' => 'Thêm Thời Gian Thất Bại', 'status' => false);
 		}
 	}
+	//het action xu ly thoi gian
 
-
+	//action lay du lieu thoi gian
 	public function getListThoiGianBoGD()
 	{
 		$thoigian = DB::table('thoigian')
@@ -185,50 +117,18 @@ class BoGDController extends Controller
 		
 		 return Datatables::of($loaithoigian)->make();
 	}
+	// het action lay du lieu  thoi gian
 
+	//controller trang chu bo giao duc
 	public function getHomeBoGD()
 	{
 		return view('bogds.thongtin');
 	}
 
-	public function postThoiGian1(Request $request)
-	{
-		//dd("xxx");
-		dd($request);
-	}
 
-	// public function postThoiGian(Request $request)
-	// {
-	// 	$tg_maso = Uuid::generate()->string;
-	// 	$user_id = Auth::user()->user_id;
-	// 	//dd(strtotime("2011-01-01")$request->datebegin);
-	// 	$tg_batdau = date('Y-m-d', strtotime(str_replace('/', '-', $request->datebegin)));
-	// 	$tg_ketthuc = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateend)));
-	// 	$tg_mota = $request->mota;
-	// 	$status = "";
-		
-	// 	try 
-	// 	{  
-	// 		DB::table('thoigian')->insert(['tg_maso' => $tg_maso,
-	// 										'user_id' => $user_id,
-	// 										'tg_batdau' => $tg_batdau,
-	// 										'tg_ketthuc' => $tg_ketthuc,
-	// 										'tg_mota' => $tg_mota
-	// 										]);
-	// 	    $status = "Thêm tài khoản thành công!";
-	// 	} 
-	// 	catch (Exception $e) 
-	// 	{
-	// 		$status = "Thêm tài khoản thất bại!";
-			
-	// 	}
-	// 	session()->flash('status', $status);
-	// 	return redirect()->back();
-	// }
-
-	//controller hien thi danh sach cac so giao duc
+	//action danh sach cac so giao duc dai hoc
 	public function getTaiKhoanSoGDDH($p){
-		$dss = DB::table('users')->where('pq_maso',$p)->orderBy('user_name', 'asc')->paginate(2);
+		
 		$title = "";
 		switch ($p) {
 			case 'sgd':
@@ -241,11 +141,70 @@ class BoGDController extends Controller
 				return View('errors.404');
 		}
 		return View::make('bogds.danhsachsogdvadh')
-				->with(compact('title'))
-				->with(compact('dss'));
+				->with(compact('title'));
 	}
 
-	
+	public function postSuaThongTinSGDDH(Request $request)
+	{
+		switch ($request->querry) {
+			case 'update':
+				$status = $this->upadteSGDDH($request);
+				break;
+			
+			case 'delete':
+				$status = $this->deleteSGDDH($request);
+				break;
+		}
+
+		return response()->json($status);
+	}
+
+	private function deleteSGDDH($request)
+	{
+		$maso = $request->ma_so;
+		try{
+			DB::beginTransaction();
+			DB::table('users')->where('user_id',$maso)->delete();
+			DB::commit();
+			return array('message' => 'Xóa Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Xóa Thất Bại', 'status' => false);
+		}
+	}
+
+	private function upadteSGDDH($request)
+	{
+		$maso = $request->ma_so;
+		$ten = $request->ten;
+		$diachi = $request->dia_chi;
+		$sdt = $request->sdt;
+		$email = $request->email;
+		try{
+			DB::beginTransaction();
+			
+			DB::table('users')->where('user_id',$maso)->update(['user_name'=>$ten,
+																'user_addr' => $diachi,
+																'user_phone' =>$sdt,
+																'user_email' =>$email,
+																]);
+			DB::commit();
+			return array('message' => 'Sửa Thành Công', 'status' => true);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Sửa Thất Bại', 'status' => false);
+		}
+	}
+
+	public function postListSGDDH(Request $request)
+	{
+		$key = $request->key;
+		$dss = DB::table('users')->where('pq_maso',$key)->orderBy('user_name', 'asc')->get();
+		return Datatables::of($dss)->removeColumn('user_pass')->make();
+	}
+	//het action danh sach so giao duc dai hoc
 
 	//controller trang tao tai khoan
     public function getTaoTaiKhoan($status="")
@@ -331,13 +290,10 @@ class BoGDController extends Controller
 			    	'user_phone' => $request->sdt,
 			    	'user_email' => $request->email,
 			    	'pq_maso' => $request->quyen,
+			    	'sgd_maso' => $request->sogd,
 			    	'user_name' => $request->ten
 			   	]);
 
-			DB::table('thpt')->insert(
-				[	'thpt_maso' => strtoupper($request->maso),
-					'sgd_maso' => $request->sogd
-				]);
 
 			DB::commit();
 			return true;
@@ -379,6 +335,54 @@ class BoGDController extends Controller
 			return false;
 		}
 	}
+	//het tao tai khoan
+
+	//action table hoc sinh
+
+	public function getHocSinh()
+	{
+		$dsthpt = DB::table('users')->where('pq_maso','thpt')->get();
+		$dskv = DB::table('khuvuc')->get();
+		return View::make('bogds.danhsachhs')->with(compact('dsthpt'))
+											->with(compact('dskv'));
+	}
+
+	public function getListHocSinh()
+	{
+		$hs =  DB::table('hocsinh')->join('users as thpt', 'thpt.user_id', '=', 'hocsinh.thpt_maso')
+								->join('users', 'users.user_id', '=', 'hocsinh.hs_maso')
+                                ->select('users.*','hocsinh.*','thpt.user_name as ten_thpt','thpt.user_id as id_thpt')
+    							->orderBy('user_name', 'asc')->get();
+    		
+    	return Datatables::of($hs)
+    	->removeColumn('user_pass')
+            ->addColumn('action', function ($hs) {
+                return '<button onclick="ediths(this)" 
+                		data-mahs="'.$hs->hs_maso.'" 
+                		data-tenhs="'.$hs->user_name.'" 
+                		data-dchs="'.$hs->user_addr.'"
+                		data-sdths="'.$hs->user_phone.'"
+                		data-ngaysinh="'.$hs->hs_ngaysinh.'"
+                		data-gioitinh="'.$hs->hs_gioitinh.'"
+                		data-cmnd="'.$hs->hs_cmnd.'"
+                		data-kvms="'.$hs->kv_maso.'"
+                		data-emailhs="'.$hs->user_email.'"
+                		data-tenthpt="'.$hs->ten_thpt.'"
+                		data-idthpt="'.$hs->id_thpt.'"
+                		id="ediths-'.$hs->hs_maso.'" 
+                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+
+                		<button onclick="deletehs(this)" 
+                		data-mathpt="'.$hs->hs_maso.'" 
+                		data-tenthpt="'.$hs->user_name.'" 
+                		id="deletehs-'.$hs->hs_maso.'" 
+                		class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Xóa</button>
+                        ';
+
+            })
+            ->make(true);
+	}
+	//het action table hoc sinh
 
 	public function getListKhoiNganh()
 	{
@@ -451,6 +455,47 @@ class BoGDController extends Controller
 		return	response()->json(array('listKhoi' => $khoi, 'listMon' => $mon));
 	}
 
+	//action list thpt
+
+	public function getListTHPT()
+	{
+		$thpt =  DB::table('users')->join('users as sgd', 'sgd.user_id', '=', 'users.sgd_maso')
+                                ->select('users.*','sgd.user_name as ten_sgd','sgd.user_id as id_sgd')
+    							->where(
+    									'users.pq_maso','=','thpt')->orderBy('user_name', 'asc')->get();
+    	
+    	return Datatables::of($thpt)
+    	->removeColumn('user_pass')
+            ->addColumn('action', function ($thpt) {
+                return '<button onclick="editthpt(this)" 
+                		data-mathpt="'.$thpt->user_id.'" 
+                		data-tenthpt="'.$thpt->user_name.'" 
+                		data-dcthpt="'.$thpt->user_addr.'"
+                		data-sdtthpt="'.$thpt->user_phone.'"
+                		data-emailthpt="'.$thpt->user_email.'"
+                		data-tensgd="'.$thpt->ten_sgd.'"
+                		data-idsgd="'.$thpt->id_sgd.'"
+                		id="editthpt-'.$thpt->user_id.'" 
+                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
+
+                		<button onclick="deletethpt(this)" 
+                		data-mathpt="'.$thpt->user_id.'" 
+                		data-tenthpt="'.$thpt->user_name.'" 
+                		id="deletethpt-'.$thpt->user_id.'" 
+                		class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Xóa</button>
+                        ';
+
+            })
+            ->make(true);
+	}
+
+	public function getTHPT()
+	{
+		$sgds = DB::table('users')->where('pq_maso','sgd')->get();
+		return View::make('bogds.danhsachthpt')->with(compact('sgds'));
+	}
+	//het action thpt
+
 	//controller quan ly khoi nganh
 	public function getKhoiNganh()
 	{
@@ -471,94 +516,7 @@ class BoGDController extends Controller
             ->make();
     }
 
-	public function postMonHoc(Request $request)
-	{
-		$key = "";
-		switch ($request->querry) {
-			case 'insert':
-				$key = 'Thêm';
-				$status = $this->insertMH($request);
-				break;
-			case 'update':
-				$key = 'Sửa';
-				$status = $this->updateMH($request);
-				break;
-			case 'delete':
-				$key = 'Xóa';
-				$status = $this->deleteMH($request);
-				break;
-			default:
-				return redirect()->back();
-				break;
-		}
-		
-		if($status){
-			$message = $key.' Mô Học Thành Công!';
-			return	response()->json(array('message' => $message));
-		}
-		else{
-			$message = 'Lỗi '.$key."!";
-			return	response()->json(array('message' => $message));
-		}
-		//return redirect()->back();
-	}
-
-	private function insertMH($request)
-	{
-		DB::beginTransaction();
-		try{
-			DB::table('monhoc')->insert(
-				[ 'mh_maso' => $request->mh_maso,
-					'mh_ten' => $request->mh_ten
-				]);
-			DB::commit();
-
-			return $status = true; //'Thêm Mô Học Thành Công!';
-		}
-		catch(\Exception $e){
-			
-			DB::rollBack();
-			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
-		}
-	}
-
-	private function updateMH($request)
-	{
-		DB::beginTransaction();
-
-		try{
-			DB::table('monhoc')->where('mh_maso', $request->mh_maso)
-            					->update(['mh_ten' => $request->mh_ten]);
-            
-			DB::commit();
-			return $status = true; //'Thêm Mô Học Thành Công!';
-		}
-		catch(\Exception $e){
-			
-			DB::rollBack();
-			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
-		}
-	}
-
-	private function deleteMH($request)
-	{
-		DB::beginTransaction();
-		try{
-			$ctk = DB::table('chitietkhoi')->where('mh_maso', $request->mh_maso)->get();
-            DB::table('monhoc')->where('mh_maso', $request->mh_maso)->delete();
-            if(!$ctk->isEmpty())
-            {
-            	DB::table('chitietkhoi')->where('khoi_maso', $ctk[0]->khoi_maso)->delete();
-            }
-			DB::commit();
-			return $status = true; //'Thêm Mô Học Thành Công!';
-		}
-		catch(\Exception $e){
-			
-			DB::rollBack();
-			return $status = false; //'Lỗi Thêm! Có thể do trùng mã số';
-		}
-	}
+	
 
 	public function getKhoi()
     {

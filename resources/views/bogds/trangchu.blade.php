@@ -43,7 +43,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                  <h4 class="modal-title" id="modalLabelTG">Thêm Thời Gian</h4>
-                <meta name="csrf-token" content="{{ csrf_token() }}">
+               
             </div>
             <div class="modal-body">
               <input type="hidden" id="query" value="insert">
@@ -75,21 +75,17 @@
                   <div class="panel-heading">
                       Danh Sách Loại Thời Gian
                   </div>
-                  <div class="panel-body">
-                    <div class="bgd-btn-them text-left">
-                    <button class="btn btn-success" onclick="showThemLTG();"><i class="glyphicon glyphicon-plus"></i> Thêm</button>
-                  </div>
+                  <div class="panel-body text-left">
+                   
                       <table id='table-ltg' class="table table-hover table-bordered">
                         <thead>
                           <tr>
                             <th>Mã Loại</th>
                             <th>Tên Loại</th>
-                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td></td>
                             <td></td>
                             <td></td>
                           </tr>
@@ -97,57 +93,13 @@
                       </table>
                   </div>
                 </div>
-<div class="modal fade text-left" id="modalThemLTG" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-        
-        
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title" id="modalLabelLTG">Thêm Loại Thời Gian</h4>
-                <meta name="csrf-token" content="{{ csrf_token() }}">
-            </div>
-            <div class="modal-body">
-              <input type="hidden" id="query" value="insert">
-              
-              <label for="textbox1">*Mã:</label>
-              <input class="form-control" id="ltg_maso" type="text"/>
 
-              <label for="textbox2">*Tên:</label>
-              <input class="form-control" type="text" id="ltg_ten" />
-            
-            </div>
-            <div class="modal-footer"> 
-                <button type="button" onclick="themLTG();" class="btn btn-primary"> Cập Nhật</button>
-               
-            </div>
-            
-           
-        </div>
-    </div>
-</div> {{-- het modal them sua xoa thoi gian --}}
            </div>
  </div>
 
    
   
 
-<!-- Modal -->
-      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
-        <div class="modal-dialog modal-sm">
-          <!-- Modal content-->
-          <div class="modal-content">
-              <div class="modal-body progressDialog">
-                    <div class="progress progress-striped active" style="margin-bottom:0;">
-                        <div class="progress-bar" style="width: 100%">
-                          Xin chờ!!!!
-                        </div>
-                    </div>
-              </div>
-            
-          </div>
-        </div>
-      </div> {{-- het modal progress dialog --}}
 
 <script>
         $(document).ready(function () {

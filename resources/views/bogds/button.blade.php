@@ -1,2 +1,0 @@
-<button onclick="editKhoi(this)"  class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button> 
-<button onclick="deleteKhoi(this)" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> 

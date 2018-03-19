@@ -26,8 +26,8 @@ class CreateHocsinhTable extends Migration
                   ->on('users')
                   ->onDelete('cascade');
             $table->foreign('thpt_maso')
-                  ->references('thpt_maso')
-                  ->on('thpt')
+                  ->references('user_id')
+                  ->on('users')
                   ->onDelete('cascade');
             $table->foreign('kv_maso')
                   ->references('kv_maso')

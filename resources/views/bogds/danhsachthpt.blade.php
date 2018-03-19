@@ -1,18 +1,16 @@
 @extends('layouts.bgdlayout')
-@section('title')
-{{ $title }}
-@endsection
+@section('title','Danh Sách Trường THPT')
 @section('content')
 
-<script type="text/javascript" src="{!!asset('public/js/bogds/ajax-table-sgd-dh.js')!!}"></script>
+<script type="text/javascript" src="{!!asset('public/js/bogds/ajax-table-thpt.js')!!}"></script>
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
     <div class="panel panel-default">
       <div class="panel-heading text-center">
-        {{ $title }}
+       Danh Sách Trường THPT
       </div>
       <div class="panel-body">
-        <table id="table-sgddh" class="table table-hover table-striped table-bordered">
+        <table id="tableTHPT" class="table table-hover table-striped table-bordered">
           <thead>
             <tr>
               <th>STT</th>
@@ -21,6 +19,7 @@
               <th>Địa Chỉ</th>
               <th>Số Điện Thoại</th>
               <th>Email</th>
+              <th>Sở Giáo Dục</th>
               <th></th>
             </tr>
           </thead>
@@ -33,45 +32,65 @@
                   <td> </td>
                   <td> </td>
                   <td> </td>
+                  <td> </td>
                 </tr>
             
           </tbody>
+          <tfoot>
+              <tr>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                  <td> </td>
+                </tr>
+          </tfoot>
         </table>
       </div>
     </div>
     
  	</div>
 
-<div class="modal fade text-left" id="modalSuaSGDDH" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade text-left" id="modalTHPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
         
         
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title" id="modalLabelLTG">Sửa Thông Tin</h4>
+                 <h4 class="modal-title" id="modalLabelTHPT">Sửa Thông Tin</h4>
             </div>
             <div class="modal-body">
-              <input type="hidden" id="query" value="update">
+              <input type="hidden" id="querry" value="update">
               
               <label for="textbox1">*Mã Số:</label>
-              <input class="form-control" id="ma_so" type="text"/>
+              <input class="form-control" id="thpt-maso" type="text"/>
 
               <label for="textbox2">*Tên:</label>
-              <input class="form-control" type="text" id="ten" />
+              <input class="form-control" type="text" id="thpt-ten" />
 
               <label for="textbox2">*Địa Chỉ:</label>
-              <input class="form-control" type="text" id="dia_chi" />
+              <input class="form-control" type="text" id="thpt-diachi" />
 
               <label for="textbox2">*Số Điện Thoại:</label>
-              <input class="form-control" type="number" id="sdt" />
+              <input class="form-control" type="number" id="thpt-sdt" />
+
+              <label for="textbox2">*Sở Giáo Dục:</label>
+              <select class="form-control"  id="sogd">
+                @foreach($sgds as $sgd)
+                  <option value="{{ $sgd->user_id }}">{{ $sgd->user_name }}</option>
+                @endforeach
+              </select>
 
               <label for="textbox2">Email:</label>
-              <input class="form-control" type="email" id="email" />
+              <input class="form-control" type="email" id="thpt-email" />
             
             </div>
             <div class="modal-footer"> 
-                <button type="button" onclick="suaSGDDH();" class="btn btn-primary"> Cập Nhật</button>
+                <button type="button" onclick="submitTHPT();" class="btn btn-primary"> Cập Nhật</button>
                
             </div>
             

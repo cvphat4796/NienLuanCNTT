@@ -21,10 +21,11 @@ class SoGDController extends Controller
 
 	public function getListTHPT()
 	{
-		$thpt =  DB::table('users')
-    							->join('thpt', 'users.user_id', '=', 'thpt.thpt_maso')
+		$thpt =  DB::table('users')->join('thpt', 'users.user_id', '=', 'thpt.thpt_maso')
+                                    ->join('users as sgd', 'sgd.user_id', '=', 'thpt.sgd_maso')
+                                ->select('users.*','sgd.user_name as ten_sgd')
     							->where([
-    									['pq_maso','=','thpt'],
+    									['users.pq_maso','=','thpt'],
     									['sgd_maso','=',Auth::user()->user_id]])->orderBy('user_name', 'asc')->get();
     	
     	return Datatables::of($thpt)
@@ -43,9 +44,7 @@ class SoGDController extends Controller
                 		data-mathpt="'.$thpt->user_id.'" 
                 		data-tenthpt="'.$thpt->user_name.'" 
                 		id="deletethpt-'.$thpt->user_id.'" 
-                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button> 
-                        
-                        
+                		class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-trash"></i> Xóa</button>
                         ';
 
             })
@@ -90,7 +89,12 @@ class SoGDController extends Controller
     	$thpt_maso = $request->thpt_maso;
     	try {
 			DB::beginTransaction();
+            $hs = DB::table('hocsinh')->where('thpt_maso',strtoupper($thpt_maso))->get()->toArray();
+            $hs = array_map(function($object){
+                    return (array) $object;
+                }, $hs);
 
+            DB::table('users')->whereIn('user_id',$hs)->delete();
 			DB::table('users')->where('user_id', strtoupper($thpt_maso))->delete();
             
 			DB::commit();
@@ -109,7 +113,7 @@ class SoGDController extends Controller
     	$thpt_diachi = $request->thpt_diachi;
     	$thpt_sdt = $request->thpt_sdt;
     	$thpt_email = $request->thpt_email;
-
+        $thpt_sgd = $request->thpt_sgd;
     	try {
 			DB::beginTransaction();
 
@@ -119,7 +123,9 @@ class SoGDController extends Controller
 									    	'user_email' => $thpt_email,
 									    	'user_name' => $thpt_ten
 									   	]);
-            
+            if(Auth::user()->user_id != $thpt_sgd)                    
+                DB::table('users')->where('user_id', strtoupper($thpt_maso))
+                                ->update([  'sgd_maso' => $thpt_sgd ]);
 			DB::commit();
 			
 			return true;
@@ -148,13 +154,10 @@ class SoGDController extends Controller
 			    	'user_phone' => $thpt_sdt,
 			    	'user_email' => $thpt_email,
 			    	'pq_maso' => 'thpt',
-			    	'user_name' => $thpt_ten
+			    	'user_name' => $thpt_ten,
+                    'sgd_maso' => Auth::user()->user_id
 			   	]);
 
-			DB::table('thpt')->insert(
-				[	'thpt_maso' => strtoupper($thpt_maso),
-					'sgd_maso' => Auth::user()->user_id
-				]);
 			DB::commit();
 			
 			return true;

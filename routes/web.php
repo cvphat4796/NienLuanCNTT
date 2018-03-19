@@ -32,6 +32,8 @@ Route::get('dang-xuat',['as' => 'getLogout', 'uses' => 'TaiKhoanController@getLo
 Route::get('doi-mat-khau',['as' => 'getDoiMatKhau', 'uses' => 'TaiKhoanController@getDoiMatKhau']);
 
 //controller bo giao duc
+
+//route thoi gian
 Route::get('bo-giao-duc/thoi-gian', 
 			['as' => 'getThoiGianBoGD', 
 			'uses' => 'BoGDController@getThoiGianBoGD'])
@@ -52,10 +54,7 @@ Route::post('bo-giao-duc/them-thoi-gian',
 			'uses' => 'BoGDController@postThoiGian'])
 			->middleware('xacthuc:bgd');
 
-Route::post('bo-giao-duc/them-loai-thoi-gian', 
-			['as' => 'postLoaiThoiGian', 
-			'uses' => 'BoGDController@postLoaiThoiGian'])
-			->middleware('xacthuc:bgd');
+//het route thoi gian
 
 Route::get('bo-giao-duc', 
 			['as' => 'getHomeBoGD', 
@@ -74,24 +73,43 @@ Route::post('bo-giao-duc/tao-tai-khoan',
 
 Route::post('tao-tai-khoan-excel', 
 			['as' => 'postTaoTaiKhoanExcel', 
-			'uses' => 'TaiKhoanController@postTaoTaiKhoanExcel'])
+			'uses' => 'ExcelController@postTaoTaiKhoanExcel'])
 			->middleware('xacthuc:bgd:sgd');
 
+//route tai khoan
 Route::get('bo-giao-duc/tai-khoan/{q}', 
 			['as' => 'getTaiKhoanSoGDDH', 
 			'uses' => 'BoGDController@getTaiKhoanSoGDDH'])
 			->middleware('xacthuc:bgd');
 
-Route::get('bo-giao-duc/quan-ly-thoi-gian', 
-			['as' => 'getThoiGian', 
-			'uses' => 'BoGDController@getThoiGian'])
-			->middleware('xacthuc:bgd');
+Route::post('bo-giao-duc/get-list-sgd-dh',[
+			'as' => 'postListSGDDH',
+			'uses' => 'BoGDController@postListSGDDH'])->middleware('xacthuc:bgd');
 
-Route::post('bo-giao-duc/quan-ly-thoi-gian', 
-			['as' => 'postThoiGian', 
-			'uses' => 'BoGDController@postThoiGian'])
-			->middleware('xacthuc:bgd');
 
+Route::get('bo-giao-duc/tai-khoan-thpt',[
+			'as' => 'getTHPT',
+			'uses' => 'BoGDController@getTHPT'])->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-thpt',[
+			'as' => 'getListTHPT',
+			'uses' => 'BoGDController@getListTHPT'])->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/tai-khoan-hs',[
+			'as' => 'getHocSinh',
+			'uses' => 'BoGDController@getHocSinh'])->middleware('xacthuc:bgd');
+
+Route::get('bo-giao-duc/get-list-hoc-sinh',[
+			'as' => 'getListHocSinh',
+			'uses' => 'BoGDController@getListHocSinh'])->middleware('xacthuc:bgd');
+
+Route::post('bo-giao-duc/sua-thong-tin',[
+			'as' => 'postSuaThongTinSGDDH',
+			'uses' => 'BoGDController@postSuaThongTinSGDDH'])->middleware('xacthuc:bgd');
+//het route tai khoan
+
+
+//route khoi nganh
 Route::get('bo-giao-duc/ql-khoi-nganh', 
 			['as' => 'getKhoiNganh', 
 			'uses' => 'BoGDController@getKhoiNganh'])
@@ -131,7 +149,7 @@ Route::post('bo-giao-duc/them-khoi-nganh',
 			['as' => 'postKhoiNganh',
 			'uses' => 'BoGDController@postKhoiNganh'])
 			->middleware('xacthuc:bgd');
-
+// het route khoi nganh
 // het controller bo giao duc
 
 
@@ -155,7 +173,7 @@ Route::get('so-giao-duc/get-list-thpt',
 Route::post('so-giao-duc/them-thpt',
 			['as' => 'postThemTHPT',
 			'uses' => 'SoGDController@postThemTHPT'])
-			->middleware('xacthuc:sgd');
+			->middleware('xacthuc:bgd:sgd');
 
 Route::get('so-giao-duc/tai-khoan-hoc-sinh',
 			['as' => 'getTaiKhoanHS',
@@ -170,7 +188,7 @@ Route::get('so-giao-duc/get-list-hs',
 Route::post('so-giao-duc/them-hs',
 			['as' => 'postThemHS',
 			'uses' => 'SoGDController@postThemHS'])
-			->middleware('xacthuc:sgd');
+			->middleware('xacthuc:bgd:sgd');
 
 Route::post('so-giao-duc/them-diem-excel',
 			['as' => 'postThemDiemHSExcel',

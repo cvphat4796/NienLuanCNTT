@@ -140,23 +140,7 @@ $(function () {
         	{data: 1},
         ],
          
-        columnDefs: [ 
-        			{"targets": [2],
-        				"data": null,
-        				"render":  function ( data, type, row, meta ) {
-        					return '<button class="btn btn-xs btn-primary" id="editLTG'+row[0]+'" '
-        					+ 'onclick="editLTG(this)" '
-        					+ 'data-ltgmaso="'+row[0]+'" '
-        					+ 'data-ltgten="'+row[1]+'" '
-        					+'<i class="glyphicon glyphicon-edit"></i> Sửa </button>'
-        					+ '<button class="btn btn-xs btn-danger" id="deleteLTG'+row[0]+'" '
-        					+ 'onclick="deleteLTG(this)" '
-        					+ 'data-ltgmaso="'+row[0]+'" '
-        					+ 'data-ltgten="'+row[1]+'" '
-        					+'<i class="glyphicon glyphicon-edit"></i> Xóa </button>'
-        				}
-        			}
-                    ],
+    
         
     }); // het load table loai thoi gian
 

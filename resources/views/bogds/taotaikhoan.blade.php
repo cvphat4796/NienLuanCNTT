@@ -1,6 +1,13 @@
 @extends('layouts.bgdlayout')
 @section('title','Tạo Tài Khoản')
 @section('content')
+<script>
+    var msg = '{{Session::get('status')}}';
+    var exist = '{{Session::has('status')}}';
+    if(exist){
+      alert(msg);
+    }
+</script>
 <script type="text/javascript" src="{!!asset('public/js/ajax-tao-tai-khoan-bgd.js')!!}"></script>
  <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -101,59 +108,53 @@
                 <div class="panel panel-info">
                     <div class="panel-heading text-center">Tạo Tài Khoản SGD, Trường ĐH Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/tao-tai-khoan-excel" id='form_excel_sgd_dh' method="post" enctype="multipart/form-data">
-                            {{ csrf_field() }}
+                       
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
                                 <a href="{!!asset('public/files/FileMauSoGDDH.xlsx')!!}" >File mẫu</a>
                                 <br/>
                                 <label for="">Upload File:</label>
-                                <input type="file" name="sgd_dh" class="form-control">
+                                <input type="file" id="sgd_dhfile" class="form-control">
 
                             </div>
                             <div class="text-right">
-                                <input type="submit" value="Cập Nhật" class="btn btn-default">                  
+                                <button  class="btn btn-default" onclick="submitExcelSGDDH()">Cập Nhật</button>                  
                             </div>
-                        </form>
                     </div>
                 </div>
                  <div class="panel panel-primary">
                     <div class="panel-heading text-center">Tạo Tài Khoản Trường THPT Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
-                        	{{ csrf_field() }}
+                        
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
                                 <a href="{!!asset('public/files/FileMauTHPT.xlsx')!!}" >File mẫu</a>
                                 <br/>
                                 <label for="">Upload File:</label>
-                                <input type="file" name="thpt" class="form-control">
+                                <input type="file" id="thptfile" class="form-control">
                                 
                             </div>
                             <div class="text-right">
-                                    <input type="submit" value="Cập Nhật" class="btn btn-default">                  
-                                </div> 
-                        </form>
+                                   <button  class="btn btn-default" onclick="submitExcelTHPT()">Cập Nhật</button>                  
+                            </div> 
                     </div>
                 </div>
 
                  <div class="panel panel-success">
                     <div class="panel-heading text-center">Tạo Tài Khoản Học Sinh Với File Excel</div>
                     <div class="panel-body">
-                        <form action="/tao-tai-khoan-excel" method="post" enctype="multipart/form-data">
-                        	{{ csrf_field() }}
+                       
                             <div class="form-group">
                                 <label for="textbox2">File mẫu:</label>
                                 <a href="{!!asset('public/files/FileMauHocSinh.xlsx')!!}" >File mẫu</a>
                                 <br/>
                                 <label for="">Upload File:</label>
-                                <input type="file" name="hs" class="form-control">
+                                <input type="file" id="hsfile" class="form-control">
                                 
                             </div>
                              <div class="text-right">
-                                    <input type="submit" value="Cập Nhật" class="btn btn-default">                  
-                                </div>
-                        </form>
+                                   <button  class="btn btn-default" onclick="submitExcelHS()">Cập Nhật</button>                  
+                            </div>
                     </div>
                 </div>
             </div>

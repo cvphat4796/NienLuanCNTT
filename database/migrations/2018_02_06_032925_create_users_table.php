@@ -20,11 +20,16 @@ class CreateUsersTable extends Migration
             $table->string('user_addr');
             $table->string('user_email')->nullable(true);
             $table->string('user_phone');
+            $table->string('sgd_maso')->nullable(true);
             $table->string('pq_maso');
             $table->primary('user_id');
             $table->foreign('pq_maso')
                   ->references('pq_maso')
                   ->on('phanquyen')
+                  ->onDelete('cascade');
+            $table->foreign('sgd_maso')
+                  ->references('user_id')
+                  ->on('users')
                   ->onDelete('cascade');
         });
     }
