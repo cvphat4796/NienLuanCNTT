@@ -136,8 +136,8 @@ $(function () {
         },
         ajax:'/bo-giao-duc/get-list-loai-thoi-gian',
         columns:[
-        	{data: 0},
-        	{data: 1},
+        	{data: 'ltg_maso'},
+        	{data: 'ltg_ten'},
         ],
          
     
