@@ -218,6 +218,11 @@ Route::get('dai-hoc/quan-ly-nganh',
 			'uses' => 'DaiHocController@getNganh'])
 			->middleware('xacthuc:dh');
 
+Route::get('dai-hoc/quan-ly-khoi',
+			['as' => 'getKhoi',
+			'uses' => 'DaiHocController@getKhoi'])
+			->middleware('xacthuc:dh');
+
 Route::get('dai-hoc/get-list-nganh',
 			['as' => 'getListNganh',
 			'uses' => 'DaiHocController@getListNganh'])
@@ -226,6 +231,16 @@ Route::get('dai-hoc/get-list-nganh',
 Route::post('dai-hoc/them-nganh',
 			['as' => 'postThemNganh',
 			'uses' => 'DaiHocController@postThemNganh'])
+			->middleware('xacthuc:dh');
+
+Route::post('dai-hoc/them-khoi',
+			['as' => 'postThemKhoi',
+			'uses' => 'DaiHocController@postThemKhoi'])
+			->middleware('xacthuc:dh');
+
+Route::post('dai-hoc/them-khoi-xet-tuyen',
+			['as' => 'postThemKhoiXetTuyen',
+			'uses' => 'DaiHocController@postThemKhoiXetTuyen'])
 			->middleware('xacthuc:dh');
 
 Route::get('dai-hoc/quan-ly-ho-so/{id}',
@@ -255,15 +270,40 @@ Route::get('hoc-sinh/danh-sach-nganh',
 
 Route::get('hoc-sinh/get-list-nganh',
 			['as' => 'getListNganh',
-			'uses' => 'HocSinhController@getListNganh']);
-			//->middleware('xacthuc:hs');
+			'uses' => 'HocSinhController@getListNganh'])
+			->middleware('xacthuc:hs');
 
 Route::post('hoc-sinh/nop-ho-so',
 			['as' => 'postNopHoSo',
 			'uses' => 'HocSinhController@postNopHoSo'])
 			->middleware('xacthuc:hs');
 
-//het controller hoc sinh			
+//het controller hoc sinh	
+
+
+//controller api
+Route::get('api-dc/get-list-mon-hoc',
+			['as' => 'getListMonHoc',
+			'uses' => 'ApiController@getListMonHoc'])
+			->middleware('xacthuc:dh');
+
+Route::get('api-dc/get-list-khoi-xet-tuyen',
+			['as' => 'getListKhoiXetTuyen',
+			'uses' => 'ApiController@getListKhoiXetTuyen'])
+			->middleware('xacthuc:dh');
+
+Route::get('api-dc/get-list-khoi',
+			['as' => 'getListKhoi',
+			'uses' => 'ApiController@getListKhoi'])
+			->middleware('xacthuc:dh');
+
+
+Route::post('api-dc/get-them-khoi-nganh', 
+			['as' => 'getThemKhoiNganh', 
+			'uses' => 'ApiController@getThemKhoiNganh'])
+			->middleware('xacthuc:dh');
+
+//het controller api		
 Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {
     return view('trangchu');
 }]);

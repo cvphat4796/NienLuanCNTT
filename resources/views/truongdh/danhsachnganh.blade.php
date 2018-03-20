@@ -133,23 +133,7 @@
       </div> {{-- het modal them Nganh excel--}}
 
 
-    <!-- Modal -->
-      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
-        <div class="modal-dialog modal-sm">
-          <!-- Modal content-->
-          <div class="modal-content">
-              <div class="modal-body progressDialog">
-                    <div class="progress progress-striped active" style="margin-bottom:0;">
-                        <div class="progress-bar" style="width: 100%">
-                          Xin chờ!!!!
-                        </div>
-                    </div>
-              </div>
-            
-          </div>
-        </div>
-      </div> {{-- het modal progress dialog --}}
-
+   
  		<table id="tableNganh" class="table table-bordered table-hover table-striped">
  			<thead>
  				<tr>

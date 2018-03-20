@@ -1,5 +1,13 @@
 ﻿*{margin:0;padding:0; }
 
+.pagination li.prev {
+    display:  none;
+}
+
+.pagination li.next {
+    display:  none;
+}
+
 .btnThemKhoi-MH {
     position:  absolute;
 }
@@ -24,7 +32,9 @@
     padding: 0;
 }
 
-
+.dh-btn-them{
+    position: absolute;
+}
 span#xinchao1 {
     text-transform: none;
     color: white;

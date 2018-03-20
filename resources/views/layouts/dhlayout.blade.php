@@ -4,18 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{!!asset('public/js/bootstrap-datepicker.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
-
-    <link rel="stylesheet" href="{!!asset('public/css/datepicker.css')!!}">
+ <meta name="csrf-token" content="{{ csrf_token() }}">
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
+    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 </head>
@@ -75,7 +74,23 @@
  
     </div>
 
- 
+  <!-- Modal -->
+      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-body progressDialog">
+                    <div class="progress progress-striped active" style="margin-bottom:0;">
+                        <div class="progress-bar" style="width: 100%">
+                          Xin chờ!!!!
+                        </div>
+                    </div>
+              </div>
+            
+          </div>
+        </div>
+      </div> {{-- het modal progress dialog --}}
+
    
 </body>
 </html>

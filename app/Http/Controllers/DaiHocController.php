@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Maatwebsite\Excel\Facades\Excel;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Facades\Datatables;
@@ -25,10 +24,10 @@ class DaiHocController extends Controller
     {
     	
     	$nganh =  DB::table('nganhhoc')
-    							->join('khoinganh', 'khoinganh.ngh_id', '=', 'nganhhoc.ngh_id')
-    							->join('khoi', 'khoi.khoi_maso', '=', 'khoinganh.khoi_maso')
+    							->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
+    							->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
     							->where([
-    									['dh_maso','=',Auth::user()->user_id]])->get();
+    									['nganhxettuyen.dh_maso','=',Auth::user()->user_id]])->get();
   
             
     	$khois = DB::table('khoi')->join('chitietkhoi', 'khoi.khoi_maso', '=', 'chitietkhoi.khoi_maso')
@@ -43,10 +42,10 @@ class DaiHocController extends Controller
 	{
 		
     	$nganh =  DB::table('nganhhoc')
-    							->join('khoinganh', 'khoinganh.ngh_id', '=', 'nganhhoc.ngh_id')
-    							->join('khoi', 'khoi.khoi_maso', '=', 'khoinganh.khoi_maso')
+    							->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
+    							->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
     							->where([
-    									['dh_maso','=',Auth::user()->user_id]])->get();
+    									['nganhxettuyen.dh_maso','=',Auth::user()->user_id]])->get();
     	
     	if(!$nganh->isEmpty()){
     		$id = $nganh[0]->ngh_id;
@@ -259,4 +258,135 @@ class DaiHocController extends Controller
 		return  View::make('truongdh.hoso')
 				->with(compact('ng'));
 	}
+
+
+
+	//action khoi xet tuyen
+	public function getKhoi()
+	{
+		$mh = DB::table('monhoc')->get();
+		return View::make('truongdh.khoixettuyen')->with(compact('mh'));
+	}
+
+	public function postThemKhoiXetTuyen(Request $request)
+	{
+		$key = "";
+		switch ($request->querry) {
+			case 'insert':
+				$status = $this->insertKhoiXetTuyen($request);
+				break;
+			case 'update':
+				$status = $this->updateKhoiXetTuyen($request);
+				break;
+			case 'delete':
+				$status = $this->deleteKhoiXetTuyen($request);
+				break;
+			default:
+				return redirect()->back();
+				break;
+		}
+		return	response()->json($status);
+
+	}
+
+	private function insertKhoiXetTuyen($request)
+	{
+		$mon1 = $request->mon1;
+		$mon2 = $request->mon2;
+		$mon3 = $request->mon3;		
+		DB::beginTransaction();
+		try{
+
+			DB::table('chitietkhoi')->insert([
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon1],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon2],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon3],
+			]);
+			DB::commit();
+			return array('message' => "Thêm Khối Xét Tuyển Thành Công!!!" );
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return array('message' => "Thêm Khối Xét Tuyển Thất Bại!!!" );
+		}
+	}
+
+
+	public function postThemKhoi(Request $request)
+	{
+		switch ($request->querry) {
+			case 'insert':
+				$status = $this->insertKhoi($request);
+				break;
+			
+			case 'update':
+				$status = $this->updateKhoi($request);
+				break;
+
+			case 'delete':
+				$status = $this->deleteKhoi($request);
+				break;
+
+		}
+
+		return response()->json($status);
+	}
+
+	private function deleteKhoi($request)
+	{
+		$maso =  $request->maso;
+		try {
+			DB::beginTransaction();
+
+			DB::table('khoi')->where('khoi_maso',$maso)->delete();
+           
+			DB::commit();
+			
+			return array('message' => 'Xóa Khối Thành Công!!!','status' => true );
+		} catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Xóa Khối Thất Bại!!!','status' => false );
+		}
+	}
+
+	private function updateKhoi($request)
+	{
+		$maso =  $request->maso;
+		$ten = $request->ten;
+		try {
+			DB::beginTransaction();
+
+			DB::table('khoi')->where('khoi_maso',$maso)->update(['khoi_ten' => $ten]);
+           
+			DB::commit();
+			
+			return array('message' => 'Sửa Khối Thành Công!!!','status' => true );
+		} catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Sửa Khối Thất Bại!!!','status' => false );
+		}
+	}
+
+	private function insertKhoi($request)
+	{
+		$maso =  Uuid::generate()->string;
+		$ten = $request->ten;
+
+		try {
+			DB::beginTransaction();
+
+			DB::table('khoi')->insert(['khoi_maso'=>$maso,
+										'khoi_ten'=>$ten
+										]);
+           
+			DB::commit();
+			
+			return array('message' => 'Thêm Khối Thành Công!!!','status' => true );
+		} catch (\Exception $e) {
+			DB::rollBack();
+			return array('message' => 'Thêm Khối Thất Bại!!!','status' => false );
+		}
+	}
+	//het action khoi xet tuyen
 }

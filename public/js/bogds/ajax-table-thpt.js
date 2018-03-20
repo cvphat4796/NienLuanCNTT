@@ -16,6 +16,8 @@ $(function () {
  	tableTHPT = function () {
  		$('#tableTHPT').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
+         responsive: true,
+
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -23,7 +25,8 @@ $(function () {
             "zeroRecords": "Không tìm thấy!",
             "info": "Hiện _PAGE_ của _PAGES_",
             "infoEmpty": "Không có dữ liệu",
-            "infoFiltered": "(Lọc từ _MAX_ total dòng)"
+            "infoFiltered": "(Lọc từ _MAX_ total dòng)",
+            
         },
  	 	aLengthMenu: [[10, 50, 100, -1], [10, 50, 100, "Tất cả"]],
  	 	iDisplayLength: 10,
