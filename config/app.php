@@ -1,5 +1,4 @@
 <?php
-$API_KEY = getenv("API_KEY")
 return [
 
     /*
@@ -103,7 +102,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY',$API_KEY),
+    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
 
