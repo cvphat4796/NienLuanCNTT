@@ -114,7 +114,7 @@ class BoGDController extends Controller
 	public function getListLoaiThoiGianBoGD()
 	{
 		$loaithoigian = DB::table('loaithoigian')->get();
-		
+		dd($loaithoigian);
 		 return Datatables::of($loaithoigian)->make(true);
 	}
 	// het action lay du lieu  thoi gian
