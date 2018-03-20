@@ -10,7 +10,7 @@
 </script>
 <script type="text/javascript" src="{!!asset('public/js/ajax-tao-tai-khoan-bgd.js')!!}"></script>
  <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-112 col-sm-112 col-md-6 col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">Nhập Thông Tin</div>
                     <form id="form-taikhoan" action="/bo-giao-duc/tao-tai-khoan" method="post">
@@ -104,7 +104,7 @@
                 </div>  
             </div> <!-- het panel thong tin -->
 
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="panel panel-info">
                     <div class="panel-heading text-center">Tạo Tài Khoản SGD, Trường ĐH Với File Excel</div>
                     <div class="panel-body">
@@ -159,25 +159,7 @@
                 </div>
             </div>
 
-            <!-- Modal -->
-      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
-        <div class="modal-dialog modal-sm">
-          <!-- Modal content-->
-          <div class="modal-content">
-              <div class="modal-body progressDialog">
-                    <div class="progress progress-striped active" style="margin-bottom:0;">
-                        <div class="progress-bar" style="width: 100%">
-                          Xin chờ!!!!
-                        </div>
-                    </div>
-              </div>
-            
-          </div>
-        </div>
-      </div> {{-- het modal progress dialog --}}
-        </div>
-        {{-- {{ csrf_field() }} --}}
-
+      
 
 
 @endsection()

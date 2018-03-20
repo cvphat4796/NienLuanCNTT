@@ -12,9 +12,7 @@ $(function () {
         $('#table-sgddh_length').addClass('dbtb_length');
         
  	});
- 	$(window).resize(function(event) {
-              location.reload();
-        });
+ 	
 
 
  	tableSGDDH = function () {
