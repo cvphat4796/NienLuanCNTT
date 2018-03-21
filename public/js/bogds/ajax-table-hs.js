@@ -111,27 +111,22 @@
                 {data: 'hs_gioitinh'},
                 {data: 'hs_cmnd'},
                 {data: 'hs_ngaysinh'},
-                {data: 'user_addr'},
                 {data: 'thpt_maso'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}],
         ajax:'/bo-giao-duc/get-list-hoc-sinh',
-        columnDefs: [ {targets: 5, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
-                        { className: "col-name", "targets": [ 1 ] }
+        columnDefs: [  
+                        {targets: 7, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
+                        {"targets": 1,
+                            "data": null,
+                            "render": function ( data, type, row, meta ) {
+                              return meta.row+1;
+                            }
+                        },
                     ],
-        "columnDefs": [ 
-                   {
-                  
-                    "targets": 1,
-                    "data": null,
-                    "render": function ( data, type, row, meta ) {
-                      return meta.row+1;
-                    }
-                  }
-                  ],
         initComplete: function () {
-            this.api().columns([4,8]).every( function () {
+            this.api().columns([8]).every( function () {
                 var column = this;
-                var select = $('<select><option value="">Hiện Tất Cả</option></select>')
+                var select = $('<select class="form-control"><option value="">Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
                     .on( 'change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(

@@ -81,6 +81,9 @@ $(window).resize(function(event) {
 	if ($(window).width() < 768 ) {
 		$('#xinchao1').removeClass('hidden');
 		$('#xinchao2').addClass('hidden');
+		$('.dataTables_paginate').css({
+			float: 'right'
+		});
 	}else{
 		$('#xinchao2').removeClass('hidden');
 		$('#xinchao1').addClass('hidden');

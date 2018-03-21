@@ -12,9 +12,6 @@
     position:  absolute;
 }
 
-.stt{
-    width: 20px;
-}
 
 .progressDialog{
     padding: 0;
@@ -22,7 +19,7 @@
 
 .dbtb_paginate{
     display:  inline;
-    float:  right;
+    float:  right !important;
     margin-top: -18px;
 }
 
@@ -223,7 +220,7 @@ color: #b13434;
 
 
 .col-name{
-    width: 150px;
+    width: 50% !important;
 }
 
 .col-tt{

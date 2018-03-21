@@ -53,7 +53,6 @@ $(function () {
 	               {
 	                "targets": 1,
 	                "data": null,
-                     className: 'stt',
 	                "render": function ( data, type, row, meta ) {
 	                  return meta.row+1;
 	                }

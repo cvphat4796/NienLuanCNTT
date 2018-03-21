@@ -23,7 +23,6 @@
               <th>Giới Tính</th>
               <th>Số CMND</th>
               <th>Ngày Sinh</th>
-              <th>Địa Chỉ</th>
               <th>Trương THPT</th>
               <th></th>
             </tr>
@@ -33,7 +32,6 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td> </td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -46,7 +44,6 @@
           </tbody>
           <tfoot>
               <tr>
-                  <td> </td>
                   <td> </td>
                   <td> </td>
                   <td> </td>

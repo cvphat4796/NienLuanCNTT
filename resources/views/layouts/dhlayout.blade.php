@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
  <meta name="csrf-token" content="{{ csrf_token() }}">
-   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
+     <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
-    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 </head>
