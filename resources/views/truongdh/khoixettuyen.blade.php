@@ -3,7 +3,9 @@
 @section('content')
 
 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="{!!asset('public/js/truongdh/ajax-xu-ly-khoixt.js')!!}"></script>
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 			
@@ -58,10 +60,7 @@
 					Danh Sách Khối Xét Tuyển
 				</div>
 				<div class="panel-body">
-					 <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-primary btnThemKhoi-MH" id="showDialogKXT" data-toggle="modal" data-target="#modalKXT"><i class="glyphicon glyphicon-plus"></i> Thêm</button>
-       
-    </div>
+				
 					<table id='table-kxt' class="table table-hover table-bordered">
 						<thead>
 							<tr>
@@ -91,10 +90,7 @@
 					Danh Sách Khối
 				</div>
 				<div class="panel-body">
-					  <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogKhoi" data-toggle="modal" data-target="#modalKhoi"><i class="glyphicon glyphicon-plus"></i> Thêm</button>
-       
-    </div>
+					 
 
 					<table id="table-khoi" class="table table-hover table-bordered">
 						<thead>

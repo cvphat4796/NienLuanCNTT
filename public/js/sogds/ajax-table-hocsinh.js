@@ -168,6 +168,7 @@
  	tableHS = function () {
  		$('#tableHS').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
+         responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -182,20 +183,44 @@
         processing: true,
         serverSide: true,
         columns:[
+                {data: null,
+                    defaultContent: '',
+                className: 'control',
+                orderable: false
+                },
                 {data: 'user_id'},
                 {data: 'user_name'},
                 {data: 'user_phone'},
                 {data: 'hs_gioitinh'},
                 {data: 'hs_cmnd'},
                 {data: 'hs_ngaysinh'},
-                {data: 'user_addr'},
                 {data: 'thpt_maso'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}],
         ajax:'/so-giao-duc/get-list-hs',
-        columnDefs: [ {targets: 5, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
-                        { className: "col-name", "targets": [ 1 ] },
+        columnDefs: [ {targets: 6, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
+                        { className: "col-name", "targets": [ 2  ] },
                          { className: "text-center", "targets": [ 8 ] }
                     ],
+        initComplete: function () {
+            this.api().columns([7]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control" ><option value="">Tất Cả</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                  select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        },
         
     });
  	} 

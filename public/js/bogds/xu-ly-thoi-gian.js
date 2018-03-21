@@ -1,6 +1,7 @@
 $(function () {
 	$('#table-thoigian').DataTable({
  		"dom": 'rt',
+        responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",

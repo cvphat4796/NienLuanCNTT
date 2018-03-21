@@ -1,16 +1,12 @@
 @extends('layouts.dhlayout')
 @section('title','Danh Sách Ngành Xét Tuyển')
 @section('content')
-
-<script type="text/javascript" src="{!!asset('public/js/ajax-table-nganh.js')!!}"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="{!!asset('public/js/truongdh/ajax-table-nganh.js')!!}"></script>
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
    {{--  modal them hoc sinh --}}
-    <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-info btnThemNganh" id="showDialogNganh" data-toggle="modal" data-target="#modalNganh">Thêm Ngành
-        </button>
-       
-    </div>
+   
       <!-- Modal -->
       <div id="modalNganh" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -32,7 +28,11 @@
                         <input class="form-control" id="nganh-maso" placeholder="Nhập mã số" type="text"/>
 
                         <label for="textbox2">*Tên:</label>
-                        <input class="form-control" id="nganh-ten" placeholder="Nhập tên" type="text"/>
+                        <div id="cn_ten">
+                           <input class="form-control pull-left"  style="width: 85%" id="nganh-ten" placeholder="Nhập tên" type="text"/>
+                          <button type="button" class="btn btn-info" onclick="addCN()" id="chuyenNganh"><i class="glyphicon glyphicon-plus"></i></button>
+                        </div>
+                       
                     
                         <label for="textbox2">*Chỉ Tiêu:</label>
                         <input class="form-control" id="nganh-chitieu" placeholder="Nhập chỉ tiêu" type="number"/>
@@ -51,7 +51,7 @@
                          @foreach ($khois as $khoi)
                               <label class="form-check-label">
                                 <input type="checkbox" name="checkNganh[]" id="{{ $khoi->khoi_maso  }}" class="form-check-input" value='{{ $khoi->khoi_maso  }}'>
-                                 {{ $khoi->khoi_mota }}
+                                 {{ $khoi->khoi_ten }}
                               </label>
                          @endforeach    
                          
@@ -70,9 +70,7 @@
         </div>
       </div> {{-- het modal them Nganh --}}
 
-    <div class="pull-left" style="position: relative; left: 10px;">
-       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelHS" data-toggle="modal" data-target="#modalExcelHS">Thêm Ngành File Excel</button>
-    </div>
+    
     <!-- Modal -->
       <div id="modalExcelHS" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">

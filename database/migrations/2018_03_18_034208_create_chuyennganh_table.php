@@ -14,8 +14,12 @@ class CreateChuyennganhTable extends Migration
     public function up()
     {
         Schema::create('chuyennganh', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->string('ngh_id');
+            $table->string('cn_ten');
+            $table->foreign('ngh_id')
+                  ->references('ngh_id')
+                  ->on('nganhhoc')
+                  ->onDelete('cascade');
         });
     }
 

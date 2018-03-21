@@ -1,17 +1,7 @@
  $(function(){
  	var data1 = "";
 
-    $('#showDialogNganh').click(function(event) {
-        $('#querry').val('insert');
-        $('#h4-Nganh').text("Thêm Ngành");
-        $('#nganh-maso').val('');
-        $('#nganh-ten').val('');
-        $('#nganh-chitieu').val('');
-       $('#nganh-diemchuan').val('');
-        $(':checkbox:checked').each(function(i){
-                  $(this).prop({checked: false});
-        });
-    });
+   
 
  	$.ajaxSetup({
 		  headers: {
@@ -53,11 +43,33 @@
                 
             }
         });
+    }
 
-       
+    removeCN = function (id) {
+        $("#cn_"+id).remove();
+        $("#btn"+id).remove();
+        arrIDCN = arrIDCN.filter(item => item != id)
+        console.log(arrIDCN);
+    }
+
+    var indexCN = 0;
+    var arrIDCN = [];   
+    addCN = function () {
+        $('#cn_ten').append('<input class="form-control pull-left" id=cn_'+indexCN+
+                            ' style="width: 85%"  placeholder="Tên Chuyên Ngành" type="text"/>'+
+                            '<button type="button" class="btn btn-danger" id=btn'+indexCN+' onclick="removeCN(\''+indexCN+'\')"'+
+                            ' ><i class="glyphicon glyphicon-minus"></i></button>');
+        arrIDCN.push(indexCN);
+        indexCN++;
+console.log(arrIDCN);
     }
 
  	submitNganh = function(event) {
+            var cn =[];
+            for (var i = 0; i < arrIDCN.length; i++) {
+                cn[i] = $('#cn_'+arrIDCN[i]).val();
+            }
+            
             var nganh_id = $('#nganh-id').val();    
             var nganh_maso = $('#nganh-maso').val();
             var nganh_ten = $('#nganh-ten').val();
@@ -122,13 +134,29 @@
         $('#tableNganh_paginate').addClass('dbtb_paginate');
         $('#tableNganh_length').addClass('dbtb_length');
 
-     
+        $('#btnNganhs').click(function(event) {
+            $('#querry').val('insert');
+            $('#h4-Nganh').text("Thêm Ngành");
+            $('#nganh-maso').val('');
+            $('#nganh-ten').val('');
+            $('#nganh-chitieu').val('');
+            $('#nganh-diemchuan').val('');
+            $(':checkbox:checked').each(function(i){
+                      $(this).prop({checked: false});
+            });
+            $('#modalNganh').modal('show');
+        });
+
+        $('#btnNganhExcel').click(function(event) {
+            $('#modalExcelHS').modal('show');
+        });
  	});
  	
 
  	tableNganh = function () {
  		$('#tableNganh').DataTable({
- 		 "dom": '<"text-right"f>rt<lp><"clear">',
+ 		 "dom": '<"text-right"Bf>rt<lp><"clear">',
+         responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -138,6 +166,17 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
+        buttons: [ {
+                        attr:{id: "btnNganhs"},
+                        className: 'btn btn-info',
+                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
+                    },
+                    {
+                        attr:{id: "btnNganhExcel"},
+                        className: 'btn btn-info',
+                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Với File Excel',
+                    }
+                ],
  	 	aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
  	 	iDisplayLength: 3,
         processing: true,

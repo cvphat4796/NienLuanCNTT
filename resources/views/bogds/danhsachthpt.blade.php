@@ -17,7 +17,6 @@
               <th>STT</th>
               <th>Mã Số</th>
               <th>Tên</th>
-              <th>Địa Chỉ</th>
               <th>Số Điện Thoại</th>
               <th>Email</th>
               <th>Sở Giáo Dục</th>
@@ -34,13 +33,11 @@
                   <td> </td>
                   <td> </td>
                   <td> </td>
-                  <td> </td>
                 </tr>
             
           </tbody>
           <tfoot>
               <tr>
-                  <td> </td>
                   <td> </td>
                   <td> </td>
                   <td> </td>

@@ -256,19 +256,20 @@
  		<table id="tableHS" class="table table-bordered table-hover table-striped">
  			<thead>
  				<tr>
+          <th></th>
  					<th>Mã Số</th>
  					<th>Tên</th>
           <th>Số Điện Thoại</th>
           <th>Giới Tính</th>
           <th>Số CMND</th>
           <th>Ngày Sinh</th>
-          <th>Địa Chỉ</th>
           <th>Trương THPT</th>
           <th></th>
  				</tr>
  			</thead>
  			<tbody>
 				  	<tr>
+              <td></td>
    						<td></td>
               <td></td>
               <td></td>
@@ -276,11 +277,23 @@
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-   						<td class="text-center"></td>
+   						<td ></td>
    					</tr>
  				
  			</tbody>
+        <tfoot>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td ></td>
+              </tr>
+          </tfoot>
  		</table>
 			
  	</div>

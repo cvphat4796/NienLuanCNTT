@@ -6,7 +6,7 @@
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
     <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogTHPT" data-toggle="modal" data-target="#modalTHPT">Thêm Trường THPT</button>
+        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogTHPT" data-toggle="modal" data-target="#modalTHPT">Thêm </button>
        
     </div>
       <!-- Modal -->
@@ -51,8 +51,8 @@
         </div>
       </div> {{-- het modal them thpt --}}
 
-    <div class="pull-left" style="position: relative; left: 160px;">
-       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelTHPT" data-toggle="modal" data-target="#modalExcelTHPT">Thêm Trường THPT Bằng File Excel</button>
+    <div class="pull-left" style="position: relative; left: 70px;">
+       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelTHPT" data-toggle="modal" data-target="#modalExcelTHPT">Thêm Bằng File Excel</button>
     </div>
     <!-- Modal -->
       <div id="modalExcelTHPT" class="modal fade" role="dialog">
@@ -102,6 +102,7 @@
  		<table id="tableTHPT" class="table table-bordered table-hover table-striped">
  			<thead>
  				<tr>
+           <th></th>
  					<th>Mã Số</th>
  					<th>Tên</th>
           <th>Địa Chỉ</th>
@@ -112,6 +113,7 @@
  			</thead>
  			<tbody>
 				  	<tr>
+              <td> </td>
    						<td> </td>
               <td> </td>
               <td></td>

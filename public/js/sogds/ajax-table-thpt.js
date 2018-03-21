@@ -131,6 +131,7 @@
  	tableTHPT = function () {
  		$('#tableTHPT').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
+         responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -145,6 +146,11 @@
         processing: true,
         serverSide: true,
         columns:[
+                {data: null,
+                    defaultContent: '',
+                className: 'control',
+                orderable: false
+                },
                 {data: 'user_id'},
                 {data: 'user_name'},
                 {data: 'user_addr'},

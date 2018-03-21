@@ -264,7 +264,7 @@ class DaiHocController extends Controller
 	//action khoi xet tuyen
 	public function getKhoi()
 	{
-		$mh = DB::table('monhoc')->get();
+		$mh = DB::table('monhoc')->orderBy('mh_ten','asc')->get();
 		return View::make('truongdh.khoixettuyen')->with(compact('mh'));
 	}
 
@@ -286,7 +286,47 @@ class DaiHocController extends Controller
 				break;
 		}
 		return	response()->json($status);
+	}
 
+	private function deleteKhoiXetTuyen($request)
+	{
+		$khoi_maso = $request->khoi;
+		DB::beginTransaction();
+		try{
+			DB::table('chitietkhoi')->where('khoi_maso',$khoi_maso)->delete();
+			
+			DB::commit();
+			return array('message' => "Xóa Khối Xét Tuyển Thành Công!!!" );
+		}
+		catch(\Exception $e){
+			DB::rollBack();
+			return array('message' => "Xóa Khối Xét Tuyển Thất Bại!!!" );
+		}
+	}
+
+	private function updateKhoiXetTuyen($request)
+	{
+		$khoi_maso = $request->khoi;
+		$mon1 = $request->mon1;
+		$mon2 = $request->mon2;
+		$mon3 = $request->mon3;	
+
+		DB::beginTransaction();
+		try{
+			DB::table('chitietkhoi')->where('khoi_maso',$khoi_maso)->delete();
+			DB::table('chitietkhoi')->insert([
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon1],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon2],
+				['khoi_maso' => $request->khoi, 'mh_maso' => $request->mon3],
+			]);
+			DB::commit();
+			return array('message' => "Sửa Khối Xét Tuyển Thành Công!!!" );
+		}
+		catch(\Exception $e){
+			
+			DB::rollBack();
+			return array('message' => "Sửa Khối Xét Tuyển Thất Bại!!!" );
+		}
 	}
 
 	private function insertKhoiXetTuyen($request)

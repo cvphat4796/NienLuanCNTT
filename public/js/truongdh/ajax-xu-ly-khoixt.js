@@ -15,6 +15,30 @@ $(function () {
         tableKhoi();
         $('#table-khoi_paginate').addClass('dbtb_paginate');
         $('#table-khoi_length').addClass('dbtb_length');
+
+        $('#btnKhoi').click(function(event) {
+			$('#querry').val('insert');
+			$('#ten').val('');
+			$('#modalKhoi').modal('show');
+		});
+
+		$('#btnKXT').click(function(event) {
+
+			$('#querry').val('insert');
+		    $('#sel-khoi').find('option').remove().end();
+			$.ajax({
+				    url: '/api-dc/get-them-khoi-nganh',
+				    type: 'POST',
+				    data: {querry: $('#querry').val()},
+					success: function (response) {
+						if(!$.isEmptyObject(response.listKhoi)){
+						    addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_ten');
+						    $('#modalKXT').modal('show');
+						}            		
+					}
+			});
+		});
+
  	});
 
 	tableMH = function () {
@@ -39,14 +63,10 @@ $(function () {
 			});
 	}
 
-	$('#showDialogKhoi').click(function(event) {
-		$('#querry').val('insert');
-		$('#ten').val('');
-	});
-
+	
 	tableKhoi = function () {
 		$('#table-khoi').DataTable({
-					"dom": '<"text-right"f>rt<lp><"clear">',
+					"dom": '<"text-right"Bf>rt<lp><"clear">',
 		 	 		"language": {
 			            "search": "Tìm kiếm:",
 			            "processing":     "Đang xử lý...",
@@ -56,7 +76,14 @@ $(function () {
 			            "infoEmpty": "Không có dữ liệu",
 			            "infoFiltered": "(Lọc từ _MAX_ total dòng)"
 			        },
-
+			        buttons: [
+			             {
+			                attr:{id: "btnKhoi"},
+			                className: 'btn btn-info',
+			                text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
+			                
+			            }
+			        ],
 			        aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
  	 				iDisplayLength: 3,
 			        ajax:'/api-dc/get-list-khoi',
@@ -114,21 +141,6 @@ $(function () {
 
 	
 
-	$('#showDialogKXT').click(function(event) {
-		$('#querry').val('insert');
-        $('#sel-khoi').find('option').remove().end();
-		 $.ajax({
-                url: '/api-dc/get-them-khoi-nganh',
-                type: 'POST',
-                data: {querry: $('#querry').val()},
-                success: function (response) {
-                    if(!$.isEmptyObject(response.listKhoi))
-                        addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_ten');
-                   
-                }
-            });
-	});
-
 	 addOptionToSelect = function(id,array,para1,para2) {
         temp = array[0];
         $.each(array, function (i, item) {
@@ -142,7 +154,7 @@ $(function () {
 
 	tableKXT = function () {
 		table = $('#table-kxt').DataTable({
-					"dom":  '<"text-right"f>rt<lp><"clear">',
+					"dom":  '<"text-right"Bf>rt<lp><"clear">',
 		 	 		"language": {
 			            "search": "Tìm kiếm:",
 			            "processing":     "Đang xử lý...",
@@ -152,6 +164,13 @@ $(function () {
 			            "infoEmpty": "Không có dữ liệu",
 			            "infoFiltered": "(Lọc từ _MAX_ total dòng)"
 			        },
+			        buttons: [
+			             {
+			                attr:{id: "btnKXT"},
+			                className: 'btn btn-primary',
+			                text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
+			            }
+			        ],
 			         aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
  	 				iDisplayLength: 3,
 			        ajax:'/api-dc/get-list-khoi-xet-tuyen',
@@ -162,28 +181,59 @@ $(function () {
 			        	{data: 'mh_ten3'},
 			        	{data: 'action'},
 			        ],
-					
+					  columnDefs: [ { width: "30px", "targets": [ 4 ] }],
 			});
 	}
 
 	submitKXT = function () {
-		 if($('#sel-mon1').val() == $('#sel-mon2').val() || $('#sel-mon1').val() ==$('#sel-mon3').val() || $('#sel-mon2').val() == $('#sel-mon3').val()){
-	            alert('Chọn trùng môn!');
-	            return false;
-	        } 
-	         $('#proDialog').modal('show');
+		if($('#querry').val() != 'delete')
+		{
+			if($('#sel-mon1').val() == $('#sel-mon2').val() || $('#sel-mon1').val() ==$('#sel-mon3').val() || $('#sel-mon2').val() == $('#sel-mon3').val()){
+		 	            alert('Chọn trùng môn!');
+		 	            return false;
+		 	} 
+		 }
+		 console.log($('#sel-khoi').val());
+	     $('#proDialog').modal('show');
 	     $.ajax({
 	            url: '/dai-hoc/them-khoi-xet-tuyen',
 	            type: 'POST',
-	            data: {khoi: $('#sel-khoi').val(), mon1: $('#sel-mon1').val(), mon2: $('#sel-mon2').val(), mon3: $('#sel-mon3').val(), querry: $('#querryKhoiNganh').val()},
+	            data: {khoi: $('#sel-khoi').val(), mon1: $('#sel-mon1').val(), mon2: $('#sel-mon2').val(), mon3: $('#sel-mon3').val(), querry: $('#querry').val()},
 	            success: function (response) {
 	            	 $('#proDialog').modal('hide');
 	                    alert(response.message);
 	                    $('#table-kxt').DataTable().ajax.reload()
 	            }
 	     });
-	        
-	 		
+	}
+
+	editKXT = function (button) {
+		$('#querry').val('update');
+		$('#sel-khoi').find('option').remove().end();
+		$.ajax({
+				    url: '/api-dc/get-them-khoi-nganh',
+				    type: 'POST',
+				    data: {querry: $('#querry').val()},
+					success: function (response) {
+						if(!$.isEmptyObject(response.listKhoi)){
+						    addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_ten');
+						    $('#sel-khoi').val($('#'+button.id).data('id'));
+						}            		
+					}
+			});
+		
+		$('#sel-mon1').val($('#'+button.id).data('mon1'));
+		$('#sel-mon2').val($('#'+button.id).data('mon2'));
+		$('#sel-mon3').val($('#'+button.id).data('mon3'));
+		$('#modalKXT').modal('show');
 	}
 	
+	deleteKXT = function (button) {
+		ok = confirm("Bạn muốn xóa Khối "+$('#'+button.id).data('ten')+"?");
+ 		if(ok){
+ 			$('#sel-khoi').append('<option selected value="'+$('#'+button.id).data('id')+'"></option>');
+ 			$('#querry').val('delete');
+ 			submitKXT();
+ 		}
+	}
 });

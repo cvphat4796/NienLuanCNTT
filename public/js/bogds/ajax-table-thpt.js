@@ -41,7 +41,6 @@ $(function () {
                 {data: 'user_id'},
                 {data: 'user_id'},
                 {data: 'user_name'},
-                {data: 'user_addr'},
                 {data: 'user_phone'},
                 {data: 'user_email'},
                 {data: 'ten_sgd'},
@@ -59,9 +58,9 @@ $(function () {
 	              } 
 	    ],
 	    initComplete: function () {
-            this.api().columns([2, 6]).every( function () {
+            this.api().columns([6]).every( function () {
                 var column = this;
-                var select = $('<select class="form-control" ><option value="">Hiện Tất Cả</option></select>')
+                var select = $('<select class="form-control" ><option value="">Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
                     .on( 'change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(
