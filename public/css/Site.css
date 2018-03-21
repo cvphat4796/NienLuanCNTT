@@ -12,6 +12,10 @@
     position:  absolute;
 }
 
+.stt{
+    width: 20px;
+}
+
 .progressDialog{
     padding: 0;
 }

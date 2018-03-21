@@ -15,6 +15,7 @@
         <table id="tableHS" class="table table-hover table-striped table-bordered">
           <thead>
             <tr>
+              <th></th>
               <th>STT</th>
               <th>Mã Số</th>
               <th>Tên</th>
@@ -31,6 +32,7 @@
                 <tr>
                   <td></td>
                   <td></td>
+                  <td></td>
                   <td> </td>
                   <td></td>
                   <td></td>
@@ -44,6 +46,7 @@
           </tbody>
           <tfoot>
               <tr>
+                  <td> </td>
                   <td> </td>
                   <td> </td>
                   <td> </td>

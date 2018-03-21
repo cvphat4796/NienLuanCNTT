@@ -84,6 +84,7 @@
  	tableHS = function () {
  		$('#tableHS').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
+         responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -97,7 +98,12 @@
  	 	iDisplayLength: 10,
         processing: true,
         serverSide: true,
-        columns:[
+        columns:[{   // Responsive control column
+                data: null,
+                defaultContent: '',
+                className: 'control',
+                orderable: false
+            },
                 {data: 'user_id'},
                 {data: 'user_id'},
                 {data: 'user_name'},
@@ -114,7 +120,8 @@
                     ],
         "columnDefs": [ 
                    {
-                    "targets": 0,
+                  
+                    "targets": 1,
                     "data": null,
                     "render": function ( data, type, row, meta ) {
                       return meta.row+1;

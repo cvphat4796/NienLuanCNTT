@@ -32,7 +32,13 @@ $(function () {
  	 	iDisplayLength: 10,
         processing: true,
         serverSide: true,
-        columns:[ {data: 'user_id'},
+        columns:[ {   // Responsive control column
+                data: null,
+                defaultContent: '',
+                className: 'control',
+                orderable: false
+            }, 
+                {data: 'user_id'},
                 {data: 'user_id'},
                 {data: 'user_name'},
                 {data: 'user_addr'},
@@ -45,17 +51,18 @@ $(function () {
         	type: 'GET'},
         "columnDefs": [ 
 	               {
-	                "targets": 0,
+	                "targets": 1,
 	                "data": null,
+                     className: 'stt',
 	                "render": function ( data, type, row, meta ) {
 	                  return meta.row+1;
 	                }
 	              } 
 	    ],
 	    initComplete: function () {
-            this.api().columns([1, 6]).every( function () {
+            this.api().columns([2, 6]).every( function () {
                 var column = this;
-                var select = $('<select><option value="">Hiện Tất Cả</option></select>')
+                var select = $('<select class="form-control" ><option value="">Hiện Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
                     .on( 'change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(

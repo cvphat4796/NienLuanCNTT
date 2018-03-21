@@ -13,6 +13,7 @@
         <table id="tableTHPT" class="table table-hover table-striped table-bordered">
           <thead>
             <tr>
+              <th></th>
               <th>STT</th>
               <th>Mã Số</th>
               <th>Tên</th>
@@ -33,11 +34,13 @@
                   <td> </td>
                   <td> </td>
                   <td> </td>
+                  <td> </td>
                 </tr>
             
           </tbody>
           <tfoot>
               <tr>
+                  <td> </td>
                   <td> </td>
                   <td> </td>
                   <td> </td>
