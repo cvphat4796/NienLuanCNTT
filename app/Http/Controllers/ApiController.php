@@ -14,8 +14,9 @@ class ApiController extends Controller
 	public function TraDiem(Request $request)
 	{
 		$sbd = $request->sbd;
-		$query = 'select * from diemthi LEFT JOIN monhoc on monhoc.mh_maso=diemthi.mh_maso WHERE diemthi.hs_maso="'.$sbd.'"';
-		$diem = DB::select(DB::raw($query ));
+
+		$diem = DB::table('diemthi')->leftJoin('monhoc', 'monhoc.mh_maso', '=', 'diemthi.mh_maso')
+									->where('diemthi.hs_maso',$sbd)->get();
 		return View::make('trangchu')
 				->with(compact('diem'));
 	}

@@ -21,9 +21,8 @@ class HocSinhController extends Controller
     									->where('hocsinh.hs_maso',Auth::user()->user_id)
     									->first();
 
-    	$query = 'select * from diemthi LEFT JOIN monhoc on monhoc.mh_maso=diemthi.mh_maso WHERE diemthi.hs_maso="'.Auth::user()->user_id.'"';
-        
-         $diem = DB::select(DB::raw($query ));
+    	$diem = DB::table('diemthi')->leftJoin('monhoc', 'monhoc.mh_maso', '=', 'diemthi.mh_maso')
+									->where('diemthi.hs_maso',Auth::user()->user_id)->get();
     	return View::make('hocsinh.thongtin')
 				->with(compact('hocsinhs'))
 				->with(compact('diem'));
