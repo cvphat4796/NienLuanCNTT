@@ -24,7 +24,6 @@ class HocSinhController extends Controller
     	$query = 'select * from diemthi LEFT JOIN monhoc on monhoc.mh_maso=diemthi.mh_maso WHERE diemthi.hs_maso="'.Auth::user()->user_id.'"';
         
          $diem = DB::select(DB::raw($query ));
-    									//dd($diem);
     	return View::make('hocsinh.thongtin')
 				->with(compact('hocsinhs'))
 				->with(compact('diem'));
@@ -52,6 +51,7 @@ class HocSinhController extends Controller
 	 											->where('chitietkhoi.khoi_maso',$nganh[0]->khoi_maso)
 	 											->select('monhoc.mh_ten')
 	 											->get();
+
 	 		$mh_temp = '';
 	 		foreach ($khoi_mh as $key => $value) {
 	 			if($value->mh_ten == $khoi_mh->last()->mh_ten){
@@ -86,6 +86,8 @@ class HocSinhController extends Controller
 	    				}
 	    				$ten_nganh = $ten_nganh.':'.$temp;
 	    			}
+
+
 	    			if(!is_null($check_nganh)){
 		    			$ok[] = (object)[	'ngh_id' => $nganh[$i-1]->ngh_id,
 		    						'ngh_maso' => $nganh[$i-1]->ngh_maso,
@@ -111,6 +113,7 @@ class HocSinhController extends Controller
 		    						'ngh_khoi' => $ngh_khoi,
 		    						'ngh_khoima' => $ma_khoi,
 		    						'ngh_diemchuan' => $nganh[$i-1]->ngh_diemchuan,
+		    						'douutien' => 'Không Đăng Ký',
 		    						'dh_ten' => $nganh[$i-1]->user_name,
 		    						'check' => 0
 	    					];
@@ -118,9 +121,11 @@ class HocSinhController extends Controller
 	    			$ngh_khoi = "";
 	    			$ma_khoi = "";
 	    		}
-	    		
-	    		$checkKhoi = DB::table('chitietkhoi')->where('khoi_maso',$nganh[$i]->khoi_maso)->first();
-	    		if(!is_null($checkKhoi)){
+	    		$khoi_mh = DB::table('chitietkhoi')->join('monhoc','monhoc.mh_maso','chitietkhoi.mh_maso')
+	 											->where('chitietkhoi.khoi_maso',$nganh[$i]->khoi_maso)
+	 											->select('monhoc.mh_ten')
+	 											->get();
+	    		if(!$khoi_mh->isEmpty()){
 	    			$mh_temp = '';
 			 		foreach ($khoi_mh as $key => $value) {
 			 			if($value->mh_ten == $khoi_mh->last()->mh_ten){
@@ -175,6 +180,7 @@ class HocSinhController extends Controller
 	    						'ngh_bachoc' => $nganh[$i]->ngh_bachoc,
 	    						'ngh_khoi' => $ngh_khoi,
 	    						'ngh_khoima' => $ma_khoi,
+	    						'douutien' => 'Không Đăng Ký',
 	    						'ngh_diemchuan' => $nganh[$i]->ngh_diemchuan,
 	    						'dh_ten' => $nganh[$i]->user_name,
 	    						'check' => 0
@@ -188,6 +194,7 @@ class HocSinhController extends Controller
     	}else{
     		$ok = collect([]);
     	}
+  
 
     	return Datatables::of($ok)
     						->editColumn('ngh_khoi',function ($list)
@@ -234,7 +241,22 @@ class HocSinhController extends Controller
 				    			})
     						->addColumn('action',function ($list)
 			    			{
-			    				  if($list->check == 0){
+			    				if(SoGDController::checkTime('LTG03','cuoi')){
+			    					$kq = DB::table('nguyenvong')->where([['hs_maso','=',Auth::user()->user_id],
+			    														['ngh_id','=',$list->ngh_id]])->first();
+			    					if(!is_null($kq)){
+										if($kq->nv_kq === 1){
+				    						return '<span class="text-success">Đậu</span>';
+				    					}
+										else{
+											return '<span class="text-danger">Rớt</span>';
+										}
+			    					}
+			    						return '<span class="text-warning">Không Nộp</span>';
+			    				}
+			    				else if(SoGDController::checkTime('LTG03','giua')){
+
+			    					if($list->check == 0){
 					                    return '<button onclick="nopNganh(this)" '
 					                    .'data-idnganh="'.$list->ngh_id.'"'
 					                    .'data-manganh="'.$list->ngh_maso.'"'
@@ -256,11 +278,13 @@ class HocSinhController extends Controller
 					                    .'<br/>'
 					                    . '<button onclick="rutNganh(this)" '
 					                    .'data-idnganh="'.$list->ngh_id.'"'
-					                    .'data-tennganh="'.$list->ngh_id.'"'
+					                    .'data-tennganh="'.$list->ngh_ten.'"'
 					                    .'id="rutNganh-'.$list->ngh_id.'"' 
 					                    .' class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Rút Hồ Sơ</button>';
 					                }
-			    				
+			    				}
+
+			    				return '';
 			    			})
     						->rawColumns(['ngh_khoi','ngh_ten','action'])
     						->make(true);

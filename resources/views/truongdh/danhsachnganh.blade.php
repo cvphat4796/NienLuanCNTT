@@ -73,18 +73,17 @@
 
     
     <!-- Modal -->
-      <div id="modalExcelHS" class="modal fade" role="dialog">
+      <div id="modalNganhExcel" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
           <!-- Modal content-->
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 id="h4-ExcelHS" class="modal-title">Thêm Học Sinh</h4>
+                  <h4 id="h4-ExcelNganh" class="modal-title">Thêm Ngành</h4>
               </div>
               <div class="modal-body">
                   <div class="form-group">
                       <input type="hidden" value="insert" id="querry">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
                       <label for="textbox2">File mẫu:</label>
                       <a href="{!!asset('public/files/FileMauThemNganh.xlsx')!!}" >File mẫu</a>
                       <br/>
@@ -100,7 +99,32 @@
         </div>
       </div> {{-- het modal them Nganh excel--}}
 
-      
+       <!-- Modal -->
+      <div id="modalDiemChuan" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 id="h4-ExcelDiemChuan" class="modal-title">Thêm Điểm Chuẩn</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <input type="hidden" value="insert" id="querry">
+                      <label for="textbox2">File mẫu:</label>
+                      <a href="{!!asset('public/files/FileMauThemDiemChuan.xlsx')!!}" >File mẫu</a>
+                      <br/>
+                      <label for="">Upload File:</label>
+                      <input type="file" id="diemchuanfiles" class="form-control">
+
+                 </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="btn-themNganhExcel" data-dismiss="modal" class="btn btn-default" onclick="submitDiemChuan()">Cập Nhật</button>
+              </div>
+          </div>
+        </div>
+      </div> {{-- het modal them Nganh excel--}}
       <!-- Modal -->
       <div id="modalHoSo" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">

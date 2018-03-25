@@ -62,10 +62,11 @@
  	 	aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Tất cả"]],
  	 	iDisplayLength: 10, 
         processing: true,
+        "order": [[ 6, "asc" ]],
         ajax:{
         url: '/hoc-sinh/get-list-nganh',
         dataSrc: 'data'
-    },
+        },
          columns: [
            {data: 'ngh_maso'},
             {data: 'ngh_ten'},
@@ -73,11 +74,15 @@
             {data: 'ngh_chitieu'},
             {data: 'ngh_diemchuan'},
             {data: 'ngh_bachoc'},
+            {data: 'douutien'},
             {data: 'dh_ten'},
             {data: 'action'},
         ],
+        columnDefs:[
+             {"sType": 'formatted-num', target: 6},
+        ],
         initComplete: function () {
-            this.api().columns([6]).every( function () {
+            this.api().columns([7]).every( function () {
                 var column = this;
                 var select = $('<select class="form-control"><option value=""> Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
@@ -108,7 +113,7 @@
         var thm = $('#'+button.id).data('tohopmon').split(';');
         $('#ma-nganh').val($('#'+button.id).data('idnganh'));
         $('#nguyen-vong').val('');
-        $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh'));
+        $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh').split(':')[0]);
         for (var i = 0; i < thm.length-1; i++) {
             $('#khoi').append('<option value="'+mathm[i]+'"> Khối '+thm[i]+'</option>');
         }
@@ -122,7 +127,7 @@
         var thm = $('#'+button.id).data('tohopmon').split(';');
         $('#ma-nganh').val($('#'+button.id).data('idnganh'));
         $('#nguyen-vong').val($('#'+button.id).data('nv'));
-        $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh'));
+        $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh').split(':')[0]);
         for (var i = 0; i < thm.length-1; i++) {
             if($('#'+button.id).data('khoi') == thm[i])
                 $('#khoi').append('<option value="'+mathm[i]+'" selected> Khối '+thm[i]+'</option>');
@@ -136,7 +141,7 @@
     }
 
  	rutNganh = function (button) {
-        ok = confirm("Bạn muốn rút hồ sơ ngành: "+$('#'+button.id).data('tennganh')+"?");
+        ok = confirm("Bạn muốn rút hồ sơ ngành: "+$('#'+button.id).data('tennganh').split(':')[0]+"?");
         if(ok){
             $('#ma-nganh').val($('#'+button.id).data('idnganh'));
             $('#query').val('delete');

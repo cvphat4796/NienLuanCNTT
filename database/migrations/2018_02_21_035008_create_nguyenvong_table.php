@@ -18,6 +18,7 @@ class CreateNguyenvongTable extends Migration
             $table->string('ngh_id');
             $table->string('hs_maso');
             $table->integer('nv_douutien');
+            $table->integer('nv_kq')->nullable(true);
             $table->primary(['khoi_maso','ngh_id','hs_maso','nv_douutien']);
             $table->foreign('khoi_maso')
                   ->references('khoi_maso')

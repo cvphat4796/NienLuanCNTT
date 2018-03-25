@@ -53,6 +53,7 @@
                   <option value="{{ $tg->ltg_maso }}">{{ $tg->ltg_ten }}</option>
                 @endforeach
               </select>
+              <input type="hidden" id="id_ltg" value=''>
               <label for="textbox1">*Ngày Bắt Đầu:</label>
               <input class="form-control ngay" id="datebegin" type="text"/>
 

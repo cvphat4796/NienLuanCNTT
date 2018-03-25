@@ -80,11 +80,12 @@
             <li id="trangchu"><a href="/">Xem Điểm</a></li>
             <li id="tuyensinh"><a href="/nganh-hoc">Xem Ngành Học</a></li>
           </ul>
-              @if (isset($listdiem))
+              @if (isset($diem))
                 <ul class="nav navbar-nav navbar-right timkiemmenu">
-                  <form class="navbar-form navbar-left" role="search">
+                  <form method="post" action="/tra-diem" class="navbar-form navbar-left" role="search">
+                     {{ csrf_field() }}
                       <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Nhập số báo danh">
+                        <input type="text" name="sbd" class="form-control" placeholder="Nhập số báo danh">
                       </div>
                       <button type="submit" class="btn btn-default">Tìm Kiếm</button>
                     </form>     

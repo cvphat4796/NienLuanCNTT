@@ -175,6 +175,8 @@ class DaiHocController extends Controller
 		}
 	}
 
+
+
 	public function postListHoSo(Request $request)
 	{
 		$id = $request->id_nganh;
@@ -203,27 +205,48 @@ class DaiHocController extends Controller
 			$v->hs_sdt = $hs->user_phone;
 
 			$v->diem_hs = $diem + $hs->kv_diemcong;
-			if($diem >= $v->ngh_diemchuan ){
-				$v->kq = true;
-			}
-			else{
-				$v->kq = false;
-			}
+			$v->stt = $index;
 			$index++;
 			$ok[] = $v;
 		}
-		$kq = collect($ok)->sortByDesc('diem')->sortBy('nv_douutien')->sortByDesc('kq');
+		
+		$kq = collect($ok)->sortByDesc('diem')->sortBy('nv_douutien')->sortByDesc('nv_kq');
+		if(SoGDController::checkTime('LTG03','giua')){
+			return Datatables::of($kq)->removeColumn('ngh_bachoc')
+									->removeColumn('ngh_id')
+									->removeColumn('dh_maso')
+									->removeColumn('ngh_chuan')
+									->removeColumn('ngh_chitieu')
+									->removeColumn('ngh_ten')
+									->removeColumn('ngh_maso')
+									->editColumn('kq',function ($list)
+									{
+										return "Chưa có kết quả";
+									})
+									->make(true);
+		}
 		return Datatables::of($kq)->removeColumn('ngh_bachoc')
 									->removeColumn('ngh_id')
 									->removeColumn('dh_maso')
 									->removeColumn('ngh_chuan')
 									->removeColumn('ngh_chitieu')
 									->removeColumn('ngh_ten')
-									->removeColumn('ngh_maso')->make();
+									->removeColumn('ngh_maso')
+									->editColumn('kq',function ($list)
+									{
+										if($list->nv_kq === 1){
+											 return '<span class="text-success">Đậu</span>';
+				    					}
+										else{
+											return '<span class="text-danger">Rớt</span>';
+										}
+									})
+									->rawColumns(['kq'])->make(true);
 	}
 
 	public function getHoSo($id)
 	{
+
 		if(SoGDController::checkTime('LTG03','giua') || SoGDController::checkTime('LTG03','cuoi')){
 			$ng = DB::table('nganhhoc')
 										->where('nganhhoc.ngh_id',$id)->first();
@@ -405,4 +428,57 @@ class DaiHocController extends Controller
 		}
 	}
 	//het action khoi xet tuyen
+
+
+	public  static function tinhKQ()
+	{
+		$ng = DB::table('nguyenvong')->join('nganhhoc','nganhhoc.ngh_id','nguyenvong.ngh_id')
+										->join('khoi','khoi.khoi_maso','nguyenvong.khoi_maso')
+									->where('nganhhoc.dh_maso',Auth::user()->user_id)->orderBy('nv_douutien','asc')->get();
+								
+		foreach ($ng as $key => $value) {
+			$diemhs = DB::table('diemthi')->where('hs_maso',$value->hs_maso)->get();
+			$mon = DB::table('chitietkhoi')->where('khoi_maso',$value->khoi_maso)->get();
+			$diem = 0;
+			foreach ($mon as $k => $v) {
+				foreach ($diemhs as $ke => $va) {
+					if($v->mh_maso==$va->mh_maso){
+						$diem += $va->dt_diemso;
+						break;
+					}
+				}
+			}
+				$hs = DB::table('users')->join('hocsinh','hocsinh.hs_maso','users.user_id')
+							->join('khuvuc','khuvuc.kv_maso','hocsinh.kv_maso')->where('user_id',$value->hs_maso)->first();
+			
+			
+			 $diem= $diem + $hs->kv_diemcong;
+
+			 if( $diem >= $value->ngh_diemchuan){
+			 	try 
+                  {
+                          DB::beginTransaction();
+
+                          DB::table('nguyenvong')->where([['ngh_id','=',$value->ngh_id],['hs_maso','=',$value->hs_maso]])->update(['nv_kq' => 1]);
+                          DB::commit();
+                  } 
+                  catch (\Exception $e) {
+                        DB::rollBack();
+                  }
+			 }
+			 else{
+			 	try 
+                  {
+                          DB::beginTransaction();
+
+                          DB::table('nguyenvong')->where([['ngh_maso','=',$ngh_maso],['hs_maso','=',$value->hs_maso]])
+                                              ->update(['nv_kq' => 0]);
+                          DB::commit();
+                  } 
+                  catch (\Exception $e) {
+                        DB::rollBack();
+                  }
+			 }
+		}
+	}
 }

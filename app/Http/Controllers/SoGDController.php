@@ -273,6 +273,20 @@ class SoGDController extends Controller
                                 class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Sửa Điểm</button>';
                     return $button_suadiem;
                 } 
+
+                 return '<button onclick="xemthem(this)" 
+                        data-mahs="'.$hs->user_id.'" 
+                        data-tenhs="'.$hs->user_name.'" 
+                        data-dchs="'.$hs->user_addr.'"
+                        data-sdths="'.$hs->user_phone.'"
+                        data-ngaysinh="'.$hs->hs_ngaysinh.'"
+                        data-gioitinh="'.$hs->hs_gioitinh.'"
+                        data-cmnd="'.$hs->hs_cmnd.'"
+                        data-kvms="'.$hs->kv_maso.'"
+                        data-thpt="'.$hs->thpt_maso.'"
+                        data-emailhs="'.$hs->user_email.'"
+                        id="xemthem-'.$hs->user_id.'" 
+                        class="btn btn-xs btn-info"><i class="glyphicon glyphicon-info-sign"></i> Thông Tin</button>';
                 
             })
             ->make(true);

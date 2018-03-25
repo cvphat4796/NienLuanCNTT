@@ -210,6 +210,10 @@ Route::post('them-nganh-excel',
 			'uses' => 'ExcelController@postThemNganhExcel'])
 			->middleware('xacthuc:dh');
 
+Route::post('them-diem-chuan-excel', 
+			['as' => 'postDiemChuanExcel', 
+			'uses' => 'ExcelController@postDiemChuanExcel'])
+			->middleware('xacthuc:dh');
 
 Route::post('tao-tai-khoan-excel', 
 			['as' => 'postTaoTaiKhoanExcel', 
@@ -287,6 +291,12 @@ Route::post('hoc-sinh/nop-ho-so',
 
 
 //controller api
+Route::post('tra-diem',['as' => 'TraDiem', 'uses' => 'ApiController@TraDiem']);
+
+Route::get('api-dc/get-nganh',
+			['as' => 'getNganh',
+			'uses' => 'ApiController@getNganh']);
+
 Route::get('api-dc/get-list-mon-hoc',
 			['as' => 'getListMonHoc',
 			'uses' => 'ApiController@getListMonHoc'])

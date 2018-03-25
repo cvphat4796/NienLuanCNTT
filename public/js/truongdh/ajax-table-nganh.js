@@ -151,7 +151,11 @@
         });
 
         $('#btnNganhExcel').click(function(event) {
-            $('#modalExcelHS').modal('show');
+            $('#modalNganhExcel').modal('show');
+        });
+
+        $('#btnDiemChuanExcel').click(function(event) {
+              $('#modalDiemChuan').modal('show');
         });
  	});
  	
@@ -177,7 +181,12 @@
                     {
                         attr:{id: "btnNganhExcel"},
                         className: 'btn btn-info',
-                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Với File Excel',
+                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Với Excel',
+                    },
+                    {
+                        attr:{id: "btnDiemChuanExcel"},
+                        className: 'btn btn-info',
+                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Điểm Với Excel',
                     }
                 ],
  	 	aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
@@ -209,8 +218,8 @@
     });
  	} 
 
-    submitDiemExcelHS = function () {
-        var extension = $('#hsDiemfile').val().split('.').pop().toLowerCase();
+    submitDiemChuan = function () {
+        var extension = $('#diemchuanfiles').val().split('.').pop().toLowerCase();
         if ($.inArray(extension, ['csv', 'xls', 'xlsx']) == -1) {
             alert('Vui lòng chọn file Excel!!!');
             return false;
@@ -221,11 +230,11 @@
                                 keyboard: false  // to prevent closing with Esc button (if you want this too)
                             });
 
-        var file_data = $('#hsDiemfile').prop('files')[0];
+        var file_data = $('#diemchuanfiles').prop('files')[0];
         var form_data = new FormData();
-        form_data.append('diemhs', file_data);
+        form_data.append('diemchuan', file_data);
         $.ajax({
-            url: '/so-giao-duc/them-diem-excel',
+            url: '/them-diem-chuan-excel',
             type: 'POST',
             data: form_data,
             enctype: 'multipart/form-data',

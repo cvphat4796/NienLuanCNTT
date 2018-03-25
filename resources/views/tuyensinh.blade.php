@@ -2,31 +2,43 @@
 @section('title','Tuyển Sinh')
 @section('content')
 <div class="row">
-        <div class="col-xs-4 col-xs-push-1 col-sm-9 col-sm-push-2 col-md-8 col-md-push-1 col-lg-10 ">
-          <form class="navbar-form navbar-left timkiem form-inline" role="search">
-            <div class="form-group ">
-              <label for="truong">Chọn Trường Đại Học:</label>
-              <select name="daihoc"  class="custom-select" id="daihoc" >
-                            <option value="#">=====Chọn Trường=====</option>
-                            <option value="CTU">CTU - Đại Học Cần Thơ</option>
-                            <option value="DTHU">DTHU - Đại Học Đồng Tháp</option>
-                        </select>
-            </div>
-                    <div class="form-group ">
-                        <label for="truong">Chọn Ngành Học:</label>
-                        <select name="daihoc" disabled="true" class="custom-select" id="nganh" >
-                            <option value="##">=====Chọn Ngành=====</option>
-                            <option value="CTU">CTU - Đại Học Cần Thơ</option>
-                            <option value="DTHU">DTHU - Đại Học Đồng Tháp</option>
-                        </select>
-                    </div>
-            <button type="submit" "  disabled="true"  class="btn btn-default" id="btn-timnganh">Tìm Kiếm</button>
-          </form>
-          <select id="disabledSelect" class="form-control">
-        <option>Disabled select</option>
-      </select>
-        </div>
+    <div class="col-xs-12 col-sm-12  col-md-12 col-lg-12 ">
+          <table id="tableNganh" class="table table-bordered  table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Mã Ngành</th>
+                <th>Tên Ngành</th>
+                    <th>Tổ Hợp Môn Xét</th>
+                    <th>Chỉ Tiêu</th>
+                    <th>Điểm Chuẩn</th>
+                    <th>Bậc Học</th>
+                    <th>Trường Đại Học</th>
+              </tr>
+            </thead>
+            <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                  </tr>
+                </tfoot>
+            <tbody>
+                  <tr>
+                       <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                  </tr>
+            </tbody>
+          </table>
       </div>
+</div>
 
 <script>
         $(document).ready(function () {

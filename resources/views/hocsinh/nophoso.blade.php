@@ -1,7 +1,7 @@
 @extends('layouts.hslayout')
 @section('title','Nộp Hồ Sơ')
 @section('content')
-
+<script src="//cdn.datatables.net/plug-ins/1.10.16/type-detection/formatted-num.js"></script>
 <script type="text/javascript" src="{!!asset('public/js/ajax-table-nganh-hs.js')!!}"></script>
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
@@ -61,6 +61,7 @@
 			        <th>Chỉ Tiêu</th>
 			        <th>Điểm Chuẩn</th>
 			        <th>Bậc Học</th>
+              <th>NV</th>
 			        <th>Trường Đại Học</th>
 			       <th></th>
 
@@ -71,6 +72,7 @@
 		              <td></td>
 		              <td></td>
 		              <td></td>
+                  <td></td>
 		              <td></td>
 		              <td></td>
 		              <td></td>
@@ -83,6 +85,7 @@
 		             <td></td>
 		              <td></td>
 		              <td></td>
+                  <td></td>
 		              <td></td>
 		              <td></td>
 		              <td></td>

@@ -49,6 +49,7 @@ $(function () {
 
 
     showThemTG = function () {
+         $('#ltg').attr('disabled', false);
     	$('#query').val('insert');
     	var ngaybd = $('#datebegin').val('');
     	var ngaykt = $('#dateend').val('');
@@ -57,6 +58,7 @@ $(function () {
     }
 
     themTG = function () {
+
     	var ltg = $('#ltg').val();
     	var ngaybd = $('#datebegin').val();
     	var ngaykt = $('#dateend').val();
@@ -73,6 +75,9 @@ $(function () {
 	 			return false;
 	 		}
     	}
+        if(query == 'update'){
+            ltg = $('#id_ltg').val();
+        }
     	$('#proDialog').modal('show');
 
     	$.ajax({
@@ -99,6 +104,8 @@ $(function () {
     editTG = function (button) {
     	$('#modalLabelTG').text("Sửa Thời Gian");
     	$('#ltg').val($('#'+button.id).data('lgtmaso'));
+        $('#ltg').attr('disabled', true);
+        $('#id_ltg').val($('#'+button.id).data('lgtmaso'))
     	var datebegin = $('#'+button.id).data('tgbd').split("-").reverse().join("/");
     	$('#datebegin').datepicker('setDate', datebegin);
     	var dateend = $('#'+button.id).data('tgkt').split("-").reverse().join("/");

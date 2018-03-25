@@ -56,14 +56,14 @@
                 data: {id_nganh: id_nganh}
             },
             columns: [
-                {data: 1},
-                {data: 1},
-                {data: 5},
-                {data: 6},
-                {data: 7},
-                {data: 4},
-                {data: 2},
-                {data: 8},
+                {data: 'stt'},
+                {data: 'hs_maso'},
+                {data: 'hs_ten'},
+                {data: 'hs_sdt'},
+                {data: 'diem_hs'},
+                {data: 'khoi_ten'},
+                {data: 'nv_douutien'},
+                {data: 'kq'},
             ],
              "columnDefs": [ 
                {
@@ -72,15 +72,7 @@
                 "render": function ( data, type, row, meta ) {
                   return meta.row+1;
                 }
-              },
-              {
-                "targets": 7,
-                "data": null,
-                "render": function ( data, type, row, meta ) {
-                  return meta.row+1;
-                }
-              } 
-              ],
+              },]
        
         
     });
