@@ -16,7 +16,12 @@ class CreateKhoiTable extends Migration
         Schema::create('khoi', function (Blueprint $table) {
             $table->string('khoi_maso');
             $table->string('khoi_ten');
+            $table->string('dh_maso');
             $table->primary('khoi_maso');
+            $table->foreign('dh_maso')
+                  ->references('user_id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 

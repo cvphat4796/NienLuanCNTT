@@ -3,7 +3,6 @@
 @section('content')
 
 <script type="text/javascript" src="{!!asset('public/js/ajax-table-nganh-hs.js')!!}"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
     <!-- Modal -->
@@ -35,9 +34,9 @@
               <div class="modal-body">
                   <div class="form-group">
                       <input type="hidden" value="insert" id="query">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
                       <input class="form-control" id="ma-nganh"  type="hidden"/>
-					  <label for="">*Chọn Khối:</label>
+					           
+                     <label for="">*Chọn Khối:</label>
                       <select class="form-control"  id="khoi">
                       	
                       </select>

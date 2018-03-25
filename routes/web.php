@@ -71,11 +71,6 @@ Route::post('bo-giao-duc/tao-tai-khoan',
 			'uses' => 'BoGDController@postTaoTaiKhoan'])
 			->middleware('xacthuc:bgd');
 
-Route::post('tao-tai-khoan-excel', 
-			['as' => 'postTaoTaiKhoanExcel', 
-			'uses' => 'ExcelController@postTaoTaiKhoanExcel'])
-			->middleware('xacthuc:bgd:sgd');
-
 //route tai khoan
 Route::get('bo-giao-duc/tai-khoan/{q}', 
 			['as' => 'getTaiKhoanSoGDDH', 
@@ -189,11 +184,7 @@ Route::post('so-giao-duc/them-hs',
 			['as' => 'postThemHS',
 			'uses' => 'SoGDController@postThemHS'])
 			->middleware('xacthuc:bgd:sgd');
-
-Route::post('so-giao-duc/them-diem-excel',
-			['as' => 'postThemDiemHSExcel',
-			'uses' => 'ExcelController@postThemDiemHSExcel'])
-			->middleware('xacthuc:sgd');			
+		
 			
 Route::post('so-giao-duc/get-diem-hs',
 			['as' => 'getDiemHS',
@@ -206,6 +197,25 @@ Route::post('so-giao-duc/sua-diem',
 			->middleware('xacthuc:sgd');			
 //het controller so giao duc
 
+//excel controller
+
+Route::post('so-giao-duc/them-diem-excel',
+			['as' => 'postThemDiemHSExcel',
+			'uses' => 'ExcelController@postThemDiemHSExcel'])
+			->middleware('xacthuc:sgd');	
+
+			
+Route::post('them-nganh-excel', 
+			['as' => 'postThemNganhExcel', 
+			'uses' => 'ExcelController@postThemNganhExcel'])
+			->middleware('xacthuc:dh');
+
+
+Route::post('tao-tai-khoan-excel', 
+			['as' => 'postTaoTaiKhoanExcel', 
+			'uses' => 'ExcelController@postTaoTaiKhoanExcel'])
+			->middleware('xacthuc:bgd:sgd');
+//het excel controller
 
 //controller Dai Hoc
 Route::get('dai-hoc/thong-tin',
@@ -221,11 +231,6 @@ Route::get('dai-hoc/quan-ly-nganh',
 Route::get('dai-hoc/quan-ly-khoi',
 			['as' => 'getKhoi',
 			'uses' => 'DaiHocController@getKhoi'])
-			->middleware('xacthuc:dh');
-
-Route::get('dai-hoc/get-list-nganh',
-			['as' => 'getListNganh',
-			'uses' => 'DaiHocController@getListNganh'])
 			->middleware('xacthuc:dh');
 
 Route::post('dai-hoc/them-nganh',
@@ -301,6 +306,11 @@ Route::get('api-dc/get-list-khoi',
 Route::post('api-dc/get-them-khoi-nganh', 
 			['as' => 'getThemKhoiNganh', 
 			'uses' => 'ApiController@getThemKhoiNganh'])
+			->middleware('xacthuc:dh');
+
+Route::get('api-dc/get-list-nganh',
+			['as' => 'getListNganh',
+			'uses' => 'ApiController@getListNganh'])
 			->middleware('xacthuc:dh');
 
 //het controller api		

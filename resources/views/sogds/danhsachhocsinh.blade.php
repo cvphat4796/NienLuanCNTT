@@ -1,21 +1,18 @@
 @extends('layouts.sgdlayout')
 @section('title','Danh Sách Học Sinh')
 @section('content')
-
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/datetime.js"></script>
 <script type="text/javascript" src="{!!asset('public/js/sogds/ajax-table-hocsinh.js')!!}"></script>
  
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
-   @if($themhs)
 
+   @if($themhs)
    
    {{--  modal them hoc sinh --}}
-    <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogHS" data-toggle="modal" data-target="#modalHS">Thêm Học Sinh</button>
-       
-    </div>
+   
       <!-- Modal -->
       <div id="modalHS" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -95,9 +92,7 @@
         </div>
       </div> {{-- het modal them HS --}}
 
-    <div class="pull-left" style="position: relative; left: 130px;">
-       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelHS" data-toggle="modal" data-target="#modalExcelHS">Thêm Bằng File Excel</button>
-    </div>
+   
     <!-- Modal -->
       <div id="modalExcelHS" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -124,7 +119,9 @@
           </div>
         </div>
       </div> {{-- het modal them HS excel--}}
+       <input type="hidden" id="checkThemHS" value="1">
 @else
+ <input type="hidden" id="checkThemHS" value="0">
        <!-- Modal -->
       <div id="modalHS" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -199,10 +196,9 @@
       </div> {{-- het modal them HS --}}
 @endif
 @if($diem)
+      <input type="hidden" id="checkDiemHS" value="1">
        {{--  modal them diem voi excel --}}
-      <div class="pull-left" >
-       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogDiemExcelHS" data-toggle="modal" data-target="#modalDiemExcelHS">Thêm Điểm Bằng File Excel</button>
-    </div>
+     
     <!-- Modal -->
       <div id="modalDiemExcelHS" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -246,6 +242,27 @@
               </div>
               <div class="modal-footer">
                   <button type="button" id="btn-themDiemHS" data-dismiss="modal" class="btn btn-default" onclick="submitDiemHS()">Cập Nhật</button>
+              </div>
+          </div>
+        </div>
+      </div> {{-- het modal sua diem--}}
+@else
+  <!-- Modal -->
+      <div id="modalDiemHS" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 id="h4-DiemHS" class="modal-title">Xem Điểm</h4>
+              </div>
+              <div class="modal-body">
+
+                  <div id="body-diem" class="form-group">
+                 </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="btn-themDiemHS" data-dismiss="modal" class="btn btn-default">Đóng</button>
               </div>
           </div>
         </div>

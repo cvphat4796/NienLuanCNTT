@@ -28,10 +28,7 @@
         $('#hoSoNop_length').addClass('dbtb_length');
         
  	});
- 	$(window).resize(function(event) {
-              location.reload();
-        });
-
+ 
  	hoSoNop = function () {
         var url = $(location).attr('pathname');
         var indexsl = url.lastIndexOf('/') + 1;
@@ -52,6 +49,7 @@
      	 	iDisplayLength: 10,
             processing: true,
             serverSide: true,
+            "bSort" : false,
             ajax:{
                 url: '/dai-hoc/get-list-ho-so',
                 type: 'POST',
@@ -60,15 +58,23 @@
             columns: [
                 {data: 1},
                 {data: 1},
-                {data: 3},
-                {data: 4},
                 {data: 5},
-                {data: 0},
                 {data: 6},
+                {data: 7},
+                {data: 4},
+                {data: 2},
+                {data: 8},
             ],
              "columnDefs": [ 
                {
                 "targets": 0,
+                "data": null,
+                "render": function ( data, type, row, meta ) {
+                  return meta.row+1;
+                }
+              },
+              {
+                "targets": 7,
                 "data": null,
                 "render": function ( data, type, row, meta ) {
                   return meta.row+1;

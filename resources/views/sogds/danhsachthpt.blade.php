@@ -1,14 +1,12 @@
 @extends('layouts.sgdlayout')
 @section('title','Danh Sách Các Trương THPT')
 @section('content')
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="{!!asset('public/js/sogds/ajax-table-thpt.js')!!}"></script>
 
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
-    <div class="pull-left" style="position: relative;">
-        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogTHPT" data-toggle="modal" data-target="#modalTHPT">Thêm </button>
-       
-    </div>
+   
       <!-- Modal -->
       <div id="modalTHPT" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -51,9 +49,7 @@
         </div>
       </div> {{-- het modal them thpt --}}
 
-    <div class="pull-left" style="position: relative; left: 70px;">
-       <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogExcelTHPT" data-toggle="modal" data-target="#modalExcelTHPT">Thêm Bằng File Excel</button>
-    </div>
+   
     <!-- Modal -->
       <div id="modalExcelTHPT" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">

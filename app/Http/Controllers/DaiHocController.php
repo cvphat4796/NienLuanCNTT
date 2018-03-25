@@ -23,11 +23,11 @@ class DaiHocController extends Controller
     public function getNganh()
     {
     	
-    	$nganh =  DB::table('nganhhoc')
-    							->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
-    							->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
-    							->where([
-    									['nganhxettuyen.dh_maso','=',Auth::user()->user_id]])->get();
+    	// $nganh =  DB::table('nganhhoc')
+    	// 						->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
+    	// 						->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
+    	// 						->where([
+    	// 								['nganhhoc.dh_maso','=',Auth::user()->user_id]])->get();
   
             
     	$khois = DB::table('khoi')->join('chitietkhoi', 'khoi.khoi_maso', '=', 'chitietkhoi.khoi_maso')
@@ -38,65 +38,7 @@ class DaiHocController extends Controller
 				->with(compact('khois'));
     }
 
-    public function getListNganh()
-	{
-		
-    	$nganh =  DB::table('nganhhoc')
-    							->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
-    							->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
-    							->where([
-    									['nganhxettuyen.dh_maso','=',Auth::user()->user_id]])->get();
-    	
-    	if(!$nganh->isEmpty()){
-    		$id = $nganh[0]->ngh_id;
-	 		$ngh_khoi = '- '.$nganh[0]->khoi_mota;
-	 		$ma_khoi = $nganh[0]->khoi_maso.':';
-	 		// dd( $nganh->count());
-	    	for($i = 1; $i < $nganh->count();$i++){
-	    		if($nganh[$i]->ngh_id != $id){
-	    			$id = $nganh[$i]->ngh_id;
-	    			$ok[] = [	'ngh_id' => $nganh[$i-1]->ngh_id,
-	    						'ngh_maso' => $nganh[$i-1]->ngh_maso,
-	    						'ngh_ten' => $nganh[$i-1]->ngh_ten,
-	    						'ngh_chitieu' => $nganh[$i-1]->ngh_chitieu,
-	    						'ngh_bachoc' => $nganh[$i-1]->ngh_bachoc,
-	    						'ngh_khoi' => $ngh_khoi,
-	    						'ngh_khoima' => $ma_khoi,
-	    						'ngh_diemchuan' => $nganh[$i-1]->ngh_chuan
-	    					];
-	    			$ngh_khoi = "";
-	    			$ma_khoi = "";
-	    		}
-	    		
-	    		$checkKhoi = DB::table('chitietkhoi')->where('khoi_maso',$nganh[$i]->khoi_maso)->first();
-	    		if(!is_null($checkKhoi)){
-	    			$ngh_khoi = $ngh_khoi.'- '.$nganh[$i]->khoi_mota;
-	    			$ma_khoi = $ma_khoi.$nganh[$i]->khoi_maso.':';
-	    		}
-	    		if ($i == ($nganh->count()-1)) {
-	    			$ok[] = [	'ngh_id' => $nganh[$i]->ngh_id,
-	    						'ngh_maso' => $nganh[$i]->ngh_maso,
-	    						'ngh_ten' => $nganh[$i]->ngh_ten,
-	    						'ngh_chitieu' => $nganh[$i]->ngh_chitieu,
-	    						'ngh_bachoc' => $nganh[$i]->ngh_bachoc,
-	    						'ngh_khoi' => $ngh_khoi,
-	    						'ngh_khoima' => $ma_khoi,
-	    						'ngh_diemchuan' => $nganh[$i]->ngh_chuan
-	    					];
-	    			$ngh_khoi = "";
-	    			$ma_khoi = "";
-	    		}
-	    		
-	    	}
-	    	$ok = collect($ok);
-    	}else{
-    		$ok = collect([]);
-    	}
-    	
-    	return Datatables::of($ok)
-                ->make();
-    	
-	}
+    
 
 	public function postThemNganh(Request $request)
 	{
@@ -104,27 +46,33 @@ class DaiHocController extends Controller
 		$key = '';
 		switch ($request->querry) {
 			case 'insert':
-				$key = 'Thêm';
 				$status = $this->insertNganh($request);
 				break;
 			case 'update':
-				$key = 'Sửa';
 				$status = $this->updateNganh($request);
 				break;
 			case 'delete':
-				$key = 'Xóa';
 				$status = $this->deleteNganh($request);
 				break;
 		}
+		return response()->json($status);
+	
+	}
 
-
-		if($status){
-			$message = $key." Ngành Thành Công!!!";
-			return response()->json(array('message' => $message,'status' => true));
-		}
-		else{
-			$message = 'Lỗi '.$key;
-			return response()->json(array('message' => $message,'status' => false));
+	private function deleteNganh($request)
+	{
+		$nganh_id = $request->nganh_id;
+		try{
+			DB::beginTransaction();
+				DB::table('nganhhoc')->where('ngh_id',$nganh_id)
+									->delete();
+			DB::commit();
+			
+			return array('message' => 'Xóa Ngành Thành Công!!!','status' => true);
+		} catch (\Exception $e) {
+			echo $e;
+			DB::rollBack();
+			return array('message' => 'Xóa Ngành Thất Bại!!!!','status' => false);
 		}
 	}
 
@@ -138,33 +86,44 @@ class DaiHocController extends Controller
 		$bachoc = $request->bh=="DH"?"Đại Học":"Cao Đẳng";
 
 		$arrayKhoi = $request->khoi;
-
+		$arrayCN = $request->cn;
 		try {
 			DB::beginTransaction();
 
-			DB::table('nganhhoc')->where('ngh_id',$nganh_id)->delete();
-
-			DB::table('nganhhoc')->insert([
-											'ngh_id' => $nganh_id,
+			DB::table('nganhhoc')->where('ngh_id',$nganh_id)
+									->update([
 											'ngh_maso' => $nganh_maso,
 											'ngh_ten' => $nganh_ten,
 											'ngh_chitieu' => $nganh_chitieu,
-											'ngh_chuan' => $nganh_diemchuan,
-											'ngh_bachoc' => $bachoc,
-											'dh_maso' => Auth::user()->user_id
+											'ngh_diemchuan' => $nganh_diemchuan,
+											'ngh_bachoc' => $bachoc
 										]);
+
+			DB::table('nganhxettuyen')->where('ngh_id',$nganh_id)->delete();
+			$nganhxettuyen = [];
             foreach ($arrayKhoi as  $value) {
-            	$khoiNganh[] = ['ngh_id' => $nganh_id, 'khoi_maso' => $value];
+            	$nganhxettuyen[] = ['ngh_id' => $nganh_id, 'khoi_maso' => $value];
             }
+            DB::table('nganhxettuyen')->insert($nganhxettuyen);
 
-            DB::table('khoinganh')->insert($khoiNganh);
-
+            DB::table('chuyennganh')->where('ngh_id',$nganh_id)->delete();
+            if(!empty($arrayCN)){
+            	$cn = [];
+            	
+            	foreach ($arrayCN as $value) {
+            		if($value == null)
+            			continue;
+	            	$cn[] = ['ngh_id' => $nganh_id, 'cn_ten' => $value];
+	            }
+	             DB::table('chuyennganh')->insert($cn);
+            }
 			DB::commit();
 			
-			return true;
+			return array('message' => 'Sửa Ngành Thành Công!!!','status' => true);
 		} catch (\Exception $e) {
+			echo $e;
 			DB::rollBack();
-			return false;
+			return array('message' => 'Sửa Ngành Thất Bại!!!!','status' => false);
 		}
 	}
 
@@ -178,7 +137,7 @@ class DaiHocController extends Controller
 		$bachoc = $request->bh=="DH"?"Đại Học":"Cao Đẳng";
 
 		$arrayKhoi = $request->khoi;
-
+		$arrayCN = $request->cn;
 		try {
 			DB::beginTransaction();
 
@@ -187,22 +146,32 @@ class DaiHocController extends Controller
 											'ngh_maso' => $nganh_maso,
 											'ngh_ten' => $nganh_ten,
 											'ngh_chitieu' => $nganh_chitieu,
-											'ngh_chuan' => $nganh_diemchuan,
+											'ngh_diemchuan' => $nganh_diemchuan,
 											'ngh_bachoc' => $bachoc,
 											'dh_maso' => Auth::user()->user_id
 										]);
+			$nganhxt = [];
+			$cn = [];
             foreach ($arrayKhoi as  $value) {
-            	$khoiNganh[] = ['ngh_id' => $nganh_id, 'khoi_maso' => $value];
+            	$nganhxt[] = ['ngh_id' => $nganh_id, 'khoi_maso' => $value];
             }
-
-            DB::table('khoinganh')->insert($khoiNganh);
-
+            if(!empty($arrayCN)){
+            	foreach ($arrayCN as $value) {
+            		if($value == null)
+            			continue;
+	            	$cn[] = ['ngh_id' => $nganh_id, 'cn_ten' => $value];
+	            }
+            }
+            
+            DB::table('nganhxettuyen')->insert($nganhxt);
+            DB::table('chuyennganh')->insert($cn);
 			DB::commit();
 			
-			return true;
+			return array('message' => 'Thêm Ngành Thành Công!!!','status' => true);
 		} catch (\Exception $e) {
+			echo $e;
 			DB::rollBack();
-			return false;
+			return array('message' => 'Thêm Ngành Thất Bại!!!','status' => false);
 		}
 	}
 
@@ -210,6 +179,7 @@ class DaiHocController extends Controller
 	{
 		$id = $request->id_nganh;
 		$ng = DB::table('nguyenvong')->join('nganhhoc','nganhhoc.ngh_id','nguyenvong.ngh_id')
+										->join('khoi','khoi.khoi_maso','nguyenvong.khoi_maso')
 									->where('nguyenvong.ngh_id',$id)->orderBy('nv_douutien','asc')->get();
 		$index = 1;	
 		$ok = [];						
@@ -225,13 +195,15 @@ class DaiHocController extends Controller
 					}
 				}
 			}
-			$hs = DB::table('users')->where('user_id',$value->hs_maso)->first();
+			$hs = DB::table('users')->join('hocsinh','hocsinh.hs_maso','users.user_id')
+							->join('khuvuc','khuvuc.kv_maso','hocsinh.kv_maso')->where('user_id',$value->hs_maso)->first();
 			
 			$v = $value;
 			$v->hs_ten = $hs->user_name;
 			$v->hs_sdt = $hs->user_phone;
-			$v->diem_hs = $diem;
-			if($diem >= $v->ngh_chuan ){
+
+			$v->diem_hs = $diem + $hs->kv_diemcong;
+			if($diem >= $v->ngh_diemchuan ){
 				$v->kq = true;
 			}
 			else{
@@ -252,11 +224,14 @@ class DaiHocController extends Controller
 
 	public function getHoSo($id)
 	{
-		$ng = DB::table('nganhhoc')
-									->where('nganhhoc.ngh_id',$id)->first();
-		
-		return  View::make('truongdh.hoso')
-				->with(compact('ng'));
+		if(SoGDController::checkTime('LTG03','giua') || SoGDController::checkTime('LTG03','cuoi')){
+			$ng = DB::table('nganhhoc')
+										->where('nganhhoc.ngh_id',$id)->first();
+			
+			return  View::make('truongdh.hoso')
+					->with(compact('ng'));
+		}
+		return redirect()->back();
 	}
 
 
@@ -417,7 +392,8 @@ class DaiHocController extends Controller
 			DB::beginTransaction();
 
 			DB::table('khoi')->insert(['khoi_maso'=>$maso,
-										'khoi_ten'=>$ten
+										'khoi_ten'=>$ten,
+										'dh_maso' => Auth::user()->user_id
 										]);
            
 			DB::commit();

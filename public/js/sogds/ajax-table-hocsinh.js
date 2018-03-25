@@ -1,32 +1,7 @@
  $(function(){
  	var data1 = "";
 
-    $('#showDialogHS').click(function(event) {
-        $('#querry').val('insert');
-        $('#h4-hs').text("Thêm Trường HS");
-        $('#hs-maso').val('');
-        $('#hs-ten').val('');
-        $('#hs-pass1').removeClass('hidden');
-        $('#hs-pass2').removeClass('hidden');
-        $('#lb-mk1').removeClass('hidden');
-        $('#lb-mk2').removeClass('hidden');
-        $('#hs-diachi').val('');
-        $('#hs-sdt').val('');
-        $('#hs-email').val('');
-        $('#hs-cmnd').val('');
-        $('#hs-ngaysinh').val('');
-        $('#hs-maso').prop('readonly',false);
-        
-
-        $('#thpt').val('');
-        $('#kv_maso').val('');
-        $('#gioitinh').val('nam');
-        
-        $('#lab-cmnd').appendTo('#hs-right');   
-        $('#hs-cmnd').appendTo('#hs-right');
-        $('#lab-email').appendTo('#hs-right');   
-        $('#hs-email').appendTo('#hs-right');
-    });
+  
 
  	$.ajaxSetup({
 		  headers: {
@@ -162,12 +137,56 @@
  		tableHS();
         $('#tableHS_paginate').addClass('dbtb_paginate');
         $('#tableHS_length').addClass('dbtb_length');
+        if($('#checkThemHS').val() != 1){
+               $('#btnThemHS').remove();
+             $('#btnThemHSExcel').remove();
+        }
+        if($('#checkDiemHS').val() != 1){
+          
+             $('#btnThemDiemHSExcel').remove();
+        }
+
+          $('#btnThemDiemHSExcel').click(function(event) {
+                 $('#modalDiemExcelHS').modal('show');
+            });
+
+        $('#btnThemHS').click(function(event) {
+                    $('#querry').val('insert');
+                    $('#h4-hs').text("Thêm HS");
+                    $('#hs-maso').val('');
+                    $('#hs-ten').val('');
+                    $('#hs-pass1').removeClass('hidden');
+                    $('#hs-pass2').removeClass('hidden');
+                    $('#lb-mk1').removeClass('hidden');
+                    $('#lb-mk2').removeClass('hidden');
+                    $('#hs-diachi').val('');
+                    $('#hs-sdt').val('');
+                    $('#hs-email').val('');
+                    $('#hs-cmnd').val('');
+                    $('#hs-ngaysinh').val('');
+                    $('#hs-maso').prop('readonly',false);
+                    
+
+                    $('#thpt').val('');
+                    $('#kv_maso').val('');
+                    $('#gioitinh').val('nam');
+                    
+                    $('#lab-cmnd').appendTo('#hs-right');   
+                    $('#hs-cmnd').appendTo('#hs-right');
+                    $('#lab-email').appendTo('#hs-right');   
+                    $('#hs-email').appendTo('#hs-right');
+                    $('#modalHS').modal('show');
+            });
+
+             $('#btnThemHSExcel').click(function(event) {
+                 $('#modalExcelHS').modal('show');
+             });
  	});
  	
 
  	tableHS = function () {
  		$('#tableHS').DataTable({
- 		 "dom": '<"text-right"f>rt<lp><"clear">',
+ 		 "dom": '<"text-right"Bf>rt<lp><"clear">',
          responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
@@ -178,6 +197,22 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
+        buttons: [{
+                    attr:{id: "btnThemHS"},
+                    className: 'btn btn-info',
+                    text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
+                },
+                {
+                    attr:{id: "btnThemHSExcel"},
+                    className: 'btn btn-info',
+                    text: '<i class="glyphicon glyphicon-plus"></i>Thêm Với Excel',
+                },
+                {
+                    attr:{id: "btnThemDiemHSExcel"},
+                    className: 'btn btn-info',
+                    text: '<i class="glyphicon glyphicon-plus"></i>Thêm Điểm Với Excel',
+                }
+                ],
  	 	aLengthMenu: [[10, 30, 50, 100, -1], [10, 30, 50, 100, "Tất cả"]],
  	 	iDisplayLength: 10,
         processing: true,
@@ -345,6 +380,35 @@ xemthem = function (button) {
                         $('#body-diem').append( 
                         '<label for="">'+monhc[i]["mh_ten"]+': </label>'+
                         '<input type="number" id="'+monhc[i]["mh_maso"]+'" value="'+monhc[i]["dt_diemso"]+'" class="form-control">' );
+                    }
+                    
+                    $('#proDialog').modal('hide');
+                    $('#modalDiemHS').modal('show');
+                }
+                else{
+                    alert("Chưa Nhập Điểm Cho Học Sinh Này!");
+                }
+            }
+        });
+    }
+
+    xemdiem = function (button) {
+        $('#body-diem').empty();
+        $('#proDialog').modal('show');
+        mahs = $('#'+button.id).data('mahs');
+        $.ajax({
+            url: '/so-giao-duc/get-diem-hs',
+            type: 'POST',
+            data: {mahs: mahs},
+            success: function (response) {
+                $('#proDialog').modal('hide');
+                monhc = response.monhoc;
+                if(monhc.length > 0){
+                    $('body-diem').append('<input type="hiden" readonly id="diem-mahs" value="'+monhc[0]["hs_maso"])+'"/>';
+                    for (var i = 0; i < monhc.length; i++) {
+                        $('#body-diem').append( 
+                        '<label for="">'+monhc[i]["mh_ten"]+': </label>'+
+                        '<input type="number" readonly id="'+monhc[i]["mh_maso"]+'" value="'+monhc[i]["dt_diemso"]+'" class="form-control">' );
                     }
                     
                     $('#proDialog').modal('hide');

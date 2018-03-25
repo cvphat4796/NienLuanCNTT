@@ -1,15 +1,5 @@
  $(function(){
-    $('#showDialogNganh').click(function(event) {
-        $('#querry').val('insert');
-        $('#h4-Nganh').text("Thêm Ngành");
-        $('#nganh-maso').val('');
-        $('#nganh-ten').val('');
-        $('#nganh-chitieu').val('');
-       $('#nganh-diemchuan').val('');
-        $(':checkbox:checked').each(function(i){
-                  $(this).prop({checked: false});
-        });
-    });
+    
 
  	$.ajaxSetup({
 		  headers: {
@@ -59,7 +49,7 @@
    
  	tableNganhHS = function () {
  		table = $('#tableNganhHS').DataTable({
- 		 "dom": 'B<"text-right"f>rt<lp><"clear">',
+ 		 "dom": '<"text-right"f>rt<lp><"clear">',
  	 	"language": {
             "search": "Tìm kiếm:",
             "processing":     "Đang xử lý...",
@@ -69,21 +59,6 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
-         buttons: [
-            {
-                text: 'Theem xxx',
-                action: function ( e, dt, node, config ) {
-                   $('#proDialog').modal('show');
-                }
-            },
-             {
-                attr:{id: "them"},
-                text: 'Theem aaa',
-                action: function ( e, dt, node, config ) {
-                   $('#proDialog').modal('show');
-                }
-            }
-        ],
  	 	aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Tất cả"]],
  	 	iDisplayLength: 10, 
         processing: true,
@@ -92,18 +67,19 @@
         dataSrc: 'data'
     },
          columns: [
-           {data: 1},
-            {data: 2},
-            {data: 5},
-            {data: 3},
-            {data: 7},
-            {data: 4},
-            {data: 8},
+           {data: 'ngh_maso'},
+            {data: 'ngh_ten'},
+            {data: 'ngh_khoi'},
+            {data: 'ngh_chitieu'},
+            {data: 'ngh_diemchuan'},
+            {data: 'ngh_bachoc'},
+            {data: 'dh_ten'},
+            {data: 'action'},
         ],
         initComplete: function () {
-            this.api().columns([0, 1, 2, 3, 4, 5, 6]).every( function () {
+            this.api().columns([6]).every( function () {
                 var column = this;
-                var select = $('<select><option value="">Hiện Tất Cả</option></select>')
+                var select = $('<select class="form-control"><option value=""> Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
                     .on( 'change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(
@@ -120,37 +96,7 @@
                 } );
             } );
         },
-         "columnDefs": [ {
-            "targets": 7    ,
-            "render": function ( data, type, row, meta ) {
-                if(row[9] == 0){
-                     return '<button onclick="nopNganh(this)" '
-                    +'data-idnganh="'+row[0]+'"'
-                    +'data-manganh="'+row[1]+'"'
-                    +'data-tennganh="'+row[2]+'"'
-                    +'data-tohopmon="'+row[6]+'"'
-                    +'id="nopNganh-'+row[0]+'"' 
-                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Nộp Hồ Sơ</button>'
-                }
-                 else{
-                     return '<button onclick="suaNganh(this)" '
-                    +'data-idnganh="'+row[0]+'"'
-                    +'data-tennganh="'+row[2]+'"'
-                    +'data-tohopmon="'+row[6]+'"'
-                    +'data-khoi="'+row[11]+'"'
-                    +'data-nv="'+row[10]+'"'
-                    +'id="suaNganh-'+row[0]+'"' 
-                    +' class="btn btn-xs btn-success"><i class="glyphicon glyphicon-pencil"></i> Sửa Hồ Sơ</button>'
-                    +'<br/>'
-                    + '<button onclick="rutNganh(this)" '
-                    +'data-idnganh="'+row[0]+'"'
-                    +'data-tennganh="'+row[2]+'"'
-                    +'id="rutNganh-'+row[0]+'"' 
-                    +' class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Rút Hồ Sơ</button>'
-
-                 }  
-            }
-        }],
+         
     });
          
  } 
@@ -158,30 +104,30 @@
  	nopNganh = function (button) {
 
         $('#khoi').empty();
-
-        var thm = $('#'+button.id).data('tohopmon').split(':');
+        var mathm = $('#'+button.id).data('khoi').split(':'); 
+        var thm = $('#'+button.id).data('tohopmon').split(';');
         $('#ma-nganh').val($('#'+button.id).data('idnganh'));
         $('#nguyen-vong').val('');
         $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh'));
         for (var i = 0; i < thm.length-1; i++) {
-            $('#khoi').append('<option value="'+thm[i]+'"> Khối '+thm[i]+'</option>');
+            $('#khoi').append('<option value="'+mathm[i]+'"> Khối '+thm[i]+'</option>');
         }
- 		$('#querry').val('insert');
+ 		$('#query').val('insert');
  		$('#modalNopHS').modal('show');
  	}
 
     suaNganh = function (button) {
         $('#khoi').empty();
-
-        var thm = $('#'+button.id).data('tohopmon').split(':');
+        var mathm = $('#'+button.id).data('khoi').split(':'); 
+        var thm = $('#'+button.id).data('tohopmon').split(';');
         $('#ma-nganh').val($('#'+button.id).data('idnganh'));
         $('#nguyen-vong').val($('#'+button.id).data('nv'));
         $('#h4-nophs').text("Bạn Chọn Ngành: "+$('#'+button.id).data('tennganh'));
         for (var i = 0; i < thm.length-1; i++) {
             if($('#'+button.id).data('khoi') == thm[i])
-                $('#khoi').append('<option value="'+thm[i]+'" selected> Khối '+thm[i]+'</option>');
+                $('#khoi').append('<option value="'+mathm[i]+'" selected> Khối '+thm[i]+'</option>');
             else
-                $('#khoi').append('<option value="'+thm[i]+' "> Khối '+thm[i]+'</option>');
+                $('#khoi').append('<option value="'+mathm[i]+' "> Khối '+thm[i]+'</option>');
         }
 
 

@@ -212,8 +212,8 @@ class SoGDController extends Controller
     							->select('hocsinh.*','users.*','khuvuc.*','thpt.user_name as thpt_ten')
     							->whereIn('hocsinh.thpt_maso',$thpt)->get();
 
-          $button_edit = '';
-         $button_delete = '';
+        $button_edit = '';
+        $button_delete = '';
         $button_suadiem = '';                  
     	return Datatables::of($hs)
     	->removeColumn('user_pass')
@@ -243,7 +243,7 @@ class SoGDController extends Controller
                                 class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Xóa</button> ';
                     return $button_edit.$button_delete;
                 }
-                else{
+                else if($this->checkTime("LTG02",'cuoi')){
                     return '<button onclick="xemthem(this)" 
                         data-mahs="'.$hs->user_id.'" 
                         data-tenhs="'.$hs->user_name.'" 
@@ -256,12 +256,18 @@ class SoGDController extends Controller
                         data-thpt="'.$hs->thpt_maso.'"
                         data-emailhs="'.$hs->user_email.'"
                         id="xemthem-'.$hs->user_id.'" 
-                        class="btn btn-xs btn-info"><i class="glyphicon glyphicon-info"></i> Thông Tin</button>';
+                        class="btn btn-xs btn-info"><i class="glyphicon glyphicon-info-sign"></i> Thông Tin</button> <br/>'.
+                        '<button onclick="xemdiem(this)" 
+                                data-mahs="'.$hs->user_id.'" 
+                                id="xemdiem-'.$hs->user_id.'" 
+                                class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Xem Điểm</button>'    
+                        ;
                 }
                 
                 $button_suadiem ='';
                 if($this->checkTime("LTG02",'giua')){
-                    $button_suadiem = '<button onclick="nhapdiem(this)" 
+                    $button_suadiem = 
+                                '<button onclick="nhapdiem(this)" 
                                 data-mahs="'.$hs->user_id.'" 
                                 id="nhapdiem-'.$hs->user_id.'" 
                                 class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i> Sửa Điểm</button>';
@@ -395,7 +401,7 @@ class SoGDController extends Controller
     	$hs_cmnd = $request->hs_cmnd;
 
     	$hs_ngaysinh = date("Y-m-d", strtotime(str_replace('/', '-',$request->hs_ngaysinh)) );
-    	$hs_gioitinh = $request->hs_gioitinh=="Nam"?"Nam":"Nữ";
+    	$hs_gioitinh = $request->hs_gioitinh=="nam"?"Nam":"Nữ";
     	$hs_kv = $request->hs_kv;
     	$hs_thpt = $request->hs_thpt;
     	try {
@@ -429,11 +435,14 @@ class SoGDController extends Controller
 
     }
 
-    private function checkTime($ltg_maso,$key)
+    public static function checkTime($ltg_maso,$key)
     {
         $time = false;
         $today = date("Y-m-d");
         $thoigian = DB::table('thoigian')->where('ltg_maso',$ltg_maso)->first();
+        if($thoigian == null){
+            return false;
+        }
         switch ($key) {
             case 'giua':
                 if($today >= $thoigian->tg_batdau && $today <= $thoigian->tg_ketthuc){

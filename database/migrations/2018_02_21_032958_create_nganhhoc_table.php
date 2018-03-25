@@ -20,7 +20,12 @@ class CreateNganhhocTable extends Migration
             $table->float('ngh_diemchuan')->nullable(true);
             $table->integer('ngh_chitieu');
             $table->string('ngh_bachoc');
+            $table->string('dh_maso');
             $table->primary('ngh_id');
+            $table->foreign('dh_maso')
+                  ->references('user_id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 

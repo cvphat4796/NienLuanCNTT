@@ -16,12 +16,7 @@ class CreateNganhxettuyenTable extends Migration
         Schema::create('nganhxettuyen', function (Blueprint $table) {
             $table->string('khoi_maso');
             $table->string('ngh_id');
-            $table->string('dh_maso');
-            $table->primary(['khoi_maso','ngh_id']);            
-            $table->foreign('dh_maso')
-                  ->references('user_id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            $table->primary(['khoi_maso','ngh_id']);    
             $table->foreign('khoi_maso')
                   ->references('khoi_maso')
                   ->on('khoi')

@@ -61,8 +61,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-             <li id="qlthoigian" ><a href="/dai-hoc/quan-ly-nganh">Quản Lý Ngành</a></li>
-             <li id="qlkhoinganh"><a href="/dai-hoc/quan-ly-khoi">Quản Lý Khối Xét Tuyển</a></li>
+             <li id="qlnganh" ><a href="/dai-hoc/quan-ly-nganh">Quản Lý Ngành</a></li>
+             <li id="qlkhoi"><a href="/dai-hoc/quan-ly-khoi">Quản Lý Khối Xét Tuyển</a></li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">

@@ -9,8 +9,8 @@
 		  }
 		});
 
-    submitExcelHS = function () {
-        var extension = $('#hsfile').val().split('.').pop().toLowerCase();
+    submitNganhExcel = function () {
+        var extension = $('#nganhfiles').val().split('.').pop().toLowerCase();
         if ($.inArray(extension, ['csv', 'xls', 'xlsx']) == -1) {
             alert('Vui lòng chọn file Excel!!!');
             return false;
@@ -21,11 +21,11 @@
                                 keyboard: false  // to prevent closing with Esc button (if you want this too)
                             });
 
-        var file_data = $('#hsfile').prop('files')[0];
+        var file_data = $('#nganhfiles').prop('files')[0];
         var form_data = new FormData();
-        form_data.append('hs', file_data);
+        form_data.append('fileNganh', file_data);
         $.ajax({
-            url: '/tao-tai-khoan-excel',
+            url: '/them-nganh-excel',
             type: 'POST',
             data: form_data,
             enctype: 'multipart/form-data',
@@ -49,25 +49,26 @@
         $("#cn_"+id).remove();
         $("#btn"+id).remove();
         arrIDCN = arrIDCN.filter(item => item != id)
-        console.log(arrIDCN);
     }
 
     var indexCN = 0;
     var arrIDCN = [];   
-    addCN = function () {
+    addCN = function (value="") {
         $('#cn_ten').append('<input class="form-control pull-left" id=cn_'+indexCN+
-                            ' style="width: 85%"  placeholder="Tên Chuyên Ngành" type="text"/>'+
+                            ' style="width: 85%"  placeholder="Tên chuyên ngành" value="'
+                            +value+'" type="text"/>'+
                             '<button type="button" class="btn btn-danger" id=btn'+indexCN+' onclick="removeCN(\''+indexCN+'\')"'+
                             ' ><i class="glyphicon glyphicon-minus"></i></button>');
         arrIDCN.push(indexCN);
         indexCN++;
-console.log(arrIDCN);
     }
 
  	submitNganh = function(event) {
-            var cn =[];
+
+            var cn = new Array();
             for (var i = 0; i < arrIDCN.length; i++) {
-                cn[i] = $('#cn_'+arrIDCN[i]).val();
+                if($('#cn_'+arrIDCN[i]).val() != '')
+                    cn[i] = $('#cn_'+arrIDCN[i]).val();
             }
             
             var nganh_id = $('#nganh-id').val();    
@@ -78,15 +79,8 @@ console.log(arrIDCN);
             var nganh_diemchuan = $('#nganh-diemchuan').val();
             
             var querry = $('#querry').val();
-            var khoi = [];
-                $(':checkbox:checked').each(function(i){
-                  khoi[i] = $(this).val();
-                });
-            if($.isEmptyObject(khoi)){
-                     alert('Phải chọn khối xét tuyển!!');          
-                    return false;
-            }
-        if(querry == 'insert'){
+            
+        if(querry == 'insert' || querry == 'update'){
             if(nganh_maso == ''){
                 alert('Phải nhập mã ngành!!');          
                 return false;
@@ -103,7 +97,14 @@ console.log(arrIDCN);
                 alert('Phải chọn bậc học!!');
                 return false;
             }
-             
+             var khoi = [];
+                $(':checkbox:checked').each(function(i){
+                  khoi[i] = $(this).val();
+                });
+            if($.isEmptyObject(khoi)){
+                     alert('Phải chọn khối xét tuyển!!');          
+                    return false;
+            }
         } 
         
  		$.ajax({
@@ -116,6 +117,7 @@ console.log(arrIDCN);
                     nganh_diemchuan: nganh_diemchuan,
                     bh: bh,
                     khoi: khoi,
+                    cn: cn,
                     querry: querry},
  			success: function (response) {
  				alert(response.message);
@@ -135,6 +137,7 @@ console.log(arrIDCN);
         $('#tableNganh_length').addClass('dbtb_length');
 
         $('#btnNganhs').click(function(event) {
+            $('#cn_ten').empty();
             $('#querry').val('insert');
             $('#h4-Nganh').text("Thêm Ngành");
             $('#nganh-maso').val('');
@@ -181,40 +184,18 @@ console.log(arrIDCN);
  	 	iDisplayLength: 3,
         processing: true,
         serverSide: true,
-        ajax:'/dai-hoc/get-list-nganh',
+        ajax:'/api-dc/get-list-nganh',
         columns: [
-            {data: 6},
-            {data: 1},
-            {data: 2},
-            {data: 5},
-            {data: 3},
-            {data: 4},
+            {data: null},
+            {data: 'ngh_maso'},
+            {data: 'ngh_ten'},
+            {data: 'tohopmon'},
+            {data: 'ngh_chitieu'},
+            {data: 'ngh_bachoc'},
+            {data: 'action'},
         ],
-         "columnDefs": [ {
-            "targets": 6,
-            "data": "download_link",
-            "render": function ( data, type, row, meta ) {
-              return '<button onclick="editNganh(this)" '
-                    +'data-idnganh="'+row[0]+'"'
-                    +'data-manganh="'+row[1]+'"'
-                    +'data-bh="'+row[4]+'"'
-                    +'data-tennganh="'+row[2]+'"'
-                    +'data-tohopmon="'+row[6]+'"'
-                    +'data-chitieu="'+row[3]+'"'
-                    +'data-diemchuan="'+row[7]+'"'
-                    +'id="editNganh-'+row[0]+'"' 
-                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Sửa</button>'
-
-                    +'<button onclick="deleteNganh(this)"'
-                    +'data-idnganh="'+row[0]+'"'
-                    +'data-tennganh="'+row[2]+'"'
-                    +'id="deleteNganh-'+row[0]+'"'
-                    +' class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Xóa</button> '
-
-                    +'<a href="/dai-hoc/quan-ly-ho-so/'+row[0]+'"'
-                    +' class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-list"></i> Xem Hồ Sơ Nộp</a> ';
-            }
-          },
+          "columnDefs": [ 
+         
            {
             "targets": 0,
             "data": "download_link",
@@ -267,15 +248,25 @@ console.log(arrIDCN);
  	
  	editNganh = function (button) {
         $('#h4-Nganh').text("Sửa Thông Tin Ngành");
-
-        $('#nganh-maso').val($('#'+button.id).data('manganh'));
-        $('#nganh-ten').val($('#'+button.id).data('tennganh'));
-        $('#nganh-chitieu').val($('#'+button.id).data('chitieu'));
-        $('#nganh-id').val($('#'+button.id).data('idnganh'));
-        $('#nganh-diemchuan').val($('#'+button.id).data('diemchuan'));
+        $('#cn_ten').empty();
+        $('#nganh-maso').val($('#'+button.id).data('maso'));
+        ten = $('#'+button.id).data('ten')
+        tenN = ten.split(":");
+        $('#nganh-ten').val(tenN[0]);
+        if(tenN.length > 1){
+            tenCN = tenN[1].split(',');
+            for (var i = 0; i < tenCN.length;i++) {
+               addCN(tenCN[i]);
+            }
+        }
         
-        $('#bh').val($('#'+button.id).data('bh')=="Đại Học"?"DH":"CD");
-        var kh = $('#'+button.id).data('tohopmon').split(':');
+
+        $('#nganh-chitieu').val($('#'+button.id).data('chitieu'));
+        $('#nganh-id').val($('#'+button.id).data('id'));
+        $('#nganh-diemchuan').val($('#'+button.id).data('ngh_diemchuan'));
+        
+        $('#bh').val($('#'+button.id).data('bachoc')=="Đại Học"?"DH":"CD");
+        var kh = $('#'+button.id).data('thm_maso').split(':');
         for (var i = 0; i < kh.length-1; i++) {
             $('#'+kh[i]).prop({checked: true})
         }
@@ -284,11 +275,13 @@ console.log(arrIDCN);
  	}
 
  	deleteNganh = function (button) {
- 		ok = confirm("Bạn muốn xóa ngành "+$('#'+button.id).data('tennganh')+"?");
+         tenN = $('#'+button.id).data('ten').split(':');
+ 		ok = confirm("Bạn muốn xóa ngành: "+tenN[0]+"?");
  		if(ok){
- 			$('#nganh-id').val($('#'+button.id).data('idnganh'));
+
+ 			$('#nganh-id').val($('#'+button.id).data('id'));
  			$('#querry').val('delete');
- 			submitHS();
+ 			submitNganh();
  		}
  		
  	}

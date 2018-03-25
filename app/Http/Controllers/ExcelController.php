@@ -7,9 +7,90 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Redirector;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Webpatser\Uuid\Uuid;
 
 class ExcelController extends Controller
 {
+
+  public function postThemNganhExcel(Request $request)
+  {
+      $path = $request->file('fileNganh')->getRealPath();
+      $data = Excel::load($path, function($reader) {})->get();
+      $nganh = [];
+      $cnganh = [];
+       if(!empty($data)){
+        $ngh_id = '';
+        $insertNganh = [];
+        $thm = [];
+        $cnganh = [];
+        //dd($data->toArray());
+          foreach ($data->toArray() as $key => $value) {
+             
+              if(!is_null($value['ma_nganh'])){
+                  $ngh_id = Uuid::generate()->string;
+                  $ngh_maso = $value['ma_nganh'];
+                  $ten = $value['ten_nganh'];
+                  if(!is_null($value['ten_chuyen_nganh'])){
+                    $cnganh[] = ['ngh_id'=> $ngh_id,'cn_ten' => $value['ten_chuyen_nganh']];
+                  }
+                  $tohopmon =  $value['to_hop_mon'];
+                  $chitieu = $value['chi_tieu'];
+                  $bachoc = strtoupper($value['bac_hoc']) == 'DH' ? "Đại Học":'Cao Đẳng'; 
+                  $temp = explode(',',$tohopmon);
+                  foreach ($temp as $key => $value) {
+                    $khoi_maso = DB::table('khoi')->where([
+                                              ['dh_maso','=',Auth::user()->user_id],
+                                              ['khoi_ten','=',strtoupper($value)]
+                                                          ])->select('khoi.khoi_maso')->first();
+
+                    $thm[] = ['ngh_id' => $ngh_id, 'khoi_maso' => $khoi_maso->khoi_maso];
+                  }
+                       
+                  $insertNganh[] = [
+                       'ngh_id' => $ngh_id, 
+                       'ngh_ten' => $ten,
+                       'ngh_maso' => $ngh_maso,
+                       'ngh_chitieu' => $chitieu,
+                       'ngh_bachoc' => $bachoc,
+                       'dh_maso' => Auth::user()->user_id
+                    ];
+                 
+              }
+              else{
+                   if(!is_null($value['ten_chuyen_nganh'])){
+                      $cnganh[] = ['ngh_id'=> $ngh_id,'cn_ten' => $value['ten_chuyen_nganh']];
+                   }
+              }
+          }
+         
+          try 
+          {
+              if(!empty($insertNganh) && !empty($thm))
+              {
+              
+                  DB::beginTransaction();
+
+                  DB::table('nganhhoc')->insert($insertNganh);
+                  DB::table('nganhxettuyen')->insert($thm);
+                  if(!empty($cnganh)){
+
+                        DB::table('chuyennganh')->insert($cnganh);
+                  }
+                  DB::commit();
+                  return response()->json(array('message' => 'Thêm Thành Công!!','status' => true)) ;
+              }
+              else
+              {
+                  return response()->json(array('message' => 'Thêm Thất Bại!!','status' => false)) ;
+             }
+          } 
+          catch (\Exception $e) {
+            echo $e;
+                DB::rollBack();
+                return response()->json(array('message' => 'Thêm Thất Bại!!','status' => false)) ;
+          }
+      }
+  }
     //controller tao tai khoan bang file excel
     public function postTaoTaiKhoanExcel(Request $request)
     {

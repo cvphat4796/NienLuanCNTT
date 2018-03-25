@@ -15,7 +15,7 @@
 			<label for="">Tên Ngành: </label>
 			<span>{{ $ng->ngh_ten }};</span>
 			<label for="">Điểm Chuẩn: </label>
-			<span>{{ $ng->ngh_chuan }};</span>
+			<span>{{ $ng->ngh_diemchuan }};</span>
 			<label for="">Chỉ Tiêu: </label>
 			<span>{{ $ng->ngh_chitieu }};</span>
 			<label for="">Bậc Học: </label>
@@ -31,11 +31,13 @@
 						<th>Số Điện Thoại</th>
 						<th>Điểm Tổng</th>
 						<th>Khối Xét</th>
+						<th>Nguyện Vọng</th>
 						<th>Kết Quả</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>

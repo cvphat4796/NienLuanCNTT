@@ -1,19 +1,6 @@
  $(function(){
  	var data1 = "";
 
-    $('#showDialogTHPT').click(function(event) {
-        $('#querry').val('insert');
-        $('#h4-THPT').text("Thêm Trường THPT");
-        $('#thpt-maso').val('');
-        $('#thpt-ten').val('');
-        $('#thpt-pass1').removeClass('hidden');
-        $('#thpt-pass2').removeClass('hidden');
-        $('#lb-mk1').removeClass('hidden');
-        $('#lb-mk2').removeClass('hidden');
-        $('#thpt-diachi').val('');
-        $('#thpt-sdt').val('');
-        $('#thpt-email').val('');
-    });
 
  	$.ajaxSetup({
 		  headers: {
@@ -125,12 +112,33 @@
  		tableTHPT();
         $('#tableTHPT_paginate').addClass('dbtb_paginate');
         $('#tableTHPT_length').addClass('dbtb_length');
+
+        $('#btnThemTHPT').click(function(event) {
+            $('#thpt-maso').prop('readonly',false);
+             $('#querry').val('insert');
+            $('#h4-THPT').text("Thêm Trường THPT");
+            $('#thpt-maso').val('');
+            $('#thpt-ten').val('');
+            $('#thpt-pass1').removeClass('hidden');
+            $('#thpt-pass2').removeClass('hidden');
+            $('#lb-mk1').removeClass('hidden');
+            $('#lb-mk2').removeClass('hidden');
+            $('#thpt-diachi').val('');
+            $('#thpt-sdt').val('');
+            $('#thpt-email').val('');
+
+            $('#modalTHPT').modal('show');
+        });
+
+        $('#btnThemTHPTExcel').click(function(event) {
+           $('#modalExcelTHPT').modal('show');
+        });
  	});
  	
 
  	tableTHPT = function () {
  		$('#tableTHPT').DataTable({
- 		 "dom": '<"text-right"f>rt<lp><"clear">',
+ 		 "dom": '<"text-right"Bf>rt<lp><"clear">',
          responsive: true,
  	 	"language": {
             "search": "Tìm kiếm:",
@@ -141,6 +149,17 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
+         buttons: [{
+                    attr:{id: "btnThemTHPT"},
+                    className: 'btn btn-info',
+                    text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
+                },
+                {
+                    attr:{id: "btnThemTHPTExcel"},
+                    className: 'btn btn-info',
+                    text: '<i class="glyphicon glyphicon-plus"></i>Thêm Với Excel',
+                }
+                ],
  	 	aLengthMenu: [[10, 20, 30, -1], [10, 20, 30, "Tất cả"]],
  	 	iDisplayLength: 10,
         processing: true,

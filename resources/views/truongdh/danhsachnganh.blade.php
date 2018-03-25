@@ -26,12 +26,13 @@
                         <label for="textbox1">*Mã số:</label>
                         <input id="nganh-id" type="hidden"/>
                         <input class="form-control" id="nganh-maso" placeholder="Nhập mã số" type="text"/>
-
-                        <label for="textbox2">*Tên:</label>
-                        <div id="cn_ten">
-                           <input class="form-control pull-left"  style="width: 85%" id="nganh-ten" placeholder="Nhập tên" type="text"/>
+                      
+                           <label for="textbox2">*Tên:</label>
+                           <div>
+                        <input class="form-control pull-left"  style="width: 85%" id="nganh-ten" placeholder="Nhập tên" type="text"/>
                           <button type="button" class="btn btn-info" onclick="addCN()" id="chuyenNganh"><i class="glyphicon glyphicon-plus"></i></button>
                         </div>
+                          <div id="cn_ten" ></div>
                        
                     
                         <label for="textbox2">*Chỉ Tiêu:</label>
@@ -85,10 +86,10 @@
                       <input type="hidden" value="insert" id="querry">
                       <meta name="csrf-token" content="{{ csrf_token() }}">
                       <label for="textbox2">File mẫu:</label>
-                      <a href="{!!asset('public/files/FileMauHocSinh.xlsx')!!}" >File mẫu</a>
+                      <a href="{!!asset('public/files/FileMauThemNganh.xlsx')!!}" >File mẫu</a>
                       <br/>
                       <label for="">Upload File:</label>
-                      <input type="file" id="hsfile" class="form-control">
+                      <input type="file" id="nganhfiles" class="form-control">
 
                  </div>
               </div>
@@ -163,7 +164,7 @@
 
  <script>
         $(document).ready(function () {
-            $('#qlhs').addClass('active');
+            $('#qlnganh').addClass('active');
         });
 
 </script>

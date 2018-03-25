@@ -8,11 +8,11 @@ $(function () {
 		});
 
 	$(document).ready(function($) {
-		tableKXT();
  		tableMH();
+        tableKhoi();
+		tableKXT();
     	$('#table-kxt_paginate').addClass('dbtb_paginate');
         $('#table-kxt_length').addClass('dbtb_length');
-        tableKhoi();
         $('#table-khoi_paginate').addClass('dbtb_paginate');
         $('#table-khoi_length').addClass('dbtb_length');
 
@@ -34,7 +34,10 @@ $(function () {
 						if(!$.isEmptyObject(response.listKhoi)){
 						    addOptionToSelect('sel-khoi',response.listKhoi,'khoi_maso','khoi_ten');
 						    $('#modalKXT').modal('show');
-						}            		
+						} 
+						else{
+							alert('Chưa có dữ liệu về khối!!');
+						}          		
 					}
 			});
 		});

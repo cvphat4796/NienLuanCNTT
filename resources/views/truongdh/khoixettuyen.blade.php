@@ -161,7 +161,7 @@
 	
  <script>
         $(document).ready(function () {
-            $('#qlkhoinganh').addClass('active');
+            $('#qlkhoi').addClass('active');
         });
 
 </script>

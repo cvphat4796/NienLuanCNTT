@@ -66,11 +66,7 @@ $(function () {
 	    		alert('Bạn Chưa Chọn Ngày!!!!');
 	 			return false;
 	    	}
-	    	var currentDay = new Date().toLocaleDateString().split("/").reverse().join("-");
-	    	if(new Date(ngaybd.split("/").reverse().join("-")).getTime() < new Date(currentDay).getTime()){
-	    		alert('Ngày Bắt Đầu Phải Lớn Hơn Ngày Hiện Tại!!!!');
-	 			return false;
-	    	}
+	    	
 	    	if(new Date(ngaybd.split("/").reverse().join("-")).getTime() > new Date(ngaykt.split("/").reverse().join("-")).getTime())
 	 		{
 	 			alert('Ngày Bắt Đầu Phải Nhỏ Hơn Ngày Kết Thúc!!!!');
