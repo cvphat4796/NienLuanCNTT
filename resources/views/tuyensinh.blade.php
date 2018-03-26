@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12 col-sm-12  col-md-12 col-lg-12 ">
-          <table id="tableNganh" class="table table-bordered  table-hover table-striped">
+          <table id="tableNganhs" class="table table-bordered  table-hover table-striped">
             <thead>
               <tr>
                 <th>Mã Ngành</th>

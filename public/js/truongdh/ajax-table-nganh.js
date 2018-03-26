@@ -123,7 +123,7 @@
  				alert(response.message);
                 if (response.status) {
                     $('#tableNganh').DataTable().ajax.reload();      
-                    $('#modalNganh').modal('hide');
+                   // $('#modalNganh').modal('hide');
                 }
  				
  			}
@@ -189,8 +189,8 @@
                         text: '<i class="glyphicon glyphicon-plus"></i>Thêm Điểm Với Excel',
                     }
                 ],
- 	 	aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
- 	 	iDisplayLength: 3,
+ 	 	aLengthMenu: [[10, 30, 50, 100, -1], [10, 30, 50, 100, "Tất cả"]],
+ 	 	iDisplayLength: 10,
         processing: true,
         serverSide: true,
         ajax:'/api-dc/get-list-nganh',

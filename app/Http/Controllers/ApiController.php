@@ -164,7 +164,6 @@ class ApiController extends Controller
 	    							$temp = $temp.'- '.$value.'</br>';
 	    						}
     						}
-    						
     					}
     					return $temp;
     				}
@@ -188,8 +187,6 @@ class ApiController extends Controller
     					return $temp;
     				}
     				return '<b>'.$list->ngh_ten.'</b>';
-    				
-    				
     			})
     			->rawColumns(['tohopmon', 'ngh_ten'])
                 ->make(true);
@@ -208,13 +205,14 @@ class ApiController extends Controller
 	        $list_ma_khoi = array();
 	        foreach ($ctkhoi as $k => $v) {
 	        	$list_ma_khoi[] = $v->khoi_maso;
-
 	        }
-	        //dd($list_ma_khoi);
-	        $khoi = DB::table('khoi')->whereNotIn('khoi_maso', $list_ma_khoi)->orderBy('khoi_ten','asc')->get();
+	        $khoi = DB::table('khoi')->where('dh_maso',Auth::user()->user_id)
+	        						->whereNotIn('khoi_maso', $list_ma_khoi)
+	        						->orderBy('khoi_ten','asc')->get();
 		}
 		else{
-			$khoi = DB::table('khoi')->orderBy('khoi_ten','asc')->get();
+			$khoi = DB::table('khoi')->where('dh_maso',Auth::user()->user_id)
+									->orderBy('khoi_ten','asc')->get();
 		}
 		
 		return	response()->json(array('listKhoi' => $khoi));
@@ -222,7 +220,7 @@ class ApiController extends Controller
 
 	public function getListKhoi()
 	{
-		$listKhoi = DB::table('khoi')->orderBy('khoi_ten','asc')->get();
+		$listKhoi = DB::table('khoi')->where('dh_maso',Auth::user()->user_id)->orderBy('khoi_ten','asc')->get();
 		return Datatables::of($listKhoi)
 							->editColumn('khoi_ten',function ($list)
 							{
@@ -238,6 +236,7 @@ class ApiController extends Controller
 	{
 	
 		$arrKXT = DB::table('chitietkhoi')->join('khoi','khoi.khoi_maso','chitietkhoi.khoi_maso')
+											->where('dh_maso',Auth::user()->user_id)
 											->join('monhoc','monhoc.mh_maso','chitietkhoi.mh_maso')
 											->orderBy('chitietkhoi.khoi_maso','asc')
 											->get();

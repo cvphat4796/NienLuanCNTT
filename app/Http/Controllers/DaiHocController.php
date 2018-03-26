@@ -22,15 +22,9 @@ class DaiHocController extends Controller
 
     public function getNganh()
     {
-    	
-    	// $nganh =  DB::table('nganhhoc')
-    	// 						->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
-    	// 						->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
-    	// 						->where([
-    	// 								['nganhhoc.dh_maso','=',Auth::user()->user_id]])->get();
-  
-            
     	$khois = DB::table('khoi')->join('chitietkhoi', 'khoi.khoi_maso', '=', 'chitietkhoi.khoi_maso')
+    								->where('dh_maso',Auth::user()->user_id)
+    								->orderBy('khoi_ten','asc')
     								->select('khoi.*')
     								->distinct()
     								->get();
@@ -118,7 +112,7 @@ class DaiHocController extends Controller
 	             DB::table('chuyennganh')->insert($cn);
             }
 			DB::commit();
-			
+			$this->tinhKQ();
 			return array('message' => 'Sửa Ngành Thành Công!!!','status' => true);
 		} catch (\Exception $e) {
 			echo $e;
@@ -430,55 +424,64 @@ class DaiHocController extends Controller
 	//het action khoi xet tuyen
 
 
-	public  static function tinhKQ()
+	public static function tinhKQ()
 	{
 		$ng = DB::table('nguyenvong')->join('nganhhoc','nganhhoc.ngh_id','nguyenvong.ngh_id')
-										->join('khoi','khoi.khoi_maso','nguyenvong.khoi_maso')
-									->where('nganhhoc.dh_maso',Auth::user()->user_id)->orderBy('nv_douutien','asc')->get();
+									->join('khoi','khoi.khoi_maso','nguyenvong.khoi_maso')
+									->where('nganhhoc.dh_maso',Auth::user()->user_id)
+									->orderBy('nv_douutien','asc')->get();
 								
 		foreach ($ng as $key => $value) {
-			$diemhs = DB::table('diemthi')->where('hs_maso',$value->hs_maso)->get();
-			$mon = DB::table('chitietkhoi')->where('khoi_maso',$value->khoi_maso)->get();
-			$diem = 0;
-			foreach ($mon as $k => $v) {
-				foreach ($diemhs as $ke => $va) {
-					if($v->mh_maso==$va->mh_maso){
-						$diem += $va->dt_diemso;
-						break;
-					}
+			$diem = self::tinhDiem($value->hs_maso,$value->khoi_maso);
+			$check = DB::table('nguyenvong')->where([['hs_maso','=',$value->hs_maso],
+													['nv_kq','=',1]])->first();
+			if(!is_null($check)){
+				self::queryDB($value->ngh_id,$value->hs_maso,0);
+			}
+			else
+			{
+				if( $diem >= $value->ngh_diemchuan)
+				{
+					self::queryDB($value->ngh_id,$value->hs_maso,1);
+				}
+			 	else
+			 	{
+				 	self::queryDB($value->ngh_id,$value->hs_maso,0);
+			 	}
+			}
+		}
+	}
+
+	private static function queryDB($ngh_id,$hs_maso,$nv_kq)
+	{
+		try 
+	    {
+	        DB::beginTransaction();
+
+	        DB::table('nguyenvong')->where([['ngh_id','=',$ngh_id],['hs_maso','=',$hs_maso]])
+	                                              ->update(['nv_kq' => $nv_kq]);
+	        DB::commit();
+	                  } 
+	    catch (\Exception $e) {
+	        DB::rollBack();
+	    }
+	}
+	private static function tinhDiem($hs_maso, $khoi_maso)
+	{
+		$diemhs = DB::table('diemthi')->where('hs_maso',$hs_maso)->get();
+		$mon = DB::table('chitietkhoi')->where('khoi_maso',$khoi_maso)->get();
+		$diem = 0;
+		foreach ($mon as $k => $v) {
+			foreach ($diemhs as $ke => $va) {
+				if($v->mh_maso==$va->mh_maso){
+					$diem += $va->dt_diemso;
+					break;
 				}
 			}
-				$hs = DB::table('users')->join('hocsinh','hocsinh.hs_maso','users.user_id')
-							->join('khuvuc','khuvuc.kv_maso','hocsinh.kv_maso')->where('user_id',$value->hs_maso)->first();
-			
-			
-			 $diem= $diem + $hs->kv_diemcong;
-
-			 if( $diem >= $value->ngh_diemchuan){
-			 	try 
-                  {
-                          DB::beginTransaction();
-
-                          DB::table('nguyenvong')->where([['ngh_id','=',$value->ngh_id],['hs_maso','=',$value->hs_maso]])->update(['nv_kq' => 1]);
-                          DB::commit();
-                  } 
-                  catch (\Exception $e) {
-                        DB::rollBack();
-                  }
-			 }
-			 else{
-			 	try 
-                  {
-                          DB::beginTransaction();
-
-                          DB::table('nguyenvong')->where([['ngh_maso','=',$ngh_maso],['hs_maso','=',$value->hs_maso]])
-                                              ->update(['nv_kq' => 0]);
-                          DB::commit();
-                  } 
-                  catch (\Exception $e) {
-                        DB::rollBack();
-                  }
-			 }
 		}
+		$hs = DB::table('users')->join('hocsinh','hocsinh.hs_maso','users.user_id')
+							->join('khuvuc','khuvuc.kv_maso','hocsinh.kv_maso')->where('user_id',$hs_maso)
+							->first();
+		return ($diem + $hs->kv_diemcong);
 	}
 }

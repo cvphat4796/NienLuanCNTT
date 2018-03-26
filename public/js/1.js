@@ -77,13 +77,13 @@ $(document).ready(function() {
 		$('#xinchao1').addClass('hidden');
 	}
 
-	tableNganh();
-	 $('#tableNganh_paginate').addClass('dbtb_paginate');
-     $('#tableNganh_length').addClass('dbtb_length');
+	tableNganhs();
+	 $('#tableNganhs_paginate').addClass('dbtb_paginate');
+     $('#tableNganhs_length').addClass('dbtb_length');
 });
 
-tableNganh = function () {
- 		table = $('#tableNganh').DataTable({
+tableNganhs = function () {
+ 		table = $('#tableNganhs').DataTable({
  		 "dom": '<"text-right"f>rt<lp><"clear">',
  	 	"language": {
             "search": "Tìm kiếm:",

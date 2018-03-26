@@ -87,8 +87,8 @@ $(function () {
 			                
 			            }
 			        ],
-			        aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
- 	 				iDisplayLength: 3,
+			        aLengthMenu: [[5, 10, 20, -1], [5, 10, 20,"Tất cả"]],
+ 	 				iDisplayLength: 5,
 			        ajax:'/api-dc/get-list-khoi',
 			        columns:[
 			        	{data: 'khoi_ten'},
@@ -174,8 +174,8 @@ $(function () {
 			                text: '<i class="glyphicon glyphicon-plus"></i>Thêm',
 			            }
 			        ],
-			         aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
- 	 				iDisplayLength: 3,
+			        aLengthMenu: [[5, 10, 20, -1], [5, 10, 20,"Tất cả"]],
+ 	 				iDisplayLength: 5,
 			        ajax:'/api-dc/get-list-khoi-xet-tuyen',
 			        columns:[
 			        	{data: 'khoi_ten', name: 'khoi'},
