@@ -16,42 +16,46 @@ class ExcelController extends Controller
   {
     $path = $request->file('diemchuan')->getRealPath();
       $data = Excel::load($path, function($reader) {})->get();
-      
-       if(!empty($data)){
-       $error = [];
-       $status = true;
-        $dh = Auth::user()->user_id;
-          foreach ($data->toArray() as $key => $value) {
-             
-              if(!is_null($value['ma_nganh'])){
-                  $ngh_id = $value['ma_nganh'];
-                  $diem_chuan = $value['diem_chuan'];
-                  try 
-                  {
-                          DB::beginTransaction();
+      try{
+          if(!empty($data)){
+             $error = [];
+             $status = true;
+              $dh = Auth::user()->user_id;
+                foreach ($data->toArray() as $key => $value) {
+                   
+                    if(!is_null($value['ma_nganh'])){
+                        $ngh_id = $value['ma_nganh'];
+                        $diem_chuan = $value['diem_chuan'];
+                        try 
+                        {
+                                DB::beginTransaction();
 
-                          DB::table('nganhhoc')->where([['ngh_maso','=',$ngh_id],['dh_maso','=',$dh]])
-                                              ->update(['ngh_diemchuan' => $diem_chuan]);
-                          DB::commit();
-                  } 
-                  catch (\Exception $e) {
-                        DB::rollBack();
-                        $status = false;
-                        $error[] =  $ngh_id = $value['ma_nganh'];
-                  }
-              }
-             
-          }
-          if($status){
-              DaiHocController::tinhKQ();
-             return response()->json(array('message' => 'Thêm Thành Công!!','status' => true)) ;
-          }
-          else{
-             return response()->json(array('message' => 'Thêm Thất Bại!!','error' => $error,'status' => false)) ;
-           }
+                                DB::table('nganhhoc')->where([['ngh_maso','=',$ngh_id],['dh_maso','=',$dh]])
+                                                    ->update(['ngh_diemchuan' => $diem_chuan]);
+                                DB::commit();
+                        } 
+                        catch (\Exception $e) {
+                              DB::rollBack();
+                              $status = false;
+                              $error[] =  $ngh_id = $value['ma_nganh'];
+                        }
+                    }
+                   
+                }
+                if($status){
+                    DaiHocController::tinhKQ();
+                   return response()->json(array('message' => 'Thêm Thành Công!!','status' => true)) ;
+                }
+                else{
+                   return response()->json(array('message' => 'Thêm Thất Bại!!','error' => $error,'status' => false)) ;
+                 }
 
+            }
+               return response()->json(array('message' => 'File Rỗng!!', 'status' => false)) ; 
       }
-         return response()->json(array('message' => 'File Rỗng!!', 'status' => false)) ; 
+      catch(\Exception $ex){
+            return response()->json(array('message' => 'Lỗi File Tải Lên!!', 'status' => false)) ; 
+      }
   }
 
   public function postThemNganhExcel(Request $request)
