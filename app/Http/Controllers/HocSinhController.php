@@ -40,7 +40,7 @@ class HocSinhController extends Controller
     							->join('nganhxettuyen', 'nganhxettuyen.ngh_id', '=', 'nganhhoc.ngh_id')
     							->join('khoi', 'khoi.khoi_maso', '=', 'nganhxettuyen.khoi_maso')
     							->join('users as dh', 'dh.user_id', '=', 'nganhhoc.dh_maso')
-    							->select('dh.user_name','nganhhoc.*','khoi.*')
+    							->select('dh.user_name','dh.user_id','nganhhoc.*','khoi.*')
     							->get();
     	
     	if(!$nganh->isEmpty()){
@@ -97,6 +97,7 @@ class HocSinhController extends Controller
 		    						'ngh_khoima' => $ma_khoi,
 		    						'ngh_diemchuan' => $nganh[$i-1]->ngh_diemchuan,
 		    						'dh_ten' => $nganh[$i-1]->user_name,
+		    						'dh_id' => $nganh[$i-1]->user_id,
 		    						'check' => 1,
 	    							'douutien' => $check_nganh->nv_douutien,
 	    							'khoi' => $check_nganh->khoi_maso
@@ -114,6 +115,7 @@ class HocSinhController extends Controller
 		    						'ngh_diemchuan' => $nganh[$i-1]->ngh_diemchuan,
 		    						'douutien' => 'Không Đăng Ký',
 		    						'dh_ten' => $nganh[$i-1]->user_name,
+		    						'dh_id' => $nganh[$i-1]->user_id,
 		    						'check' => 0
 	    					];
 	    			}
@@ -166,6 +168,7 @@ class HocSinhController extends Controller
 		    						'ngh_khoima' => $ma_khoi,
 		    						'ngh_diemchuan' => $nganh[$i]->ngh_diemchuan,
 		    						'dh_ten' => $nganh[$i]->user_name,
+		    						'dh_id' => $nganh[$i]->user_id,
 	    							'check' => 1,
 	    							'douutien' => $check_nganh->nv_douutien,
 	    							'khoi' => $check_nganh->khoi_maso
@@ -182,6 +185,7 @@ class HocSinhController extends Controller
 	    						'douutien' => 'Không Đăng Ký',
 	    						'ngh_diemchuan' => $nganh[$i]->ngh_diemchuan,
 	    						'dh_ten' => $nganh[$i]->user_name,
+		    					'dh_id' => $nganh[$i]->user_id,
 	    						'check' => 0
 	    					];
 		    		}

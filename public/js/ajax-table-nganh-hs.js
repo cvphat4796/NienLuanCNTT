@@ -49,6 +49,7 @@
    
  	tableNganhHS = function () {
  		table = $('#tableNganhHS').DataTable({
+        responsive: true,
  		 "dom": '<"text-right"f>rt<lp><"clear">',
  	 	"language": {
             "search": "Tìm kiếm:",
@@ -59,8 +60,8 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
- 	 	aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Tất cả"]],
- 	 	iDisplayLength: 10, 
+ 	 	aLengthMenu: [[3, 5, 10, 25, -1], [3, 5, 10, 25, "Tất cả"]],
+ 	 	iDisplayLength: 3, 
         processing: true,
         "order": [[ 6, "asc" ]],
         ajax:{
@@ -75,7 +76,7 @@
             {data: 'ngh_diemchuan'},
             {data: 'ngh_bachoc'},
             {data: 'douutien'},
-            {data: 'dh_ten'},
+            {data: 'dh_id'},
             {data: 'action'},
         ],
         columnDefs:[
