@@ -275,17 +275,17 @@ Route::get('hoc-sinh/thong-tin',
 			->middleware('xacthuc:hs');
 
 Route::get('hoc-sinh/danh-sach-nganh',
-			['as' => 'getNganh',
+			['as' => 'getNganhHS',
 			'uses' => 'HocSinhController@getNganh'])
 			->middleware('xacthuc:hs');
 
 Route::get('hoc-sinh/get-list-nganh',
-			['as' => 'getListNganh',
+			['as' => 'getListNganhHS',
 			'uses' => 'HocSinhController@getListNganh'])
 			->middleware('xacthuc:hs');
 
 Route::post('hoc-sinh/nop-ho-so',
-			['as' => 'postNopHoSo',
+			['as' => 'postNopHoSoHS',
 			'uses' => 'HocSinhController@postNopHoSo'])
 			->middleware('xacthuc:hs');
 
@@ -296,7 +296,7 @@ Route::post('hoc-sinh/nop-ho-so',
 Route::post('tra-diem',['as' => 'TraDiem', 'uses' => 'ApiController@TraDiem']);
 
 Route::get('api-dc/get-nganh',
-			['as' => 'getNganh',
+			['as' => 'getNganhAll',
 			'uses' => 'ApiController@getNganh']);
 
 Route::get('api-dc/get-list-mon-hoc',
@@ -326,7 +326,4 @@ Route::get('api-dc/get-list-nganh',
 			->middleware('xacthuc:dh');
 
 //het controller api		
-Route::get('tuyen-sinh',['as' => 'tuyensinh', function () {
-    return view('trangchu');
-}]);
 

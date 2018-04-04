@@ -131,7 +131,7 @@
            
         </div>
     </div>
-</div> {{-- het modal them sua xoa thoi gian --}}
+</div> {{-- het modal khoi --}}
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
 			<div class="panel panel-success">

@@ -25,20 +25,15 @@
    <div class="container">
       <div class="row">
         <div class="banner">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 icon">
+          <div class="hidden-xs hidden-sm col-md-2 col-lg-2 icon">
             
           </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 tieude">
+          <div class="col-xs-12 col-sm-12 col-md-push-1 col-md-8 col-lg-8 tieude">
             <span>Bộ Giáo Dục và Đào Tạo</span> 
             <br/>
             Hệ Thống Quản Lý điểm & Xét Tuyển đại Học
           </div>
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center info ">
-            <a href="/hoc-sinh/thong-tin">Id: {!! Auth::id() !!}</a>
-            <br/>
-            <a href="/dang-xuat" class="btn btn-default">Đăng xuất</a>
-          </div>
-          
+        
         </div>
       </div>
     </div> <!-- ket thuc banner -->
@@ -54,7 +49,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <span class="navbar-brand hidden" id="xinchao1">Xin Chào: {!! Auth::user()['user_name'] !!}</span>
+              <span class="navbar-brand hidden dropdown"  id="xinchao1">
+                 <span class="dropdown-toggle xinchao"   data-toggle="dropdown">Xin Chào: {!! Auth::user()['user_name'] !!}<b class="caret"></b></span>
+                  <ul class="dropdown-menu">
+                      <li> <a href="/hoc-sinh/thong-tin">Thông Tin</a>  <li>
+                      <li> <a href="/dang-xuat" >Đăng xuất</a></li>
+                      <li><a onclick="dmk();" >Đổi Mật Khẩu</a></li>
+                             
+                  </ul>
+              </span>
             </div>
       
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,7 +69,15 @@
                
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><span class="xinchao" id="xinchao2">Xin Chào: {!! Auth::user()['user_name'] !!}</span></li>
+              <li class="dropdown">
+                 <span class="dropdown-toggle xinchao"  id="xinchao2" data-toggle="dropdown">Xin Chào: {!! Auth::user()['user_name'] !!}<b class="caret"></b></span>
+                  <ul class="dropdown-menu">
+                     <li> <a href="/hoc-sinh/thong-tin">Thông Tin</a>  <li>
+                    
+                      <li><a  onclick="dmk();" >Đổi Mật Khẩu</a></li>
+                         <li> <a href="/dang-xuat" >Đăng xuất</a></li>      
+                  </ul>
+              </li>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div>
@@ -77,5 +88,32 @@
         @yield('content')
  
     </div>
+
+    <div class="modal fade text-left" id="modalDMK" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        
+        
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title" id="modalLabelKhoi">Đổi Mật Khẩu</h4>
+            </div>
+            <div class="modal-body">
+              <label for="textbox1">*Mật Khẩu Củ:</label>
+              <input class="form-control" id="mk-cu" type="password"/>
+               <label for="textbox1">*Mật Khẩu Mới:</label>
+              <input class="form-control" id="mk-moi1" type="password"/>
+               <label for="textbox1">*Nhập Lại:</label>
+              <input class="form-control" id="mk-moi2" type="password"/>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" onclick="submitDMK();" class="btn btn-primary"> Cập Nhật</button>
+               
+            </div>
+            
+           
+        </div>
+    </div>
+</div> {{-- Doi Mat Khau --}}
 </body>
 </html>

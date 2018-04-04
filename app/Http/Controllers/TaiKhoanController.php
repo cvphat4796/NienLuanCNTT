@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class TaiKhoanController extends Controller
 {
@@ -13,12 +14,12 @@ class TaiKhoanController extends Controller
 	{
 		if(Auth::check()){
              $user = Auth::user();
-            if($user->user_pass == $request->pass){
+            if(Hash::check($request->mk_cu, $user->user_pass)){
                 try{
                     DB::beginTransaction();
 
                     DB::table('users')->where('user_id', $user->user_id)
-                                        ->upadte('user_pass', $request->changepass);
+                                        ->update(['user_pass' => bcrypt($request->mk_moi)]);
                     DB::commit();
                     return array('message' => 'Đổi Mật Khẩu Thành Công', 'status' => true);
                 }
@@ -27,7 +28,7 @@ class TaiKhoanController extends Controller
                     return array('message' => 'Đổi Mật Khẩu Thất Bại', 'status' => false);
                 }
             }
-    	   return View('taikhoan.doimatkhau');
+    	  return array('message' => 'Mật Khẩu Không Đúng', 'status' => false);
     	}
     	return response()->json(array('message' => 'Bạn Chưa Đăng Nhập!!', 'status' => false));;
 	}
@@ -64,9 +65,9 @@ class TaiKhoanController extends Controller
                 case 'bgd':
                     return redirect()->route('getThoiGianBoGD');
                 case 'sgd':
-                    return redirect()->route('getThongTinSoGD');
-                case 'dh':
                     return redirect()->route('getTaiKhoanHS');
+                case 'dh':
+                    return redirect()->route('getNganh');
                 case 'thpt':
                     return redirect()->route('getTaiKhoanHS');
                 case 'hs':

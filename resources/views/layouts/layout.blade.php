@@ -17,19 +17,14 @@
     <link rel="stylesheet" href="{!!asset('public/css/bootstrap.css')!!}">
     <link rel="stylesheet" href="{!!asset('public/css/Site.css')!!}" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
-    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
-    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
 
 </head>
 <body>
    <div class="container" >
       <div class="row">
         <div class="banner">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 icon">
+          <div class="hidden-xs hidden-sm col-md-2 col-lg-2 icon">
             
           </div>
           <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 tieude">
@@ -37,7 +32,7 @@
             <br/>
             Hệ Thống Quản Lý điểm & Xét Tuyển đại Học
           </div>
-          <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 form-dangnhap ">
+          <div class="col-xs-5 col-sm-5 col-md-2 col-lg-2 form-dangnhap ">
             <form action="/dang-nhap" id="login"  method="post" class="form-inline">
               {{ csrf_field() }}
               <div class="form-group tieudedangnhap">
@@ -103,6 +98,11 @@
     @yield('content')
   
 
- 
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{!!asset('public/js/bootstrap.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('public/js/1.js')!!}"></script>
+    <script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+    <script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 </html>

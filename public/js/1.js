@@ -1,5 +1,10 @@
 ﻿ $(function(){
-	
+		$.ajaxSetup({
+		  headers: {
+		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		  }
+		});
+
 		
 // nganh
 
@@ -68,8 +73,36 @@ $('#login').submit(function(event) {
 });
 //login
 
-dmk = function (argument) {
-	 $('#proDialog').modal('show');
+submitDMK = function () {
+	if($('#mk-moi1').val() == "" || $('#mk-moi2').val() == "" || $('#mk-cu').val() ==""){
+		alert('Không được để trống !!!');
+		return  false;
+	}
+	if($('#mk-moi1').val() != $('#mk-moi2').val()){
+		alert('Mật khẩu nhập lại không đúng !!!');
+		return  false;
+	}
+
+	$.ajax({
+ 			url: '/doi-mat-khau',
+ 			type: 'POST',
+ 			data: {mk_cu: $('#mk-cu').val(),
+                    mk_moi: $('#mk-moi2').val()
+                },
+ 			success: function (response) {
+ 				alert(response.message);
+             	$('#mk-moi1').val("");
+             	$('#mk-moi2').val("");
+             	$('#mk-cu').val("");
+ 			}
+ 		});
+}
+
+dmk = function () {
+	$('#mk-moi1').val("");
+    $('#mk-moi2').val("");
+    $('#mk-cu').val("");
+	 $('#modalDMK').modal('show');
 	 return false;
 }
 //resize

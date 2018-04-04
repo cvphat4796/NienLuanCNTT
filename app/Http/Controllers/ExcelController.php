@@ -70,7 +70,7 @@ class ExcelController extends Controller
             $insertNganh = [];
             $thm = [];
             $cnganh = [];
-            //dd($data->toArray());
+
               foreach ($data->toArray() as $key => $value) {
                  
                   if(!is_null($value['ma_nganh'])){
@@ -159,7 +159,6 @@ class ExcelController extends Controller
             
         }
 
-        
         return  response()->json($status);
        
         
@@ -169,17 +168,10 @@ class ExcelController extends Controller
     {
        return  ['hs_maso' => $id, 'mh_maso' => $mh_maso,'dt_diemso' => $diemso];
     }
-    public function postThemDiemHSExcel(Request $request)
+
+    private function ifMakeArrayDiem($id,$value)
     {
-        $path = $request->file('diemhs')->getRealPath();
-        $data = Excel::load($path, function($reader) {})->get();
-        try{
-            if(!empty($data)){
-                foreach ($data->toArray() as $key => $value) {
-                    if(is_null($value['ma_hs']))
-                          continue;
-                    $id = $value['ma_hs'];
-                    $mh_maso = '';
+                  $mh_maso = '';
                     if(!is_null($value['toan'])){
                         $mh_maso = 'TO';
                         $diemso = $value['toan'];
@@ -250,33 +242,36 @@ class ExcelController extends Controller
                         $diemso = $value['giao_duc_cong_dan'];
                         $insert_user[] = $this->arrayDiem($id,$mh_maso,$diemso);
                     }  
-                }
-                try{
-                      if(!empty($insert_user))
-                      {
+                    return $insert_user;
+    }
+    public function postThemDiemHSExcel(Request $request)
+    {
+        $path = $request->file('diemhs')->getRealPath();
+        $data = Excel::load($path, function($reader) {})->get();
+        try{
+            if(!empty($data)){
+              $index = 1;
+                foreach ($data->toArray() as $key => $value) {
+                    if(is_null($value['ma_hs']))
+                          continue;
+                    $insert_user = $this->ifMakeArrayDiem($value['ma_hs'],$value);
+                     try{
+                      
                               DB::beginTransaction();
                               DB::table('diemthi')->insert($insert_user);
                               DB::commit();
-                              $status =  true;
-                      }
-                      else
-                      {
-                              $status =  false;
-                      }
-                } 
-                catch (\Exception $e) {
-                      DB::rollBack();
-                      $status =  false;
-                }    
-                if($status){
-                      $message =  'Thêm Điểm Học Sinh Thành Công!';
-                      return  response()->json(array('message' => $message,'status' => true));
+                    } 
+                    catch (\Exception $e) {
+                          DB::rollBack();
+                          return  response()->json(array('message' => "Thêm Điểm Thất bại ở dòng ".$index." các dòng sau chưa được thêm!!!",'status' => true));
+                    } 
+                     $index++;
                 }
-                else{
-                      $message = 'Lỗi Thêm Điểm!! ';
-                      return  response()->json(array('message' => $message,'status' => false));
-                }
+                     
+              return  response()->json(array('message' => 'Thêm Điểm Học Sinh Thành Công!','status' => true));
+              
           }
+           return  response()->json(array('message' => "File rỗng!!",'status' => false));
       }
       catch(\Exception $ex){
             return response()->json(array('message' => 'Lỗi File Tải Lên!!', 'status' => false)) ; 
@@ -290,6 +285,7 @@ class ExcelController extends Controller
         $data = Excel::load($path, function($reader) {})->get();
         try{
             if(!empty($data)){
+              $index = 1;
                 foreach ($data->toArray() as $key => $value) {
                     if(is_null($value['ma_so']))
                         continue;
@@ -316,28 +312,22 @@ class ExcelController extends Controller
                        'user_email' => $email,
                        'pq_maso' => $quyen
                     ];
+
+                     try 
+                      {                        
+                              DB::beginTransaction();
+
+                              DB::table('users')->insert($insert_user);
+
+                              DB::commit();
+                          
+                      } catch (\Exception $e) {
+                          DB::rollBack();
+                         return array('message' => $message.'Thất Bại '.$index.' các dòng sau chưa được thêm!!!','status' => false);
+                      }
+                       $index++;
                 }
-                try 
-                {
-
-                    if(!empty($insert_user))
-                    {
-                        DB::beginTransaction();
-
-                        DB::table('users')->insert($insert_user);
-
-                        DB::commit();
-                        return array('message' => $message.'Thành Công!!','status' => true);
-                    }
-                    else
-                    {
-                        return array('message' => $message.'Thất Bại!!','status' => false);
-                    }
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    return array('message' => $message.'Thất Bại!!','status' => false);
-                }
-                
+                return array('message' => $message.'Thành Công!!','status' => true);
             }
         }
       catch(\Exception $ex){
@@ -353,6 +343,7 @@ class ExcelController extends Controller
         $data = Excel::load($path, function($reader) {})->get();
         try{
             if(!empty($data)){
+              $index = 1;
                 foreach ($data->toArray() as $key => $value) {
                     if(is_null($value['ma_so']))
                         continue;
@@ -365,7 +356,7 @@ class ExcelController extends Controller
                     $email = $value['email'];
                     $quyen= "thpt";  
                     $message = 'Thêm Trường THPT ';
-                    $insert_user[] = [
+                    $insert_user = [
                        'user_id' => $id, 
                        'user_name' => $ten,
                        'user_pass' => $matkhau,
@@ -375,27 +366,22 @@ class ExcelController extends Controller
                        'sgd_maso' => $sgd_maso,
                        'pq_maso' => $quyen
                     ];
-                   
-                }
-                try 
-                {
-                    if(!empty($insert_user))
+                   try 
                     {
                         DB::beginTransaction();
-                        
+                            
                         DB::table('users')->insert($insert_user);
 
                         DB::commit();   
-                        return array('message' => $message.'Thành Công!!','status' => true);
+                           
+                      
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        return array('message' => $message.'Thất Bại ở dòng '.$index.' các dòng sau chưa được thêm!!!','status' => false);
                     }
-                    else
-                    {
-                        return array('message' => $message.'Thất Bại!!','status' => false);
-                    }
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    return array('message' => $message.'Thất Bại!!','status' => false);
+                   $index++;
                 }
+                return array('message' => $message.'Thành Công!!','status' => true);
                 
             }
           }
@@ -412,6 +398,7 @@ class ExcelController extends Controller
         $data = Excel::load($path, function($reader) {})->get();
         try{   
             if(!empty($data)){
+              $index = 1;
                 foreach ($data->toArray() as $key => $value) {
                     if(is_null($value['ma_so']))
                         continue;
@@ -447,29 +434,24 @@ class ExcelController extends Controller
                        'hs_ngaysinh' => $ngaysinh,
                        'hs_gioitinh' => $gioitinh
                     ];
-                }
-                try 
-                {
-                    if(!empty($insert_user) && !empty($insert_hs))
-                    {
-                        DB::beginTransaction();
+                     try 
+                      {
+                              DB::beginTransaction();
 
-                        DB::table('users')->insert($insert_user);
+                              DB::table('users')->insert($insert_user);
+                              
+                              DB::table('hocsinh')->insert($insert_hs);
+
+                              DB::commit();   
+                             
+                      } catch (\Exception $e) {
+                          DB::rollBack();
+                          return array('message' => $message.'Thất Bại '.$index.' các dòng sau chưa được thêm!!!','status' => false);
+                      }
+                       $index++;
+                }
+                return array('message' => $message.'Thành Công!!','status' => true);
                         
-                        DB::table('hocsinh')->insert($insert_hs);
-
-                        DB::commit();   
-                        return array('message' => $message.'Thành Công!!','status' => true);
-                    }
-                    else
-                    {
-                        return array('message' => $message.'Thất Bại!!','status' => false);
-                    }
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    return array('message' => $message.'Thất Bại!!','status' => false);
-                }
-                
             }
         }
           catch(\Exception $ex){
