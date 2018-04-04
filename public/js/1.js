@@ -1,5 +1,6 @@
 ﻿ $(function(){
-	 
+	
+		
 // nganh
 
  $("#daihoc").val("#").change(function(){
@@ -67,6 +68,10 @@ $('#login').submit(function(event) {
 });
 //login
 
+dmk = function (argument) {
+	 $('#proDialog').modal('show');
+	 return false;
+}
 //resize
 $(document).ready(function() {
 	if ($(window).width() < 768 ) {
@@ -80,6 +85,7 @@ $(document).ready(function() {
 	tableNganhs();
 	 $('#tableNganhs_paginate').addClass('dbtb_paginate');
      $('#tableNganhs_length').addClass('dbtb_length');
+
 });
 
 tableNganhs = function () {

@@ -29,7 +29,9 @@ Route::get('nganh-hoc',['as' => 'nganhhoc',  function () {
 Route::get('dang-nhap', ['as' => 'getLogin', 'uses' => 'TaiKhoanController@getLogin']);
 Route::post('dang-nhap', ['as' => 'postLogin', 'uses' => 'TaiKhoanController@postLogin']);
 Route::get('dang-xuat',['as' => 'getLogout', 'uses' => 'TaiKhoanController@getLogout']);
-Route::get('doi-mat-khau',['as' => 'getDoiMatKhau', 'uses' => 'TaiKhoanController@getDoiMatKhau']);
+Route::post('doi-mat-khau',['as' => 'postDoiMatKhau', 
+							'uses' => 'TaiKhoanController@postDoiMatKhau'])
+							->middleware('xacthuc:bgd:sgd:dh:hs:thpt');
 
 //controller bo giao duc
 

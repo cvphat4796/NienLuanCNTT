@@ -40,9 +40,13 @@
 .dh-btn-them{
     position: absolute;
 }
-span#xinchao1 {
+#xinchao1 {
     text-transform: none;
     color: white;
+    cursor: pointer;
+}
+span.xinchao{
+     cursor: pointer;
 }
  
 body{

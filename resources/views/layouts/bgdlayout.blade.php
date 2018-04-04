@@ -36,6 +36,7 @@
             <a href="/bo-giao-duc">Id: {!! Auth::id() !!}</a>
             <br/>
             <a href="/dang-xuat" class="btn btn-default">Đăng xuất</a>
+             <button  class="btn btn-default">Đổi Mật Khẩu</button>
           </div>
           
         </div>
@@ -53,28 +54,42 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <span class="navbar-brand hidden" id="xinchao1">Xin Chào: {!! Auth::user()['user_name'] !!}</span>
+          <span class="navbar-brand hidden dropdown"  id="xinchao1">
+             <span class="dropdown-toggle xinchao"   data-toggle="dropdown">Xin Chào: {!! Auth::user()['user_name'] !!}<b class="caret"></b></span>
+              <ul class="dropdown-menu">
+                  <li> <a href="/dang-xuat" >Đăng xuất</a></li>
+                  <li><a onclick="dmk();" >Đổi Mật Khẩu</a></li>
+                         
+              </ul>
+          </span>
+        
         </div>
     
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-             <li id="qlthoigian" ><a href="/bo-giao-duc/thoi-gian">Quản Lý Thời Gian</a></li>
-                     
-                     <li id="qltaikhoan" class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Tài Khoản <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/bo-giao-duc/tao-tai-khoan">Tạo Tài Khoản</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan/sgd">Tài Khoản Sở GD</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan/dh">Tài Khoản Trường ĐH</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan-thpt">Tài Khoản Trường THPT</a></li>
-                            <li><a href="/bo-giao-duc/tai-khoan-hs">Tài Khoản Học Sinh</a></li>
-                        </ul>
-                    </li>
+              <li id="qlthoigian" ><a href="/bo-giao-duc/thoi-gian">Quản Lý Thời Gian</a></li>
+              <li id="qltaikhoan" class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Tài Khoản <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="/bo-giao-duc/tao-tai-khoan">Tạo Tài Khoản</a></li>
+                          <li><a href="/bo-giao-duc/tai-khoan/sgd">Tài Khoản Sở GD</a></li>
+                          <li><a href="/bo-giao-duc/tai-khoan/dh">Tài Khoản Trường ĐH</a></li>
+                          <li><a href="/bo-giao-duc/tai-khoan-thpt">Tài Khoản Trường THPT</a></li>
+                          <li><a href="/bo-giao-duc/tai-khoan-hs">Tài Khoản Học Sinh</a></li>
+                      </ul>
+              </li>
                 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><span class="xinchao" id="xinchao2">Xin Chào: {!! Auth::user()['user_name'] !!}</span></li>
+          <li class="dropdown">
+             <span class="dropdown-toggle xinchao"  id="xinchao2" data-toggle="dropdown">Xin Chào: {!! Auth::user()['user_name'] !!}<b class="caret"></b></span>
+              <ul class="dropdown-menu">
+                  <li> <a href="/dang-xuat" >Đăng xuất</a></li>
+                  <li><a  onclick="dmk();" >Đổi Mật Khẩu</a></li>
+                         
+              </ul>
+          </li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div>

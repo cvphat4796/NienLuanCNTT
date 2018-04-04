@@ -3,21 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
 class TaiKhoanController extends Controller
 {
- 	public function getDoiMatKhau()
+ 	public function postDoiMatKhau(Request $request)
 	{
 		if(Auth::check()){
-    		$user = Auth::user();
-    		if($user->pq_maso == 'bgd')
-    			return redirect()->route('tuyensinh');
-    		else
-    			return redirect()->route('getLogin');
+             $user = Auth::user();
+            if($user->user_pass == $request->pass){
+                try{
+                    DB::beginTransaction();
+
+                    DB::table('users')->where('user_id', $user->user_id)
+                                        ->upadte('user_pass', $request->changepass);
+                    DB::commit();
+                    return array('message' => 'Đổi Mật Khẩu Thành Công', 'status' => true);
+                }
+                catch (\Exception $e) {
+                    DB::rollBack();
+                    return array('message' => 'Đổi Mật Khẩu Thất Bại', 'status' => false);
+                }
+            }
+    	   return View('taikhoan.doimatkhau');
     	}
-    	return View('taikhoan.doimatkhau');
+    	return response()->json(array('message' => 'Bạn Chưa Đăng Nhập!!', 'status' => false));;
 	}
 
    
@@ -50,13 +62,13 @@ class TaiKhoanController extends Controller
         $user = Auth::user();
             switch ($user->pq_maso) {
                 case 'bgd':
-                    return redirect()->route('getHomeBoGD');
+                    return redirect()->route('getThoiGianBoGD');
                 case 'sgd':
                     return redirect()->route('getThongTinSoGD');
                 case 'dh':
-                    return redirect()->route('getThongTinDaiHoc');
+                    return redirect()->route('getTaiKhoanHS');
                 case 'thpt':
-                    return redirect()->route('getHomeTHPTGD');
+                    return redirect()->route('getTaiKhoanHS');
                 case 'hs':
                     return redirect()->route('getThongTinHocSinh');
             }

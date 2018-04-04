@@ -7,36 +7,36 @@
 				<thead>
 					<tr >
 						
-						<th colspan="2" style="text-align: center;">Thông Tin</th>
+						<th class="bg-primary" colspan="2" style="text-align: center;">Thông Tin</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td class="col-tt">Mã Số:</td>
+						<td class="col-tt"><b>Mã Số:</b></td>
 						<td>{!! $hocsinhs->hs_maso !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Tên:</td>
+						<td  class="col-tt"><b>Tên:</b></td>
 						<td>{!! $hocsinhs->user_name !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Địa chỉ:</td>
+						<td  class="col-tt"><b>Địa chỉ:</b></td>
 						<td>{!! $hocsinhs->user_addr !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Số điện thoại:</td>
+						<td  class="col-tt"><b>Số điện thoại:</b></td>
 						<td>{!! $hocsinhs->user_phone !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Email:</td>
+						<td  class="col-tt"><b>Email:</b></td>
 						<td>{!! $hocsinhs->user_email !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Trường THPT:</td>
+						<td  class="col-tt"><b>Trường THPT:</b></td>
 						<td>{!! $hocsinhs->thpt_ten !!}</td>
 					</tr>
 					<tr>
-						<td  class="col-tt">Email:</td>
+						<td  class="col-tt"><b>Email:</b></td>
 						<td>{!! $hocsinhs->kv_ten !!}</td>
 					</tr>
 				</tbody>
@@ -47,7 +47,7 @@
 			<table class="table table-hover table-striped table-bordered">
 				<thead>
 					<tr>
-						<th colspan="{{count($diem)}}" style="text-align: center;">Bảng Điểm</th>
+						<th class="bg-success text-success" colspan="{{count($diem)}}" style="text-align: center;">Bảng Điểm</th>
 					</tr>
 					<tr>
 					@forelse  ($diem as $d)

@@ -186,7 +186,7 @@
                     {
                         attr:{id: "btnDiemChuanExcel"},
                         className: 'btn btn-info',
-                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Điểm Với Excel',
+                        text: '<i class="glyphicon glyphicon-plus"></i>Thêm Điểm Chuẩn Với Excel',
                     }
                 ],
  	 	aLengthMenu: [[10, 30, 50, 100, -1], [10, 30, 50, 100, "Tất cả"]],
