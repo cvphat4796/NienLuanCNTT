@@ -125,7 +125,8 @@
  			success: function (response) {
  				alert(response.message);
                 if (response.status) {
-                    $('#tableHS').DataTable().ajax.reload()
+                    $('#tableHS').DataTable().draw();//ajax.reload(initCompleteFunction(settings, json),false)
+
                 }
  				
  			}
@@ -236,9 +237,19 @@
                         { className: "col-name", "targets": [ 2  ] },
                          { className: "text-center", "targets": [ 8 ] }
                     ],
-        initComplete: function () {
-            this.api().columns([7]).every( function () {
+        "drawCallback": function( settings ) {
+                 initCompleteFunction(settings)
+          }
+        
+    });
+ 	} 
+   initCompleteFunction = function (settings) {
+     console.log(settings.oInstance);
+            var api =settings.oInstance.api()
+
+            api.columns([7]).every( function () {
                 var column = this;
+               
                 var select = $('<select class="form-control" ><option value="">Tất Cả</option></select>')
                     .appendTo( $(column.footer()).empty() )
                     .on( 'change', function () {
@@ -255,11 +266,7 @@
                   select.append( '<option value="'+d+'">'+d+'</option>' )
                 } );
             } );
-        },
-        
-    });
- 	} 
-
+        }
     submitDiemExcelHS = function () {
         var extension = $('#hsDiemfile').val().split('.').pop().toLowerCase();
         if ($.inArray(extension, ['csv', 'xls', 'xlsx']) == -1) {

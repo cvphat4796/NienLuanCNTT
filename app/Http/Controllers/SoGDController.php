@@ -212,9 +212,7 @@ class SoGDController extends Controller
     							->select('hocsinh.*','users.*','khuvuc.*','thpt.user_name as thpt_ten')
     							->whereIn('hocsinh.thpt_maso',$thpt)->get();
 
-        $button_edit = '';
-        $button_delete = '';
-        $button_suadiem = '';                  
+                       
     	return Datatables::of($hs)
     	->removeColumn('user_pass')
     	->removeColumn('kv_diemcong')
