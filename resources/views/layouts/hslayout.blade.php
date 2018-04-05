@@ -28,7 +28,7 @@
           <div class="hidden-xs hidden-sm col-md-2 col-lg-2 icon">
             
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-push-1 col-md-8 col-lg-8 tieude">
+          <div class="col-xs-12 col-sm-12 col-md-push-1 col-md-9 col-lg-9 tieude">
             <span>Bộ Giáo Dục và Đào Tạo</span> 
             <br/>
             Hệ Thống Quản Lý điểm & Xét Tuyển đại Học
