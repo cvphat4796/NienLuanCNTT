@@ -404,7 +404,10 @@ class DaiHocController extends Controller
 	{
 		$maso =  Uuid::generate()->string;
 		$ten = $request->ten;
-
+		$k = DB::table('khoi')->where([['khoi_ten', '=', $ten],['dh_maso','=', Auth::user()->user_id]])->first();
+		if($k != null){
+			return array('message' => 'Khối Đã Tồn Tại!!!','status' => false );
+		}
 		try {
 			DB::beginTransaction();
 

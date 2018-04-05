@@ -123,7 +123,7 @@
  				alert(response.message);
                 if (response.status) {
                     $('#tableNganh').DataTable().ajax.reload();      
-                   // $('#modalNganh').modal('hide');
+                   //$('#modalNganh').modal('hide');
                 }
  				
  			}

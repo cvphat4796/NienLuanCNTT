@@ -125,7 +125,10 @@ $(function () {
 			alert("Bạn Chưa Nhập Tên!!!");
 			return false;
 		}
-		 $('#proDialog').modal('show');
+		 $('#proDialog').modal({
+                                backdrop: 'static',
+                                keyboard: false  // to prevent closing with Esc button (if you want this too)
+                            });
 		$.ajax({
             url: '/dai-hoc/them-khoi',
             type: 'POST',
