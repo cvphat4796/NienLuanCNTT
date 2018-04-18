@@ -140,8 +140,8 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
- 	 	aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
- 	 	iDisplayLength: 3,
+ 	 	aLengthMenu: [[10, 20, 30, -1], [10, 20, 30, "Tất cả"]],
+ 	 	iDisplayLength: 10,
         processing: true,
         serverSide: true,
         columns:[
@@ -168,7 +168,7 @@
         $('#thpt-diachi').val($('#'+button.id).data('dcthpt'));
         $('#thpt-sdt').val($('#'+button.id).data('sdtthpt'));
         $('#thpt-email').val($('#'+button.id).data('emailthpt'));
- 		
+ 		$('#thpt-maso').prop('readonly',true);
  		$('#querry').val('update');
  		$('#modalTHPT').modal('show');
  	}

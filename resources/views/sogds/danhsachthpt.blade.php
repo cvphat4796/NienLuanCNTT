@@ -1,7 +1,7 @@
 @extends('layouts.sgdlayout')
 @section('title','Danh Sách Các Trương THPT')
 @section('content')
-<script type="text/javascript" src="{!!asset('public/js/ajax-table-thpt.js')!!}"></script>
+<script type="text/javascript" src="{!!asset('public/js/sogds/ajax-table-thpt.js')!!}"></script>
 
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
@@ -21,7 +21,7 @@
               <div class="modal-body">
                   <div class="form-group">
                       <input type="hidden" value="insert" id="querry">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
+                      
                       <label for="textbox1">*Mã số:</label>
                       <input class="form-control" id="thpt-maso" placeholder="Nhập mã số" type="text"/>
 
@@ -66,7 +66,7 @@
               <div class="modal-body">
                   <div class="form-group">
                       <input type="hidden" value="insert" id="querry">
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
+                    
                       <label for="textbox2">File mẫu:</label>
                       <a href="{!!asset('public/files/FileMauTHPT.xlsx')!!}" >File mẫu</a>
                       <br/>

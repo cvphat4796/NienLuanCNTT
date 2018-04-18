@@ -1,12 +1,16 @@
 @extends('layouts.sgdlayout')
-@section('title','Danh Sách Các Trương THPT')
+@section('title','Danh Sách Học Sinh')
 @section('content')
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/datetime.js"></script>
-<script type="text/javascript" src="{!!asset('public/js/ajax-table-hocsinh.js')!!}"></script>
+<script type="text/javascript" src="{!!asset('public/js/sogds/ajax-table-hocsinh.js')!!}"></script>
+ 
  <div class="row">
  	<div class="col-xs-12 col-sm-12  col-md-12  col-lg-12 ">
+   @if($themhs)
+
+   
    {{--  modal them hoc sinh --}}
     <div class="pull-left" style="position: relative;">
         <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogHS" data-toggle="modal" data-target="#modalHS">Thêm Học Sinh</button>
@@ -24,7 +28,7 @@
               <div class="modal-body">
                 <div class="row">
                   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                      <div class="form-group">
+                      <div class="form-group" id="hs-left">
                         <input type="hidden" value="insert" id="querry">
                         <meta name="csrf-token" content="{{ csrf_token() }}">
                         
@@ -50,7 +54,7 @@
                     </div>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                      <div class="form-group">
+                      <div class="form-group" id="hs-right">
                           <label for="textbox2">*Chọn trường THPT:</label>
                           <select id="thpt" class="form-control">
                               @foreach ($thpts as $thpt)
@@ -74,10 +78,10 @@
                           <label for="textbox2">*Ngày sinh:</label>
                           <input class="form-control ngay" id="hs-ngaysinh" placeholder="Nhập ngày sinh" type="text"/>
 
-                          <label for="textbox2">*Số CMND:</label>
+                          <label for="textbox2" id='lab-cmnd'>*Số CMND:</label>
                           <input class="form-control" id="hs-cmnd" placeholder="Nhập số cmnd" type="number"/>
                           
-                          <label for="textbox2">Email:</label>
+                          <label for="textbox2" id='lab-email'>Email:</label>
                           <input class="form-control" id="hs-email" placeholder="Nhập email" type="email"/>
                       </div>
                   </div>
@@ -120,9 +124,83 @@
           </div>
         </div>
       </div> {{-- het modal them HS excel--}}
+@else
+       <!-- Modal -->
+      <div id="modalHS" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 id="h4-HS" class="modal-title">Thêm Học Sinh</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <input type="hidden" value="insert" id="querry">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                        
+                        <label for="textbox1">*Mã số:</label>
+                        <input class="form-control" id="hs-maso" placeholder="Nhập mã số" type="text"/>
 
+                        <label for="textbox2">*Tên:</label>
+                        <input class="form-control" id="hs-ten" placeholder="Nhập tên" type="text"/>
+
+                        <label for="textbox2">*Nhập địa chỉ:</label>
+                        <input class="form-control" id="hs-diachi" placeholder="Nhập địa chỉ" type="text"/>
+
+                        <label for="textbox2">*Số điện thoại:</label>
+                        <input class="form-control" id="hs-sdt" placeholder="Nhập số điện thoại" type="text"/>
+
+                       
+                          <label for="textbox2">*Số CMND:</label>
+                          <input class="form-control" id="hs-cmnd" placeholder="Nhập số cmnd" type="number"/>
+                          
+                    </div>
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                      <div class="form-group">
+                          <label for="textbox2">*Chọn trường THPT:</label>
+                          <select id="thpt" class="form-control">
+                              @foreach ($thpts as $thpt)
+                                  <option value="{{ $thpt->user_id  }}">{{ $thpt->user_name }}</option>
+                              @endforeach                                       
+                          </select>
+                                    
+                          <label for="textbox2">*Chọn khu vực:</label>
+                          <select id="kv_maso" class="form-control">
+                              @foreach ($khuvucs as $khuvuc)
+                                  <option value="{{ $khuvuc->kv_maso  }}">{{ $khuvuc->kv_ten }}</option>
+                              @endforeach                                       
+                          </select>
+
+                          <label for="textbox2">*Giới tính:</label>
+                          <select id="gioitinh" class="form-control">
+                            <option value="nam">Nam</option>
+                            <option value="nu">Nữ</option>
+                          </select>
+                                    
+                          <label for="textbox2">*Ngày sinh:</label>
+                          <input class="form-control ngay" id="hs-ngaysinh" placeholder="Nhập ngày sinh" type="text"/>
+
+                          <label for="textbox2">Email:</label>
+                          <input class="form-control" id="hs-email" placeholder="Nhập email" type="email"/>
+                      </div>
+                  </div>
+                </div>
+                </div>
+                  
+              <div class="modal-footer">
+                  <button type="button" data-dismiss="modal"  class="btn btn-default" >Đóng</button>
+              </div>
+          </div>
+        </div>
+      </div> {{-- het modal them HS --}}
+@endif
+@if($diem)
        {{--  modal them diem voi excel --}}
-      <div class="pull-left" style="position: relative; left: 300px;">
+      <div class="pull-left" >
        <button type="button" class="btn btn-info btnThemKhoi-MH" id="showDialogDiemExcelHS" data-toggle="modal" data-target="#modalDiemExcelHS">Thêm Điểm Bằng File Excel</button>
     </div>
     <!-- Modal -->
@@ -163,11 +241,7 @@
               </div>
               <div class="modal-body">
 
-                  <meta name="csrf-token" content="{{ csrf_token() }}">
                   <div id="body-diem" class="form-group">
-                      
-                      
-                     
                  </div>
               </div>
               <div class="modal-footer">
@@ -176,23 +250,8 @@
           </div>
         </div>
       </div> {{-- het modal sua diem--}}
-
-    <!-- Modal -->
-      <div id="proDialog" class="modal fade "  style="padding-top:15%; overflow-y:visible;" role="dialog">
-        <div class="modal-dialog modal-sm">
-          <!-- Modal content-->
-          <div class="modal-content">
-              <div class="modal-body progressDialog">
-                    <div class="progress progress-striped active" style="margin-bottom:0;">
-                        <div class="progress-bar" style="width: 100%">
-                          Xin chờ!!!!
-                        </div>
-                    </div>
-              </div>
-            
-          </div>
-        </div>
-      </div> {{-- het modal progress dialog --}}
+@endif
+   
 
  		<table id="tableHS" class="table table-bordered table-hover table-striped">
  			<thead>
@@ -218,7 +277,7 @@
               <td></td>
               <td></td>
               <td></td>
-   						<td></td>
+   						<td class="text-center"></td>
    					</tr>
  				
  			</tbody>

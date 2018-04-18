@@ -15,11 +15,17 @@
         $('#hs-email').val('');
         $('#hs-cmnd').val('');
         $('#hs-ngaysinh').val('');
+        $('#hs-maso').prop('readonly',false);
+        
 
         $('#thpt').val('');
         $('#kv_maso').val('');
         $('#gioitinh').val('nam');
         
+        $('#lab-cmnd').appendTo('#hs-right');   
+        $('#hs-cmnd').appendTo('#hs-right');
+        $('#lab-email').appendTo('#hs-right');   
+        $('#hs-email').appendTo('#hs-right');
     });
 
  	$.ajaxSetup({
@@ -66,11 +72,9 @@
        
     }
 
-    submitDiemHS = function () {
-        // body...
-    }
 
  	submitHS = function(event) {
+         $('#hs-maso').prop('readonly',false);
         var hs_maso = $('#hs-maso').val();
         var hs_ten = $('#hs-ten').val();
         var hs_pass1 = $('#hs-pass1').val();
@@ -173,8 +177,8 @@
             "infoEmpty": "Không có dữ liệu",
             "infoFiltered": "(Lọc từ _MAX_ total dòng)"
         },
- 	 	aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "Tất cả"]],
- 	 	iDisplayLength: 3,
+ 	 	aLengthMenu: [[10, 30, 50, 100, -1], [10, 30, 50, 100, "Tất cả"]],
+ 	 	iDisplayLength: 10,
         processing: true,
         serverSide: true,
         columns:[
@@ -189,7 +193,8 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}],
         ajax:'/so-giao-duc/get-list-hs',
         columnDefs: [ {targets: 5, render: $.fn.dataTable.render.moment(  'DD/MM/YYYY' )},
-                        { className: "col-name", "targets": [ 1 ] }
+                        { className: "col-name", "targets": [ 1 ] },
+                         { className: "text-center", "targets": [ 8 ] }
                     ],
         
     });
@@ -243,17 +248,48 @@
         $('#hs-email').val($('#'+button.id).data('emailhs'));
  		$('#hs-cmnd').val($('#'+button.id).data('cmnd'));
         $('#hs-ngaysinh').val(moment($('#'+button.id).data('ngaysinh')).format("DD/MM/YYYY"));
-
+        $('#hs-maso').prop('readonly',true);
         $('#thpt').val($('#'+button.id).data('thpt'));
         $('#kv_maso').val($('#'+button.id).data('kvms'));
         if($('#'+button.id).data('gioitinh') == "Nam")
             $('#gioitinh').val('nam');
         else
-            $('#gioitinh').val('nu');    
-
+            $('#gioitinh').val('nu'); 
+        $('#lab-cmnd').appendTo('#hs-left');   
+        $('#hs-cmnd').appendTo('#hs-left');
  		$('#querry').val('update');
  		$('#modalHS').modal('show');
  	}
+
+xemthem = function (button) {
+        $('#h4-HS').text("Thông Tin Học Sinh");
+        $('#hs-maso').val($('#'+button.id).data('mahs'));
+        $('#hs-ten').val($('#'+button.id).data('tenhs'));
+        $('#hs-diachi').val($('#'+button.id).data('dchs'));
+        $('#hs-sdt').val($('#'+button.id).data('sdths'));
+        $('#hs-email').val($('#'+button.id).data('emailhs'));
+        $('#hs-cmnd').val($('#'+button.id).data('cmnd'));
+        $('#hs-ngaysinh').val(moment($('#'+button.id).data('ngaysinh')).format("DD/MM/YYYY"));
+        $('#thpt').val($('#'+button.id).data('thpt'));
+        $('#kv_maso').val($('#'+button.id).data('kvms'));
+        if($('#'+button.id).data('gioitinh') == "Nam")
+            $('#gioitinh').val('nam');
+        else
+            $('#gioitinh').val('nu'); 
+
+         $('#hs-maso').prop('readonly',true);
+         $('#hs-ten').prop('readonly',true);
+         $('#hs-diachi').prop('readonly',true);
+         $('#hs-sdt').prop('readonly',true);
+         $('#hs-email').prop('readonly',true);
+         $('#hs-cmnd').prop('readonly',true);
+         $('#hs-ngaysinh').prop('disabled',true);
+         $('#thpt').prop('disabled',true);
+         $('#kv_maso').prop('disabled',true);
+         $('#gioitinh').prop('disabled',true);
+
+        $('#modalHS').modal('show');
+    }
 
  	deletehs = function (button) {
  		ok = confirm("Bạn muốn xóa môn "+$('#'+button.id).data('tenhs')+"?");
@@ -265,9 +301,9 @@
  		}
  		
  	}
-
+    var monhc;
+    var mahs;
     nhapdiem = function (button) {
-        //$('#modalDiemHS').modal('show');
         $('#body-diem').empty();
         $('#proDialog').modal('show');
         mahs = $('#'+button.id).data('mahs');
@@ -277,12 +313,12 @@
             data: {mahs: mahs},
             success: function (response) {
                 $('#proDialog').modal('hide');
-                var monhc = response.monhoc;
+                monhc = response.monhoc;
                 if(monhc.length > 0){
                     $('body-diem').append('<input type="hiden" id="diem-mahs" value="'+monhc[0]["hs_maso"])+'"/>';
                     for (var i = 0; i < monhc.length; i++) {
                         $('#body-diem').append( 
-                        '<label for="">'+monhc[i]["mh_ten"]+'</label>'+
+                        '<label for="">'+monhc[i]["mh_ten"]+': </label>'+
                         '<input type="number" id="'+monhc[i]["mh_maso"]+'" value="'+monhc[i]["dt_diemso"]+'" class="form-control">' );
                     }
                     
@@ -292,6 +328,32 @@
                 else{
                     alert("Chưa Nhập Điểm Cho Học Sinh Này!");
                 }
+            }
+        });
+    }
+
+
+    submitDiemHS = function () {
+         var arrayDiem = {};
+         for (var i = 0; i < monhc.length; i++) {
+            arrayDiem[monhc[i]["mh_maso"]]= ( $('#'+monhc[i]["mh_maso"]).val());
+        }
+        
+        var adiem = JSON.stringify(arrayDiem);
+
+       $.ajax({
+            url: '/so-giao-duc/sua-diem',
+            type: 'POST',
+            data: {hs_maso: mahs,arrayDiem: arrayDiem},
+           dataType: 'JSON',
+            complete: function() {
+                $('#proDialog').modal('hide');
+            },
+            success: function (response) {
+                $('#proDialog').modal('hide');
+                alert(response.message);
+               
+                
             }
         });
     }

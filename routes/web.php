@@ -192,12 +192,17 @@ Route::post('so-giao-duc/them-hs',
 
 Route::post('so-giao-duc/them-diem-excel',
 			['as' => 'postThemDiemHSExcel',
-			'uses' => 'SoGDController@postThemDiemHSExcel'])
+			'uses' => 'ExcelController@postThemDiemHSExcel'])
 			->middleware('xacthuc:sgd');			
 			
 Route::post('so-giao-duc/get-diem-hs',
 			['as' => 'getDiemHS',
 			'uses' => 'SoGDController@getDiemHS'])
+			->middleware('xacthuc:sgd');	
+
+Route::post('so-giao-duc/sua-diem',
+			['as' => 'postSuaDiemHS',
+			'uses' => 'SoGDController@postSuaDiemHS'])
 			->middleware('xacthuc:sgd');			
 //het controller so giao duc
 
